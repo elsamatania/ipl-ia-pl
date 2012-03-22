@@ -5,7 +5,7 @@ import java.util.List;
 
 public class PesquisaUniforme<P extends Problema<E>, E extends Estado> extends MetodoPesquisaAGP<P,E>{
 
-    public static final String NOME = "Uniforme";
+    private static final String NOME = "Uniforme";
 
     @Override
     public void inserirSucessores(No<E> noAExpandir, List<E> listaSucessores, LinkedList<No<E>> listaPorExpandir, P problema) {

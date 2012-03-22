@@ -1,12 +1,12 @@
 package agente;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class PesquisaProfundidadePrimeiro<P extends Problema<E>, E extends Estado> extends MetodoPesquisaAGP<P,E> {
 
-    public static final String NOME = "Profundidade primeiro";
+    private static final String NOME = "Profundidade primeiro";
 
     @Override
     public Solucao pesquisar(P problema) {

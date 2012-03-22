@@ -4,7 +4,6 @@
  */
 package sokoban;
 
-import agente.Estado;
 import agente.Operador;
 import agente.Problema;
 import java.util.List;

@@ -2,8 +2,9 @@ package agente;
 
 public class PesquisaPorAprofundamentoProgressivo implements MetodoPesquisa{
 
-        public static final String NOME = "Aprofundamento progressivo";
+    private static final String NOME = "Aprofundamento progressivo";
 
+    @Override
     public Solucao pesquisar(Problema problema) {
         //TODO
         return null;

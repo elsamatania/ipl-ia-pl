@@ -1,12 +1,12 @@
 package agente;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class PesquisaProfundidadeLimitada<P extends Problema<E>, E extends Estado> extends PesquisaProfundidadePrimeiro<P,E>{
 
-    public static final String NOME = "Profundidade limitada";
+    private static final String NOME = "Profundidade limitada";
 
     private int limite;
 
