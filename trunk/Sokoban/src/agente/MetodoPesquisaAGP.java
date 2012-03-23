@@ -6,6 +6,7 @@ import java.util.List;
 
 public abstract class MetodoPesquisaAGP<P extends Problema<E>, E extends Estado> implements MetodoPesquisa<P>{
 
+    @Override
     public Solucao pesquisar(P problema) {
         return agp(problema);
     }
