@@ -4,8 +4,6 @@
  */
 package sokoban;
 
-import agente.Operador;
-
 /**
  *
  * @author Renato
@@ -23,7 +21,11 @@ public class MoverAgenteCima extends OperadorSokoban {
 
     @Override
     public boolean podeSerAplicado(EstadoSokoban estado) {
-        return estado.agentePodeMoverCima();
+        Celula destino = estado.getCelulaAcima(estado.getPosicaoAgente());
+        if(destino != null){
+            return !destino.temParede() && !destino.temCaixote();
+        }
+        return false;
     }
     
 }

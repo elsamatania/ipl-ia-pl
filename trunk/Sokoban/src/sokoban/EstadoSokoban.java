@@ -43,7 +43,33 @@ public final class EstadoSokoban extends Estado{
         }
     }
     
+    public Celula getCelulaAcima(Celula c){
+        if(c.getY()<=0){
+            return null;
+        }
+        return matriz[c.getX()][c.getY()-1];
+    }
     
+    public Celula getCelulaDireita(Celula c){
+        if(c.getX()>= matriz.length-1){
+            return null;
+        }
+        return matriz[c.getX()+1][c.getY()];
+    }
+    
+    public Celula getCelulaAbaixo(Celula c){
+        if(c.getY()>= matriz[0].length-1){
+            return null;
+        }
+        return matriz[c.getX()][c.getY()+1];
+    }
+    
+    public Celula getCelulaEsquerda(Celula c){
+        if(c.getX()<= 0){
+            return null;
+        }
+        return matriz[c.getX()-1][c.getY()];
+    }
     
     @Override
     public void aplicarOperadores(List<Operador> operadores) {
@@ -79,7 +105,9 @@ public final class EstadoSokoban extends Estado{
     }
     
     
-    
+    public Celula getPosicaoAgente() {
+        return posicaoAgente;
+    }
     
     public void setPosicaoAgente(Celula destino){
         posicaoAgente.setAgente(false);
@@ -94,5 +122,5 @@ public final class EstadoSokoban extends Estado{
     boolean agentePodeMoverDireita() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
-   
+    
 }
