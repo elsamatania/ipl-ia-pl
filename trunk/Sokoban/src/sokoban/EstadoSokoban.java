@@ -12,11 +12,10 @@ import java.util.List;
  *
  * @author Renato
  */
-public class EstadoSokoban extends Estado{
+public final class EstadoSokoban extends Estado{
 
-    private int agentePosicaoX;
-    private int agentePosicaoY;
     private Celula[][] matriz;
+    private Celula posicaoAgente;
 
     public EstadoSokoban(char[][] tabela) {
         matriz = new Celula[tabela.length][tabela[0].length];
@@ -38,9 +37,7 @@ public class EstadoSokoban extends Estado{
                         matriz[i][j].setCaixote(true);
                         break;
                     case 'A':
-                        matriz[i][j].setAgente(true);
-                        agentePosicaoX = i;
-                        agentePosicaoY = j;
+                        setPosicaoAgente(matriz[i][j]);
                 }
             } 
         }
@@ -54,32 +51,48 @@ public class EstadoSokoban extends Estado{
     }
 
     public boolean agentePodeMoverCima() {
-        if(agentePosicaoY <= 0){
+        Celula destino = matriz[posicaoAgente.getX()][posicaoAgente.getY()-1];
+        if(posicaoAgente.getY() <= 0 || destino.temParede()){
             return false;
         }
-        Celula destino = matriz[agentePosicaoX][agentePosicaoY-1];
-        return !destino.temCaixote() && !destino.temParede();
+
+        if(destino.temCaixote()){
+            if(posicaoAgente.getY()<=1){
+                return false;
+            }
+            Celula acima = matriz[posicaoAgente.getX()][posicaoAgente.getY()-2];
+            if(acima.temCaixote() || acima.temParede()){
+                return false;
+            }
+        }
+        return true;
     }
     
     public void moverAgenteCima(){
-        matriz[agentePosicaoX][agentePosicaoY].setAgente(false);
-        matriz[agentePosicaoX][agentePosicaoY-1].setAgente(true);
-        agentePosicaoY--;
-    }
-    
-    public boolean caixotePodeMoverCima(int xAtual, int yAtual){
-        if(yAtual <= 0 || yAtual >= matriz[0].length-1){
-            return false;
+        Celula destino = matriz[posicaoAgente.getX()][posicaoAgente.getY()-1];
+
+        if(destino.temCaixote()){
+            matriz[posicaoAgente.getX()][posicaoAgente.getY()-2].setCaixote(true);
+            destino.setCaixote(false);
         }
-        Celula destino = matriz[xAtual][yAtual-1];
-        return !destino.temParede() && !destino.temCaixote() 
-                && matriz[xAtual][yAtual+1].temAgente();
+        setPosicaoAgente(destino);
     }
     
-    public void moverCaixoteCima(int xAtual, int yAtual){
-        matriz[xAtual][yAtual].setCaixote(false);
-        matriz[xAtual][yAtual-1].setCaixote(true);
-        moverAgenteCima();
-    }
     
+    
+    
+    public void setPosicaoAgente(Celula destino){
+        posicaoAgente.setAgente(false);
+        posicaoAgente = destino;
+        posicaoAgente.setAgente(true);
+    }
+
+    void moverAgenteDireita() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    boolean agentePodeMoverDireita() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+   
 }

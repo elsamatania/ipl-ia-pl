@@ -4,26 +4,24 @@
  */
 package sokoban;
 
-import agente.Operador;
-
 /**
  *
  * @author Renato
  */
-public class MoverAgenteCima extends OperadorSokoban {
+public class MoverAgenteDireita extends OperadorSokoban{
 
-    public MoverAgenteCima(double custo) {
+    public MoverAgenteDireita(double custo) {
         super(custo);
     }
 
     @Override
     public void executar(EstadoSokoban estado) {
-        estado.moverAgenteCima();
+        estado.moverAgenteDireita();
     }
 
     @Override
     public boolean podeSerAplicado(EstadoSokoban estado) {
-        return estado.agentePodeMoverCima();
+        return estado.agentePodeMoverDireita();
     }
     
 }
