@@ -4,11 +4,14 @@
  */
 package sokoban;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Renato
  */
-public class Celula {
+public class Celula implements Cloneable{
     private int x;
     private int y;
     private boolean agente = false;
@@ -19,6 +22,15 @@ public class Celula {
     public Celula(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public Celula clone(){
+        try {
+            return (Celula) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            return null;
+        }
     }
 
     public boolean temAgente() {
@@ -37,7 +49,7 @@ public class Celula {
         this.caixote = caixote;
     }
 
-    public boolean temObjetivo() {
+    public boolean isObjetivo() {
         return objetivo;
     }
 
@@ -69,13 +81,13 @@ public class Celula {
         if(temAgente()){
             return "A";
         }
-        if(temCaixote() && temObjetivo()){
+        if(temCaixote() && isObjetivo()){
             return "X";
         }
         if(temCaixote()){
             return "C";
         }
-        if(temObjetivo()){
+        if(isObjetivo()){
             return "O";
         }
         return "V";
@@ -87,6 +99,10 @@ public class Celula {
 
     public int getY() {
         return y;
+    }
+    
+    public boolean estaVazia(){
+        return !temParede() && !temCaixote() && !temAgente();
     }
 
 }

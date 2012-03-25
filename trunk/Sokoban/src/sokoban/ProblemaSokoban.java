@@ -6,6 +6,8 @@ package sokoban;
 
 import agente.Operador;
 import agente.Problema;
+import java.awt.Point;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,14 +16,22 @@ import java.util.List;
  */
 public class ProblemaSokoban extends Problema<EstadoSokoban> {
 
+    private LinkedList<Point> posicoesObjetivo;
+    
     public ProblemaSokoban(EstadoSokoban estadoInicial, List<Operador> listaOperadores) {
         super(estadoInicial, listaOperadores);
+        posicoesObjetivo = estadoInicial.getPosicoesObjetivo();
     }
 
     
     @Override
     public boolean isObjetivoAtingido(EstadoSokoban e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for (Point p : posicoesObjetivo) {
+            if(!e.getCelula(p).temCaixote()){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

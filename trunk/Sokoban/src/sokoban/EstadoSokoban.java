@@ -6,16 +6,24 @@ package sokoban;
 
 import agente.Estado;
 import agente.Operador;
+import java.awt.Point;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author Renato
  */
-public final class EstadoSokoban extends Estado{
+public final class EstadoSokoban extends Estado implements Cloneable{
 
     private Celula[][] matriz;
     private Celula posicaoAgente;
+
+    private EstadoSokoban() {
+        
+    }
+    
+    
 
     public EstadoSokoban(char[][] tabela) {
         matriz = new Celula[tabela.length][tabela[0].length];
@@ -41,6 +49,19 @@ public final class EstadoSokoban extends Estado{
                 }
             } 
         }
+    }
+
+    @Override
+    protected EstadoSokoban clone() {
+        EstadoSokoban copia = new EstadoSokoban();
+        copia.matriz = new Celula[matriz.length][matriz[0].length];
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                copia.matriz[i][j] = matriz[i][j].clone();
+            }
+        }
+        copia.posicaoAgente = posicaoAgente.clone();
+        return copia;
     }
     
     public Celula getCelulaAcima(Celula c){
@@ -75,34 +96,6 @@ public final class EstadoSokoban extends Estado{
     public void aplicarOperadores(List<Operador> operadores) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    public boolean agentePodeMoverCima() {
-        Celula destino = matriz[posicaoAgente.getX()][posicaoAgente.getY()-1];
-        if(posicaoAgente.getY() <= 0 || destino.temParede()){
-            return false;
-        }
-
-        if(destino.temCaixote()){
-            if(posicaoAgente.getY()<=1){
-                return false;
-            }
-            Celula acima = matriz[posicaoAgente.getX()][posicaoAgente.getY()-2];
-            if(acima.temCaixote() || acima.temParede()){
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    public void moverAgenteCima(){
-        Celula destino = matriz[posicaoAgente.getX()][posicaoAgente.getY()-1];
-
-        if(destino.temCaixote()){
-            matriz[posicaoAgente.getX()][posicaoAgente.getY()-2].setCaixote(true);
-            destino.setCaixote(false);
-        }
-        setPosicaoAgente(destino);
-    }
     
     
     public Celula getPosicaoAgente() {
@@ -115,12 +108,21 @@ public final class EstadoSokoban extends Estado{
         posicaoAgente.setAgente(true);
     }
 
-    void moverAgenteDireita() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public LinkedList<Point> getPosicoesObjetivo() {
+        LinkedList<Point> lista = new LinkedList<Point>();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                Celula c = matriz[i][j];
+                if(c.isObjetivo()){
+                    lista.add(new Point(c.getX(), c.getY()));
+                }
+            }
+        }
+        return lista;
     }
-
-    boolean agentePodeMoverDireita() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    
+    public Celula getCelula(Point p){
+        return matriz[p.x][p.y];
     }
     
 }
