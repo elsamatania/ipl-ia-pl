@@ -36,7 +36,15 @@ public class ProblemaSokoban extends Problema<EstadoSokoban> {
 
     @Override
     public List<EstadoSokoban> aplicarOperadores(EstadoSokoban e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LinkedList<EstadoSokoban> estados = new LinkedList<EstadoSokoban>();
+        for (Operador o : listaOperadores) {
+            if(o.podeSerAplicado(e)){
+                EstadoSokoban copia = e.clone();
+                o.executar(copia);
+                estados.add(copia);
+            }
+        }
+        return estados;
     }
     
 }

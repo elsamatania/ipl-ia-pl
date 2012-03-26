@@ -4,9 +4,6 @@
  */
 package sokoban;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author Renato
@@ -19,16 +16,64 @@ public class Celula implements Cloneable{
     private boolean caixote = false;
     private boolean objetivo = false ;
 
-    public Celula(int x, int y) {
+    public Celula(int x, int y, boolean isParede, boolean isObjetivo) {
         this.x = x;
         this.y = y;
+        this.parede = isParede;
+        this.objetivo = isObjetivo;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Celula other = (Celula) obj;
+        return equals(other);
+    }
+    
+    public boolean equals(Celula other){
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        if (this.agente != other.agente) {
+            return false;
+        }
+        if (this.parede != other.parede) {
+            return false;
+        }
+        if (this.caixote != other.caixote) {
+            return false;
+        }
+        if (this.objetivo != other.objetivo) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + this.x;
+        hash = 13 * hash + this.y;
+        hash = 13 * hash + (this.agente ? 1 : 0);
+        hash = 13 * hash + (this.parede ? 1 : 0);
+        hash = 13 * hash + (this.caixote ? 1 : 0);
+        hash = 13 * hash + (this.objetivo ? 1 : 0);
+        return hash;
     }
 
     @Override
     public Celula clone(){
         try {
             return (Celula) super.clone();
-        } catch (CloneNotSupportedException ex) {
+        } catch (Exception ex) {
             return null;
         }
     }
@@ -53,16 +98,8 @@ public class Celula implements Cloneable{
         return objetivo;
     }
 
-    public void setObjetivo(boolean objetivo) {
-        this.objetivo = objetivo;
-    }
-
     public boolean temParede() {
         return parede;
-    }
-
-    public void setParede(boolean parede) {
-        this.parede = parede;
     }
 
     /*

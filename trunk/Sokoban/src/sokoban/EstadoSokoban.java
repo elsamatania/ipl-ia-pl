@@ -7,6 +7,7 @@ package sokoban;
 import agente.Estado;
 import agente.Operador;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,36 +24,62 @@ public final class EstadoSokoban extends Estado implements Cloneable{
         
     }
     
-    
-
     public EstadoSokoban(char[][] tabela) {
         matriz = new Celula[tabela.length][tabela[0].length];
         for (int i = 0; i < tabela.length; i++) {
             for (int j = 0; j < tabela[0].length; j++) {
-                matriz[i][j] = new Celula(i, j);
                 switch(tabela[i][j]){
                     case 'P':
-                        matriz[i][j].setParede(true);
+                        matriz[i][j] = new Celula(i, j, true, false);
                         break;
                     case 'O':
-                        matriz[i][j].setObjetivo(true);
+                        matriz[i][j] = new Celula(i, j, false, true);
                         break;
                     case 'C':
+                        matriz[i][j] = new Celula(i, j, false, false);
                         matriz[i][j].setCaixote(true);
                         break;
                     case 'X':
-                        matriz[i][j].setObjetivo(true);
+                        matriz[i][j] = new Celula(i, j, false, true);
                         matriz[i][j].setCaixote(true);
                         break;
                     case 'A':
-                        setPosicaoAgente(matriz[i][j]);
+                        matriz[i][j] = new Celula(i, j, false, false);
+                        matriz[i][j].setAgente(true);
+                        posicaoAgente = matriz[i][j];
                 }
             } 
         }
     }
 
     @Override
-    protected EstadoSokoban clone() {
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final EstadoSokoban other = (EstadoSokoban) obj;
+        return equals(other);
+    }
+    
+    public boolean equals(EstadoSokoban other){
+        if (!Arrays.deepEquals(this.matriz, other.matriz)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Arrays.deepHashCode(this.matriz);
+        return hash;
+    }
+
+    @Override
+    public EstadoSokoban clone() {
         EstadoSokoban copia = new EstadoSokoban();
         copia.matriz = new Celula[matriz.length][matriz[0].length];
         for (int i = 0; i < matriz.length; i++) {
@@ -60,8 +87,20 @@ public final class EstadoSokoban extends Estado implements Cloneable{
                 copia.matriz[i][j] = matriz[i][j].clone();
             }
         }
-        copia.posicaoAgente = posicaoAgente.clone();
+        copia.posicaoAgente = copia.getCelula(new Point(posicaoAgente.getX(), posicaoAgente.getY()));
         return copia;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder((matriz.length + 1)*matriz[0].length);
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                sb.append(matriz[i][j].toString());
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
     
     public Celula getCelulaAcima(Celula c){
