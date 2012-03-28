@@ -12,17 +12,17 @@ import sokoban.EstadoSokoban;
  * @author Renato
  */
 public class MoverAgenteBaixo extends OperadorSokoban{
-
-    public MoverAgenteBaixo(double custo) {
-        super(custo);
+    
+    
+    public MoverAgenteBaixo(double custoAgente, double custoCaixote) {
+        super(custoAgente, custoCaixote);
     }
 
     @Override
     public void executar(EstadoSokoban estado) {
         Celula destino = estado.getCelulaAbaixo(estado.getPosicaoAgente());
         if(destino.temCaixote()){
-            destino.setCaixote(false);
-            estado.getCelulaAbaixo(destino).setCaixote(true);
+            moverCaixote(destino, estado.getCelulaAbaixo(destino));
         }
         estado.setPosicaoAgente(destino);
     }

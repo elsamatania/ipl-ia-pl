@@ -47,6 +47,10 @@ public final class EstadoSokoban extends Estado implements Cloneable{
                         matriz[i][j] = new Celula(i, j, false, false);
                         matriz[i][j].setAgente(true);
                         posicaoAgente = matriz[i][j];
+                        break;
+                    default:
+                        matriz[i][j] = new Celula(i, j, false, false);
+                        
                 }
             } 
         }

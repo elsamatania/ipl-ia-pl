@@ -5,6 +5,7 @@
 package sokoban.operadores;
 
 import agente.Operador;
+import sokoban.Celula;
 import sokoban.EstadoSokoban;
 
 /**
@@ -14,9 +15,24 @@ import sokoban.EstadoSokoban;
 public abstract class OperadorSokoban extends Operador<EstadoSokoban> {
 
     protected double custoCaixote;
+    protected int movimentosCaixote = 0;
     
-    public OperadorSokoban(double custo) {
-        super(custo);
+    public OperadorSokoban(double custoAgente, double custoCaixote) {
+        super(custoAgente);
+        this.custoCaixote = custoCaixote;
     }
+    
+    protected void moverCaixote(Celula origem, Celula destino){
+        origem.setCaixote(false);
+        destino.setCaixote(true);
+        movimentosCaixote++;
+    }
+
+    @Override
+    public double getCusto() {
+        return super.getCusto() + movimentosCaixote*custoCaixote;
+    }
+    
+    
     
 }

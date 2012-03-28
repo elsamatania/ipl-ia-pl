@@ -1,7 +1,7 @@
 package agente;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Solucao {
     private Problema problema;
@@ -17,8 +17,7 @@ public class Solucao {
     }
 
     public double custoSolucao(){
-        //TODO
-        return 0;
+        return problema.getCustoSolucao(listaOperadores);
     }
 
     public List<Operador> getOperadores(){

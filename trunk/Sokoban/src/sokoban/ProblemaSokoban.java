@@ -23,7 +23,6 @@ public class ProblemaSokoban extends Problema<EstadoSokoban> {
         posicoesObjetivo = estadoInicial.getPosicoesObjetivo();
     }
 
-    
     @Override
     public boolean isObjetivoAtingido(EstadoSokoban e) {
         for (Point p : posicoesObjetivo) {

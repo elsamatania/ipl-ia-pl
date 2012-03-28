@@ -31,6 +31,7 @@ public class Sokoban {
         
         if(eValido(chars)){
             System.out.println("Ficheiro válido! :)");
+            System.out.println(new EstadoSokoban(chars));
         } else{
             System.out.println("Ficheiro inválido... :(");
         }
@@ -46,9 +47,7 @@ public class Sokoban {
             linha = br.readLine();
         }
 
-        char[][] tabela = new char[listaLinhas.size()][listaLinhas.get(0).length];
-
-        return (char[][]) listaLinhas.toArray(tabela);
+        return (char[][]) listaLinhas.toArray(new char[0][0]);
     }
     
     public static boolean eValido(char[][] tabela){
