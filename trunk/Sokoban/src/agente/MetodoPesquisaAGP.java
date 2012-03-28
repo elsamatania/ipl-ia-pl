@@ -1,7 +1,9 @@
 package agente;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 public abstract class MetodoPesquisaAGP<P extends Problema<E>, E extends Estado> implements MetodoPesquisa<P>{
@@ -31,7 +33,7 @@ public abstract class MetodoPesquisaAGP<P extends Problema<E>, E extends Estado>
 
     private Solucao agp(P problema) {
         LinkedList<No<E>> nosPorExpandir = new LinkedList<No<E>>();
-        LinkedList<No<E>> nosExpandidos = new LinkedList<No<E>>();
+        Set<No<E>> nosExpandidos = new HashSet<No<E>>();
         
         nosPorExpandir.add(new No<E>(problema.getEstadoInicial()));
         
