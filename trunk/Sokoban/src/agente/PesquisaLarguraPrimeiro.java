@@ -9,7 +9,10 @@ public class PesquisaLarguraPrimeiro<P extends Problema<E>, E extends Estado> ex
 
     @Override
     public void inserirSucessores(No<E> noAExpandir, List<E> listaSucessores, LinkedList<No<E>> listaPorExpandir, P problema) {
-        //todo
+        for (E est : listaSucessores) {
+            No<E> no = new No<E>(est, noAExpandir, 0, 0);
+            listaPorExpandir.add(no);
+        }
     }
 
     @Override
