@@ -27,21 +27,27 @@ public class AreaDesenho extends javax.swing.JPanel {
     
     public void carregaPuzzle(String puzzleFile) {
         String puzzle = null;
+        Puzzle puzzleObj = new Puzzle();
         try {
             BufferedReader in = new BufferedReader(new FileReader("./src/puzzles/" + puzzleFile));
             String str;
+
             while ((str = in.readLine()) != null) {
+                puzzleObj.addLinha(str);
+                /*
                 if (puzzle == null) {
-                     puzzle = str;
+                puzzle = str;
                 } else {
-                    puzzle = puzzle + str;
+                puzzle = puzzle + str;
                 }
+                 * 
+                 */
             }
             in.close();
         } catch (IOException e) {
         }
 
-        System.out.println(puzzle);
+        System.out.println(puzzleObj.outputString());
 
     }
 
