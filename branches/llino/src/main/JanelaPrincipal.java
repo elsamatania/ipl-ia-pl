@@ -10,6 +10,13 @@
  */
 package main;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import sokoban.EstadoSokoban;
+
 /**
  *
  * @author Leonardo Lino
@@ -90,6 +97,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -120,6 +129,80 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 new JanelaPrincipal().setVisible(true);
             }
         });
+    }
+    
+        public static char[][] lerFicheiroProblema(File f) throws Exception{
+        ArrayList<char[]> listaLinhas = new ArrayList<char[]>();
+        BufferedReader br = new BufferedReader(new FileReader(f));
+
+        String linha = br.readLine();
+        while(linha != null){
+            listaLinhas.add(linha.toCharArray());
+            linha = br.readLine();
+        }
+
+        return (char[][]) listaLinhas.toArray(new char[0][0]);
+    }
+    
+    public static boolean eValido(char[][] tabela){
+        int numAgentes, numCaixotes, numObjetivos;
+        numAgentes = numCaixotes = numObjetivos = 0;
+        for (int i = 0; i < tabela.length; i++) {
+            if(tabela[i].length != tabela[0].length){
+                return false;
+            }
+            for (int j = 0; j < tabela[0].length; j++) {
+                switch(tabela[i][j]){
+                    case 'P':
+                    case 'V':
+                        break;
+                    case 'O':
+                        numObjetivos++;
+                        break;
+                    case 'C':
+                        numCaixotes++;
+                        break;
+                    case 'X':
+                        numObjetivos++;
+                        numCaixotes++;
+                        break;
+                    case 'A':
+                        numAgentes++;
+                        break;
+                    default:
+                        return false;
+                }
+            } 
+        }
+        
+        if(numAgentes != 1 || numCaixotes != numObjetivos || numCaixotes == 0){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public void carregarProblema(){
+        char[][] chars = null;
+        File fich = null;
+        JFileChooser jf = new JFileChooser();
+        int resposta = jf.showOpenDialog(this);
+        if(resposta == JFileChooser.APPROVE_OPTION){
+            fich = jf.getSelectedFile();
+        }
+        
+        try {
+            chars = lerFicheiroProblema(fich);
+        } catch (Exception ex) {
+            System.out.println("Não foi possível ler o ficheiro: " + ex);
+        }
+        
+        if(eValido(chars)){
+            System.out.println("Ficheiro válido! :)");
+            System.out.println(new EstadoSokoban(chars));
+        } else{
+            System.out.println("Ficheiro inválido... :(");
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public main.AreaDesenho areaDesenho;

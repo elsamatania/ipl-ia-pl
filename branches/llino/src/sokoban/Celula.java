@@ -14,7 +14,7 @@ public class Celula implements Cloneable{
     private boolean agente = false;
     private boolean parede = false;
     private boolean caixote = false;
-    private boolean objetivo = false ;
+    private boolean objetivo = false;
 
     public Celula(int x, int y, boolean isParede, boolean isObjetivo) {
         this.x = x;
