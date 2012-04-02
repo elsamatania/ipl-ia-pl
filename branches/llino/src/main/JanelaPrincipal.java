@@ -47,6 +47,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         );
 
         escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
+        escolhaPuzzle.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                escolhaPuzzleItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -74,6 +79,12 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void escolhaPuzzleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_escolhaPuzzleItemStateChanged
+        areaDesenho.carregaPuzzle(evt.getItem().toString());
+        //System.out.println(evt.getItem().toString());
+        
+    }//GEN-LAST:event_escolhaPuzzleItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -111,7 +122,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private main.AreaDesenho areaDesenho;
+    public main.AreaDesenho areaDesenho;
     private javax.swing.JComboBox escolhaPuzzle;
     // End of variables declaration//GEN-END:variables
 }

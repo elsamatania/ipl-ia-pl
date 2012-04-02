@@ -4,24 +4,32 @@
  */
 package main;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  *
  * @author Leonardo Lino
  */
 public class Controlador {
     
-    JanelaPrincipal jp = new JanelaPrincipal();
-    AreaDesenho ad = new AreaDesenho();
+    private static JanelaPrincipal jp;
+    private static AreaDesenho ad;
 
     public Controlador() {
     }
     
-    public void setJP(JanelaPrincipal jp){
-        this.jp = jp;
+    public static void main(String[] args) {
+        jp = new JanelaPrincipal();
+        jp.setVisible(true);
+        ad = jp.areaDesenho;
+
     }
+
     
-    public void setAD (AreaDesenho ad){
-        this.ad = ad;
-    }
+     
+
+    
     
 }

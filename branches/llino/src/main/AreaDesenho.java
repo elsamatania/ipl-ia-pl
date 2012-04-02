@@ -23,13 +23,12 @@ public class AreaDesenho extends javax.swing.JPanel {
     /** Creates new form AreaDesenho */
     public AreaDesenho() {
         initComponents();
-        carregaPuzzle();
     }
     
-    public void carregaPuzzle() {
+    public void carregaPuzzle(String puzzleFile) {
         String puzzle = null;
         try {
-            BufferedReader in = new BufferedReader(new FileReader("./src/puzzles/soko001.txt"));
+            BufferedReader in = new BufferedReader(new FileReader("./src/puzzles/" + puzzleFile));
             String str;
             while ((str = in.readLine()) != null) {
                 if (puzzle == null) {
