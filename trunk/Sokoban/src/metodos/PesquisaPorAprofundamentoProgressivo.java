@@ -1,10 +1,12 @@
-package agente;
+package metodos;
+
+import agente.Problema;
+import agente.Solucao;
 
 public class PesquisaPorAprofundamentoProgressivo implements MetodoPesquisa{
 
-    private static final String NOME = "Aprofundamento progressivo";
+        public static final String NOME = "Aprofundamento progressivo";
 
-    @Override
     public Solucao pesquisar(Problema problema) {
         //TODO
         return null;

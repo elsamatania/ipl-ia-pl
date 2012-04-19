@@ -1,12 +1,15 @@
-package agente;
+package metodos;
 
-import java.util.LinkedList;
+import agente.Estado;
+import agente.No;
+import agente.Problema;
 import java.util.List;
+import java.util.LinkedList;
 
 
-public class PesquisaProfundidadeLimitada<P extends Problema<E>, E extends Estado> extends PesquisaProfundidadePrimeiro<P,E>{
+public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{
 
-    private static final String NOME = "Profundidade limitada";
+    public static final String NOME = "Profundidade limitada";
 
     private int limite;
 
@@ -29,10 +32,14 @@ public class PesquisaProfundidadeLimitada<P extends Problema<E>, E extends Estad
         this.limite = limite;
     }
 
+
     @Override
-    public void inserirSucessores(No<E> noAExpandir, List<E> listaSucessores, LinkedList<No<E>> listaPorExpandir, P problema) {
-        super.inserirSucessores(noAExpandir, listaSucessores, listaPorExpandir, problema);
+    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores,
+                                  LinkedList<No> listaPorExpandir, Problema problema) {
+
+        //TODO
     }
+
 
     @Override
     public String toString(){

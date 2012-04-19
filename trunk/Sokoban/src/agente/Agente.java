@@ -1,6 +1,7 @@
 package agente;
 
 import java.util.HashMap;
+import metodos.*;
 
 /**
  *
