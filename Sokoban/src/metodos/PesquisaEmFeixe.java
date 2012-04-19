@@ -1,14 +1,19 @@
-package agente;
+package metodos;
 
-import java.util.LinkedList;
+import agente.Agente;
+import agente.Estado;
+import agente.No;
+import agente.Problema;
 import java.util.List;
+import java.util.LinkedList;
 
 
-public class PesquisaEmFeixe<P extends Problema<E>, E extends Estado>  extends PesquisaAAsterisco<P,E>{
+public class PesquisaEmFeixe  extends PesquisaAAsterisco{
 
-    private static final String NOME = "Feixe";
+    public static final String NOME = "Feixe";
 
     private int tamanhoMaximoLista;
+
 
     public PesquisaEmFeixe(Agente agente){
         this(100, agente);
@@ -30,10 +35,14 @@ public class PesquisaEmFeixe<P extends Problema<E>, E extends Estado>  extends P
         this.tamanhoMaximoLista = tamanhoMaximoLista;
     }
 
+
     @Override
-    public void inserirSucessores(No<E> noAExpandir, List<E> listaSucessores, LinkedList<No<E>> listaPorExpandir, P problema) {
-        //todo
+    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores,
+                                  LinkedList<No> listaPorExpandir, Problema problema) {
+
+        //TODO
     }
+
 
     @Override
     public String toString() {
