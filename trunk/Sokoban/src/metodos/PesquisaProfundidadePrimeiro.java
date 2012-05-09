@@ -29,7 +29,7 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisa {
                 return new Solucao(problema, no);
             }
 
-            inserirSucessores(no, problema.aplicarOperadores(no.getEstado()), nosPorExpandir, problema);
+            inserirSucessores(no, problema.aplicarOperadores(no.getEstado()));
 
         }
         return null;
@@ -48,14 +48,13 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisa {
         return false;
     }
 
-    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores,
-            LinkedList<No> listaPorExpandir, Problema problema) {
+    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
 
         for (Estado single : listaSucessores) {
 
             No novoNo = new No(single, noAExpandir, noAExpandir.getG() + single.getOperador().getCusto(), 0);
             if (!isCiclo(novoNo)) {
-                listaPorExpandir.addFirst(novoNo);
+                nosPorExpandir.addFirst(novoNo);
             }
         }
     }
