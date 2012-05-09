@@ -11,8 +11,7 @@ public class PesquisaUniforme extends MetodoPesquisaAGP{
 
     public static final String NOME = "Uniforme";
 
-    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores,
-                                  LinkedList<No> listaPorExpandir, Problema problema) {
+    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
 
         //TODO
     }

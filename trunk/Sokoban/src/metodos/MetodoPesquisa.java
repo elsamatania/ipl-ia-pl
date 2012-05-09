@@ -1,10 +1,14 @@
 package metodos;
 
+import agente.No;
 import agente.Problema;
 import agente.Solucao;
+import java.util.LinkedList;
 
-public interface MetodoPesquisa {
+public abstract class MetodoPesquisa implements Pesquisa {
+    protected Problema problema;
+    protected LinkedList<No> nosPorExpandir = new LinkedList<No>();
 
-    public Solucao pesquisar(Problema problema);
+    
 
 }

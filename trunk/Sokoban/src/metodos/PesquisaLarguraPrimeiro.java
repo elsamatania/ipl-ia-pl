@@ -10,14 +10,14 @@ public class PesquisaLarguraPrimeiro extends MetodoPesquisaAGP {
 
     public static final String NOME = "Largura primeiro";
 
-    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores,
-            LinkedList<No> listaPorExpandir, Problema problema) {
-
+    @Override
+    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
         for (Estado single : listaSucessores) {
             No novoNo = new No(single, noAExpandir, noAExpandir.getG() + single.getOperador().getCusto(), 0);
-            listaPorExpandir.addLast(novoNo);
+            nosPorExpandir.addLast(novoNo);
         }
     }
+
 
     @Override
     public String toString() {
