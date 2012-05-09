@@ -7,32 +7,31 @@ package sokoban.operadores;
 import agente.Operador;
 import sokoban.EstadoSokoban;
 import sokoban.Celula;
-
 /**
  *
  * @author Leonardo Lino
  */
-public class MoverBaixo extends Operador<EstadoSokoban> {
+public class MoverEsquerda extends Operador<EstadoSokoban> {
 
-    public MoverBaixo(double custo) {
+    public MoverEsquerda(double custo) {
         super(custo);
     }
 
     @Override
     public void executar(EstadoSokoban estado) {
-        Celula celula = estado.getCelulaAbaixo(estado.getPosicaoAgente());
+        Celula celula = estado.getCelulaEsquerda(estado.getPosicaoAgente());
        estado.setPosicaoAgente(celula);
         
         if (celula.temCaixote()) {
-            Celula celulaAbaixoCaixote = estado.getCelulaAbaixo(celula);
-            celulaAbaixoCaixote.setCaixote(true);
+            Celula celulaEsquerdaCaixote = estado.getCelulaEsquerda(celula);
+            celulaEsquerdaCaixote.setCaixote(true);
             celula.setCaixote(false);
         }
     }
 
     @Override
     public boolean podeSerAplicado(EstadoSokoban estado) {
-        Celula celula = estado.getCelulaAbaixo(estado.getPosicaoAgente());
+        Celula celula = estado.getCelulaEsquerda(estado.getPosicaoAgente());
         
         if (celula == null) {
             return false;
@@ -42,16 +41,17 @@ public class MoverBaixo extends Operador<EstadoSokoban> {
         }
         
         if (celula.temCaixote()) {
-            Celula celulaAbaixoCaixote = estado.getCelulaAbaixo(celula);
-            if (celulaAbaixoCaixote == null) {
+            Celula celulaEsquerdaCaixote = estado.getCelulaEsquerda(celula);
+            if (celulaEsquerdaCaixote == null) {
                 return false;
             }
-            if (celulaAbaixoCaixote.isParede() || celulaAbaixoCaixote.temCaixote()) {
+            if (celulaEsquerdaCaixote.isParede() || celulaEsquerdaCaixote.temCaixote()) {
                 return false;
             }
         }
         return true;
     }
+    
     
     
 }
