@@ -7,7 +7,8 @@ import agente.Solucao;
 import java.util.List;
 import java.util.LinkedList;
 
-public class PesquisaProfundidadePrimeiro extends MetodoPesquisaAGP {
+
+public class PesquisaProfundidadePrimeiro extends MetodoPesquisa {
 
     public static final String NOME = "Profundidade primeiro";
 
@@ -16,11 +17,9 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisaAGP {
         return agp(problema);
     }
 
+
     //AGP sem lista de nos expandidos
     private Solucao agp(Problema problema) {
-        LinkedList<No> nosPorExpandir = new LinkedList<No>();
-
-
         No no;
         nosPorExpandir.add(new No(problema.getEstadoInicial()));
         while (!nosPorExpandir.isEmpty()) {
@@ -60,6 +59,7 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisaAGP {
             }
         }
     }
+
 
     @Override
     public String toString() {

@@ -33,9 +33,7 @@ public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{
     }
 
 
-    @Override
-    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores,
-                                  LinkedList<No> listaPorExpandir, Problema problema) {
+    public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
 
         //TODO
     }

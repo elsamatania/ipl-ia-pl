@@ -18,13 +18,13 @@ public class Agente {
     /**
      * Mapa de hash que contem os metodos que o agente e capaz de utilizar.
      */
-    private HashMap<String, MetodoPesquisa> metodosPesquisa = new HashMap<String, MetodoPesquisa>();
+    private HashMap<String, Pesquisa> metodosPesquisa = new HashMap<String, Pesquisa>();
 
 
     /**
      * Metodo  de pesquisa actual.
      */
-    private MetodoPesquisa metodoPesquisa;
+    private Pesquisa metodoPesquisa;
 
 
     /**
@@ -38,7 +38,7 @@ public class Agente {
      */
     public Agente() {
         //Define as capacidades do agente :-)
-        MetodoPesquisa metodo = new PesquisaLarguraPrimeiro();
+        Pesquisa metodo = new PesquisaLarguraPrimeiro();
         metodosPesquisa.put(metodo.toString(), metodo);
 
         //Por omissao o nosso agente utiliza a pesquisa em largura
