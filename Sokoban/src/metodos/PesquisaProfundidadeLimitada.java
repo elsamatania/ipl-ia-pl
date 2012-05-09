@@ -35,7 +35,9 @@ public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{
 
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
 
-        //TODO
+         if (noAExpandir.getProfundidade()<limite){
+            super.inserirSucessores(noAExpandir, listaSucessores);
+        }
     }
 
 
