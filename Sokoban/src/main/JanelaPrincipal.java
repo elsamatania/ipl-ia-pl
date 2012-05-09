@@ -10,11 +10,18 @@
  */
 package main;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import sokoban.EstadoSokoban;
 
 /**
@@ -23,11 +30,15 @@ import sokoban.EstadoSokoban;
  */
 public class JanelaPrincipal extends javax.swing.JFrame {
 
+    private PuzzleTableModel puzzleTableModel;
+    private JTable tabelaPuzzle = new JTable();
+    private EstadoSokoban puzzle;
     /**
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal() {
 	initComponents();
+        painelPuzzle.add(tabelaPuzzle);
     }
 
     /**
@@ -39,21 +50,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        areaDesenho = new main.AreaDesenho();
         escolhaPuzzle = new javax.swing.JComboBox();
+        painelPuzzle = new javax.swing.JPanel();
+        botaoEscolherPuzzle = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout areaDesenhoLayout = new javax.swing.GroupLayout(areaDesenho);
-        areaDesenho.setLayout(areaDesenhoLayout);
-        areaDesenhoLayout.setHorizontalGroup(
-            areaDesenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 796, Short.MAX_VALUE)
-        );
-        areaDesenhoLayout.setVerticalGroup(
-            areaDesenhoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 278, Short.MAX_VALUE)
-        );
 
         escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
         escolhaPuzzle.addItemListener(new java.awt.event.ItemListener() {
@@ -61,28 +62,35 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 escolhaPuzzleItemStateChanged(evt);
             }
         });
+        escolhaPuzzle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                escolhaPuzzleActionPerformed(evt);
+            }
+        });
+
+        botaoEscolherPuzzle.setText("Escolher puzzle");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(areaDesenho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGap(27, 27, 27)
+                .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botaoEscolherPuzzle)
+                .addContainerGap(591, Short.MAX_VALUE))
+            .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(184, 184, 184)
-                .addComponent(areaDesenho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoEscolherPuzzle))
+                .addGap(39, 39, 39)
+                .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -90,10 +98,19 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void escolhaPuzzleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_escolhaPuzzleItemStateChanged
-	areaDesenho.carregaPuzzle(evt.getItem().toString());
-	//System.out.println(evt.getItem().toString());
-
+	String escolha = (String) escolhaPuzzle.getSelectedItem();
+        URL resource = getClass().getResource("src/puzzles/" + escolha);
+        File file = new File(resource.getFile());
+        try {
+            setPuzzleInicial(lerFicheiroProblema(file));
+        } catch (Exception ex) {
+            Logger.getLogger(JanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_escolhaPuzzleItemStateChanged
+
+    private void escolhaPuzzleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_escolhaPuzzleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_escolhaPuzzleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,14 +223,32 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 	}
 
 	if (eValido(chars)) {
-	    System.out.println("Ficheiro válido! :)");
-	    System.out.println(new EstadoSokoban(chars));
+	    setPuzzleInicial(chars);
 	} else {
-	    System.out.println("Ficheiro inválido... :(");
+	    JOptionPane.showMessageDialog(rootPane, "O ficheiro indicado não contém um problema de Sokoban válido.",
+                    "Erro", JOptionPane.WARNING_MESSAGE);
 	}
     }
+    
+    private void setPuzzleInicial(char[][] tabela){
+        puzzle = new EstadoSokoban(tabela);
+        puzzleTableModel = new PuzzleTableModel(puzzle);
+        configurarTabela();
+        
+    }
+    
+    private void configurarTabela() {
+        tabelaPuzzle.setModel(puzzleTableModel);
+        tabelaPuzzle.setDefaultRenderer(Object.class, new PecaPuzzleCellRenderer());
+        for (int i = 0; i < tabelaPuzzle.getColumnCount(); i++) {
+            tabelaPuzzle.getColumnModel().getColumn(i).setPreferredWidth(Propriedades.CELL_WIDTH);
+        }
+        tabelaPuzzle.setRowHeight(Propriedades.CELL_HEIGHT);
+        tabelaPuzzle.setBorder(BorderFactory.createLineBorder(Color.black));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public main.AreaDesenho areaDesenho;
+    private javax.swing.JButton botaoEscolherPuzzle;
     private javax.swing.JComboBox escolhaPuzzle;
+    private javax.swing.JPanel painelPuzzle;
     // End of variables declaration//GEN-END:variables
 }

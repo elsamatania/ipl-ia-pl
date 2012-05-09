@@ -2,9 +2,10 @@ package main;
 
 import java.util.EventObject;
 import javax.swing.table.AbstractTableModel;
+import sokoban.Celula;
 import sokoban.EstadoSokoban;
 
-public class PuzzleTableModel extends AbstractTableModel implements PuzzleListener{
+public class PuzzleTableModel extends AbstractTableModel implements PuzzleListener {
 
     private EstadoSokoban puzzle;
 
@@ -26,7 +27,7 @@ public class PuzzleTableModel extends AbstractTableModel implements PuzzleListen
     }
 
     @Override
-    public Object getValueAt(int row, int col) {
+    public Celula getValueAt(int row, int col) {
         return puzzle.getValueAt(row, col);
     }
 
