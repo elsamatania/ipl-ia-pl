@@ -21,17 +21,6 @@ public abstract class Problema<E extends Estado> {
     public E getEstadoInicial() {
         return estadoInicial;
     }
-
-    //para cada solução (definida por uma lista de sucessivos operadores) calcula o custo total
-    public double getCustoSolucao(List<Operador> listaOperadores) {
-        double custoTotal = 0;
-        
-        for (Operador o : listaOperadores) {
-            custoTotal += o.getCusto();
-        }
-        
-        return custoTotal;
-    }
     
     //tem de ter um método para verificar se o objetivo foi atingido
     public abstract boolean isObjetivoAtingido(E e);

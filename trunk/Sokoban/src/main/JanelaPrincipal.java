@@ -10,19 +10,20 @@
  */
 package main;
 
+import agente.Solucao;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
+import javax.swing.*;
+import sokoban.Celula;
 import sokoban.EstadoSokoban;
+import sokoban.SokobanResolver;
 
 /**
  *
@@ -32,13 +33,15 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     private PuzzleTableModel puzzleTableModel;
     private JTable tabelaPuzzle = new JTable();
-    private EstadoSokoban puzzle;
+    private SokobanResolver sokobanResolver;
+    //private EstadoSokoban puzzle;
+
     /**
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal() {
-	initComponents();
-        painelPuzzle.add(tabelaPuzzle);
+        initComponents();
+        //painelPuzzle.add(tabelaPuzzle);
     }
 
     /**
@@ -53,6 +56,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         escolhaPuzzle = new javax.swing.JComboBox();
         painelPuzzle = new javax.swing.JPanel();
         botaoEscolherPuzzle = new javax.swing.JButton();
+        botaoResolver = new javax.swing.JButton();
+        botaoMostrarSolucao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,26 +67,54 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 escolhaPuzzleItemStateChanged(evt);
             }
         });
-        escolhaPuzzle.addActionListener(new java.awt.event.ActionListener() {
+
+        botaoEscolherPuzzle.setText("Escolher puzzle");
+        botaoEscolherPuzzle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                escolhaPuzzleActionPerformed(evt);
+                botaoEscolherPuzzleActionPerformed(evt);
             }
         });
 
-        botaoEscolherPuzzle.setText("Escolher puzzle");
+        botaoResolver.setText("Resolver");
+        botaoResolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoResolverActionPerformed(evt);
+            }
+        });
+
+        botaoMostrarSolucao.setText("Mostrar solução");
+        botaoMostrarSolucao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoMostrarSolucaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(botaoEscolherPuzzle)
-                .addContainerGap(591, Short.MAX_VALUE))
-            .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botaoResolver)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botaoMostrarSolucao))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botaoEscolherPuzzle)))
+                        .addGap(0, 551, Short.MAX_VALUE)))
+                .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {botaoEscolherPuzzle, botaoMostrarSolucao, botaoResolver, escolhaPuzzle});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -89,28 +122,70 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoEscolherPuzzle))
-                .addGap(39, 39, 39)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoResolver)
+                    .addComponent(botaoMostrarSolucao))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {botaoEscolherPuzzle, botaoMostrarSolucao, botaoResolver, escolhaPuzzle});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void escolhaPuzzleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_escolhaPuzzleItemStateChanged
-	String escolha = (String) escolhaPuzzle.getSelectedItem();
-        URL resource = getClass().getResource("src/puzzles/" + escolha);
-        File file = new File(resource.getFile());
+        String escolha = (String) escolhaPuzzle.getSelectedItem();
+        File file = new File("src/puzzles/" + escolha);
         try {
-            setPuzzleInicial(lerFicheiroProblema(file));
+            setPuzzle(lerFicheiroProblema(file));
         } catch (Exception ex) {
-            Logger.getLogger(JanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro com a leitura do ficheiro: " + ex.getMessage(),
+                    "Erro", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_escolhaPuzzleItemStateChanged
 
-    private void escolhaPuzzleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_escolhaPuzzleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_escolhaPuzzleActionPerformed
+    private void botaoResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoResolverActionPerformed
+        botaoEscolherPuzzle.setEnabled(false);
+        botaoResolver.setEnabled(false);
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() {
+                sokobanResolver.resolverProblema();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                if (sokobanResolver.temSolucao()) {
+                    System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
+                    System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
+                    System.out.println("Tempo de pesquisa: " + sokobanResolver.getTempoPesquisa() + " ms");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "O problema não tem solução", "Sem solução", JOptionPane.INFORMATION_MESSAGE);
+                }
+                botaoEscolherPuzzle.setEnabled(true);
+                botaoResolver.setEnabled(true);
+            }
+        }.execute();
+    }//GEN-LAST:event_botaoResolverActionPerformed
+
+    private void botaoEscolherPuzzleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEscolherPuzzleActionPerformed
+        carregarProblema();
+    }//GEN-LAST:event_botaoEscolherPuzzleActionPerformed
+
+    private void botaoMostrarSolucaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMostrarSolucaoActionPerformed
+        new SwingWorker<Void, Void>() {
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                sokobanResolver.mostrarSolucao();
+                return null;
+            }
+        }.execute();
+    }//GEN-LAST:event_botaoMostrarSolucaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -118,136 +193,114 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     public static void main(String args[]) {
 
 
-	/*
-	 * Set the Nimbus look and feel
-	 */
-	//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /*
-	 * If Nimbus (introduced in Java SE 6) is not available, stay with the
-	 * default look and feel. For details see
-	 * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-	 */
-	try {
-	    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-		if ("Nimbus".equals(info.getName())) {
-		    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-		    break;
-		}
-	    }
-	} catch (ClassNotFoundException ex) {
-	    java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-	} catch (InstantiationException ex) {
-	    java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-	} catch (IllegalAccessException ex) {
-	    java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-	} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-	    java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-	}
-	//</editor-fold>
+         * Set the Nimbus look and feel
+         */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the
+         * default look and feel. For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-	/*
-	 * Create and display the form
-	 */
-	java.awt.EventQueue.invokeLater(new Runnable() {
+        /*
+         * Create and display the form
+         */
+        java.awt.EventQueue.invokeLater(new Runnable() {
 
-	    public void run() {
-		new JanelaPrincipal().setVisible(true);
-	    }
-	});
+            @Override
+            public void run() {
+                new JanelaPrincipal().setVisible(true);
+            }
+        });
     }
 
     public static char[][] lerFicheiroProblema(File f) throws Exception {
-	ArrayList<char[]> listaLinhas = new ArrayList<char[]>();
-	BufferedReader br = new BufferedReader(new FileReader(f));
+        ArrayList<char[]> listaLinhas = new ArrayList<char[]>();
+        BufferedReader br = new BufferedReader(new FileReader(f));
 
-	String linha = br.readLine();
-	while (linha != null) {
-	    listaLinhas.add(linha.toCharArray());
-	    linha = br.readLine();
-	}
+        String linha = br.readLine();
+        while (linha != null) {
+            listaLinhas.add(linha.toCharArray());
+            linha = br.readLine();
+        }
 
-	return (char[][]) listaLinhas.toArray(new char[0][0]);
-    }
-
-    public static boolean eValido(char[][] tabela) {
-	int numAgentes, numCaixotes, numObjetivos;
-	numAgentes = numCaixotes = numObjetivos = 0;
-	for (int i = 0; i < tabela.length; i++) {
-	    if (tabela[i].length != tabela[0].length) {
-		return false;
-	    }
-	    for (int j = 0; j < tabela[0].length; j++) {
-		switch (tabela[i][j]) {
-		    case 'P':
-		    case 'V':
-			break;
-		    case 'O':
-			numObjetivos++;
-			break;
-		    case 'C':
-			numCaixotes++;
-			break;
-		    case 'X':
-			numObjetivos++;
-			numCaixotes++;
-			break;
-		    case 'A':
-			numAgentes++;
-			break;
-		    default:
-			return false;
-		}
-	    }
-	}
-
-	if (numAgentes != 1 || numCaixotes != numObjetivos || numCaixotes == 0) {
-	    return false;
-	}
-
-	return true;
+        return listaLinhas.toArray(new char[0][0]);
     }
 
     public void carregarProblema() {
-	char[][] chars = null;
-	File fich = null;
-	JFileChooser jf = new JFileChooser();
-	int resposta = jf.showOpenDialog(this);
-	if (resposta == JFileChooser.APPROVE_OPTION) {
-	    fich = jf.getSelectedFile();
-	}
+        char[][] chars;
+        File fich;
+        JFileChooser jf = new JFileChooser();
+        int resposta = jf.showOpenDialog(this);
+        if (resposta == JFileChooser.APPROVE_OPTION) {
+            fich = jf.getSelectedFile();
+        } else {
+            return;
+        }
 
-	try {
-	    chars = lerFicheiroProblema(fich);
-	} catch (Exception ex) {
-	    System.out.println("Não foi possível ler o ficheiro: " + ex);
-	}
-
-	if (eValido(chars)) {
-	    setPuzzleInicial(chars);
-	} else {
-	    JOptionPane.showMessageDialog(rootPane, "O ficheiro indicado não contém um problema de Sokoban válido.",
+        try {
+            chars = lerFicheiroProblema(fich);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro com a leitura do ficheiro: " + ex.getMessage(),
                     "Erro", JOptionPane.WARNING_MESSAGE);
-	}
+            return;
+        }
+
+        if (SokobanResolver.isSokobanValido(chars)) {
+            setPuzzle(chars);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "O ficheiro indicado não contém um problema de Sokoban válido.",
+                    "Erro", JOptionPane.WARNING_MESSAGE);
+            carregarProblema();
+        }
     }
-    
-    private void setPuzzleInicial(char[][] tabela){
-        puzzle = new EstadoSokoban(tabela);
-        puzzleTableModel = new PuzzleTableModel(puzzle);
+
+    private void setPuzzle(char[][] tabela) {
+        if (sokobanResolver == null) {
+            sokobanResolver = new SokobanResolver(tabela);
+            //puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
+        } else {
+            //painelPuzzle.remove(tabelaPuzzle);
+            sokobanResolver.setProblema(tabela);
+            //puzzleTableModel.setPuzzle(sokobanResolver.getPuzzleInicial());
+        }
+        puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
         configurarTabela();
-        
     }
-    
+
     private void configurarTabela() {
         tabelaPuzzle.setModel(puzzleTableModel);
         tabelaPuzzle.setDefaultRenderer(Object.class, new PecaPuzzleCellRenderer());
         for (int i = 0; i < tabelaPuzzle.getColumnCount(); i++) {
             tabelaPuzzle.getColumnModel().getColumn(i).setPreferredWidth(Propriedades.CELL_WIDTH);
         }
+
         tabelaPuzzle.setRowHeight(Propriedades.CELL_HEIGHT);
         tabelaPuzzle.setBorder(BorderFactory.createLineBorder(Color.black));
+        painelPuzzle.add(tabelaPuzzle);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEscolherPuzzle;
+    private javax.swing.JButton botaoMostrarSolucao;
+    private javax.swing.JButton botaoResolver;
     private javax.swing.JComboBox escolhaPuzzle;
     private javax.swing.JPanel painelPuzzle;
     // End of variables declaration//GEN-END:variables

@@ -42,6 +42,7 @@ public abstract class MetodoPesquisaAGP extends MetodoPesquisa {
 
         No no;
         nosPorExpandir.add(new No(problema.getEstadoInicial()));
+        
         while (!nosPorExpandir.isEmpty()) {
             no = nosPorExpandir.removeFirst();
             if (nosExpandidos.contains(no.getEstado())) {

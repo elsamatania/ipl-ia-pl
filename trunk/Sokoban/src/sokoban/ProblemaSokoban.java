@@ -40,6 +40,7 @@ public class ProblemaSokoban extends Problema<EstadoSokoban> {
             if(o.podeSerAplicado(e)){
                 EstadoSokoban copia = e.clone();
                 o.executar(copia);
+                copia.setOperador(o);
                 estados.add(copia);
             }
         }

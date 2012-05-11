@@ -51,7 +51,7 @@ public class ImageLoader {
 
     MediaTracker media = new MediaTracker(new Component() {});
     try {
-      img = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/imagens/"+nome));
+      img = Toolkit.getDefaultToolkit().createImage(getClass().getResource(nome));
       if (img == null)
         throw new Exception("Bitmap não encontrado: " + nome);
       media.addImage(img, 0);
