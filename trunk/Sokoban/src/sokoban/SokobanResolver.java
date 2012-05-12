@@ -90,9 +90,9 @@ public class SokobanResolver {
     }
 
     public void resolverProblema() {
-        long tempoInicial = new Date().getTime();
+        long tempoInicial = System.nanoTime();
         solucao = agente.resolveProblema(problema, null);
-        tempoPesquisa = new Date().getTime() - tempoInicial;
+        tempoPesquisa = System.nanoTime() - tempoInicial;
     }
     
     public void mostrarSolucao(){

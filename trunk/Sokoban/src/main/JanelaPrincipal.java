@@ -162,9 +162,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 if (sokobanResolver.temSolucao()) {
                     System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
                     System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
-                    System.out.println("Tempo de pesquisa: " + sokobanResolver.getTempoPesquisa() + " ms");
+                    System.out.println("Tempo de pesquisa: " + sokobanResolver.getTempoPesquisa() + " ns");
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "O problema não tem solução", "Sem solução", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPane, "O problema não tem solução",
+                            "Sem solução", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println("Tempo de pesquisa: " + sokobanResolver.getTempoPesquisa() + " ns");
                 }
                 botaoEscolherPuzzle.setEnabled(true);
                 botaoResolver.setEnabled(true);
