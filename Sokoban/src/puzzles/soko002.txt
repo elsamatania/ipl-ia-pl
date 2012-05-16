@@ -1,8 +1,8 @@
-PPPPPPPP
-PPVVOAVP
-PPVPOPVP
-PPVVVCVP
-PPOCCVPP
-PPVVPPPP
-PPPPPPPP
-PPPPPPPP
+########
+##  .@ #
+## #.# #
+##   $ #
+##.$$ ##
+##  ####
+########
+########

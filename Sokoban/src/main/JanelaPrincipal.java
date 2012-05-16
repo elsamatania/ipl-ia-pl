@@ -33,6 +33,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     private PuzzleTableModel puzzleTableModel;
     private JTable tabelaPuzzle = new JTable();
+    private JFileChooser jf = new JFileChooser();
     private SokobanResolver sokobanResolver;
     //private EstadoSokoban puzzle;
 
@@ -61,7 +62,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
+        escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecionar...", "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
         escolhaPuzzle.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 escolhaPuzzleItemStateChanged(evt);
@@ -137,13 +138,15 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void escolhaPuzzleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_escolhaPuzzleItemStateChanged
-        String escolha = (String) escolhaPuzzle.getSelectedItem();
-        File file = new File("src/puzzles/" + escolha);
-        try {
-            setPuzzle(lerFicheiroProblema(file));
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro com a leitura do ficheiro: " + ex.getMessage(),
-                    "Erro", JOptionPane.WARNING_MESSAGE);
+        if (escolhaPuzzle.getSelectedIndex() != 0) {
+            String escolha = (String) escolhaPuzzle.getSelectedItem();
+            File file = new File("src/puzzles/" + escolha);
+            try {
+                setPuzzle(lerFicheiroProblema(file));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro com a leitura do ficheiro: " + ex.getMessage(),
+                        "Erro", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_escolhaPuzzleItemStateChanged
 
@@ -151,6 +154,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         botaoEscolherPuzzle.setEnabled(false);
         botaoResolver.setEnabled(false);
         new SwingWorker<Void, Void>() {
+
             @Override
             protected Void doInBackground() {
                 sokobanResolver.resolverProblema();
@@ -162,7 +166,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 if (sokobanResolver.temSolucao()) {
                     System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
                     System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
-                    System.out.println("Tempo de pesquisa: " + sokobanResolver.getTempoPesquisa() + " ns");
+                    System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa()/1000000) + " ms");
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "O problema não tem solução",
                             "Sem solução", JOptionPane.INFORMATION_MESSAGE);
@@ -244,13 +248,15 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             linha = br.readLine();
         }
 
+        char[][] tabela = listaLinhas.toArray(new char[0][0]);
+        traduzirProblema(tabela);
+
         return listaLinhas.toArray(new char[0][0]);
     }
 
     public void carregarProblema() {
         char[][] chars;
         File fich;
-        JFileChooser jf = new JFileChooser();
         int resposta = jf.showOpenDialog(this);
         if (resposta == JFileChooser.APPROVE_OPTION) {
             fich = jf.getSelectedFile();
@@ -275,14 +281,37 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    public static void traduzirProblema(char[][] tabela) {
+        for (int i = 0; i < tabela.length; i++) {
+            for (int j = 0; j < tabela[i].length; j++) {
+                switch (tabela[i][j]) {
+                    case '#':
+                        tabela[i][j] = 'P';
+                        break;
+                    case '.':
+                        tabela[i][j] = 'O';
+                        break;
+                    case '@':
+                        tabela[i][j] = 'A';
+                        break;
+                    case '$':
+                        tabela[i][j] = 'C';
+                        break;
+                    case '*':
+                        tabela[i][j] = 'X';
+                        break;
+                    case ' ':
+                        tabela[i][j] = 'V';
+                }
+            }
+        }
+    }
+
     private void setPuzzle(char[][] tabela) {
         if (sokobanResolver == null) {
             sokobanResolver = new SokobanResolver(tabela);
-            //puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
         } else {
-            //painelPuzzle.remove(tabelaPuzzle);
             sokobanResolver.setProblema(tabela);
-            //puzzleTableModel.setPuzzle(sokobanResolver.getPuzzleInicial());
         }
         puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
         configurarTabela();
@@ -298,6 +327,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         tabelaPuzzle.setRowHeight(Propriedades.CELL_HEIGHT);
         tabelaPuzzle.setBorder(BorderFactory.createLineBorder(Color.black));
         painelPuzzle.add(tabelaPuzzle);
+        pack();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEscolherPuzzle;
