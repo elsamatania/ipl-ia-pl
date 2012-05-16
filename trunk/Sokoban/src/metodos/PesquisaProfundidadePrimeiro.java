@@ -8,10 +8,15 @@ import java.util.List;
 import java.util.LinkedList;
 
 
-public class PesquisaProfundidadePrimeiro extends MetodoPesquisa {
+public class PesquisaProfundidadePrimeiro extends MetodoPesquisa<LinkedList<No>> {
 
     public static final String NOME = "Profundidade primeiro";
 
+    public PesquisaProfundidadePrimeiro() {
+        nosPorExpandir = new LinkedList<No>();
+    }
+
+    
     @Override
     public Solucao pesquisar(Problema problema) {
         return agp(problema);

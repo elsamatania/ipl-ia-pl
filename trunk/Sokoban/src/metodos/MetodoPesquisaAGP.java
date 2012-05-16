@@ -6,9 +6,10 @@ import agente.Problema;
 import agente.Solucao;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 
 
-public abstract class MetodoPesquisaAGP extends MetodoPesquisa {
+public abstract class MetodoPesquisaAGP<L extends Queue<No>> extends MetodoPesquisa<L> {
 
     protected HashSet<Estado> nosExpandidos = new HashSet<Estado>();
     
@@ -44,7 +45,7 @@ public abstract class MetodoPesquisaAGP extends MetodoPesquisa {
         nosPorExpandir.add(new No(problema.getEstadoInicial()));
         
         while (!nosPorExpandir.isEmpty()) {
-            no = nosPorExpandir.removeFirst();
+            no = nosPorExpandir.remove();
             if (nosExpandidos.contains(no.getEstado())) {
                 continue;
             }
@@ -60,4 +61,9 @@ public abstract class MetodoPesquisaAGP extends MetodoPesquisa {
         }
         return null;
     }
+    /*
+    protected abstract void inicializar(No noInicial);
+    protected abstract No getNoSeguinte();
+    * 
+    */
 }

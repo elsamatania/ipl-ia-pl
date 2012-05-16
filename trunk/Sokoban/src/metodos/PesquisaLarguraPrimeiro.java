@@ -2,13 +2,16 @@ package metodos;
 
 import agente.Estado;
 import agente.No;
-import agente.Problema;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PesquisaLarguraPrimeiro extends MetodoPesquisaAGP {
+public class PesquisaLarguraPrimeiro extends MetodoPesquisaAGP<LinkedList<No>> {
 
     public static final String NOME = "Largura primeiro";
+
+    public PesquisaLarguraPrimeiro() {
+        nosPorExpandir = new LinkedList<No>();
+    }
 
     @Override
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
@@ -23,4 +26,5 @@ public class PesquisaLarguraPrimeiro extends MetodoPesquisaAGP {
     public String toString() {
         return NOME;
     }
+
 }
