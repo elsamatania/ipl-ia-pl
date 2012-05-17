@@ -3,27 +3,30 @@ package metodos;
 import agente.Agente;
 import agente.Estado;
 import agente.No;
-import agente.Problema;
 import java.util.List;
-import java.util.LinkedList;
-import java.util.Collections;
+import java.util.PriorityQueue;
 
-public class PesquisaSofrega extends MetodoPesquisaInformadoBFS{
+public class PesquisaSofrega extends MetodoPesquisaInformadoBFS<PriorityQueue<No>> {
 
     public static final String NOME = "Sofrega";
 
-    public PesquisaSofrega(Agente agente){
+    public PesquisaSofrega(Agente agente) {
         super(agente);
+        nosPorExpandir = new PriorityQueue<No>();
     }
 
     // f = h;
+    @Override
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
-        //TODO
-  }
+        for (Estado est : listaSucessores) {
+            No no = new No(est, noAExpandir, noAExpandir.getG() + est.getOperador().getCusto(),
+                    agente.getHeuristica().calcular(est));
+            nosPorExpandir.add(no);
+        }
+    }
 
-    
-  @Override
-  public String toString() {
-    return NOME;
-  }
+    @Override
+    public String toString() {
+        return NOME;
+    }
 }

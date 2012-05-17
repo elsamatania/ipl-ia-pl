@@ -5,10 +5,12 @@
 package sokoban;
 
 import agente.Agente;
+import agente.Heuristica;
 import agente.Operador;
 import agente.Solucao;
 import java.util.ArrayList;
 import java.util.List;
+import metodos.HeuristicaCaixotesForaSitio;
 import sokoban.operadores.MoverBaixo;
 import sokoban.operadores.MoverCima;
 import sokoban.operadores.MoverDireita;
@@ -22,7 +24,7 @@ public class SokobanResolver {
 
     private List<Operador> operadores;
     private ProblemaSokoban problema;
-    private Agente agente = new Agente();
+    private static Agente agente = new Agente();
     private Solucao solucao;
     private long tempoPesquisa;
 
@@ -84,9 +86,13 @@ public class SokobanResolver {
         return problema.getEstadoInicial();
     }
 
-    public void resolverProblema() {
+    public void resolverProblema(String nomeHeuristica) {
+        Heuristica heuristica = null;
+        if(nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)){
+            heuristica = new HeuristicaCaixotesForaSitio(problema);
+        }
         long tempoInicial = System.nanoTime();
-        solucao = agente.resolveProblema(problema, null);
+        solucao = agente.resolveProblema(problema, heuristica);
         tempoPesquisa = System.nanoTime() - tempoInicial;
     }
     
@@ -119,6 +125,17 @@ public class SokobanResolver {
         return tempoPesquisa;
     }
     
+    public static String[] getNomesMetodos(){
+        return agente.getNomesMetodos();
+    }
+    
+    public static String[] getNomesHeuristicas(){
+        String[] nomes = {HeuristicaCaixotesForaSitio.NOME};
+        return nomes;
+    }
 
+    public void setMetodoPesquisa(String metodo) {
+        agente.setMetodoPesquisa(metodo);
+    }
     
 }

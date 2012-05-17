@@ -46,5 +46,9 @@ public class ProblemaSokoban extends Problema<EstadoSokoban> {
         }
         return estados;
     }
-    
+
+    public LinkedList<Point> getPosicoesObjetivo() {
+        return posicoesObjetivo;
+    }
+
 }

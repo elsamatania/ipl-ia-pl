@@ -42,6 +42,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
      */
     public JanelaPrincipal() {
         initComponents();
+        //comboMetodo.
         //painelPuzzle.add(tabelaPuzzle);
     }
 
@@ -59,10 +60,12 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         botaoEscolherPuzzle = new javax.swing.JButton();
         botaoResolver = new javax.swing.JButton();
         botaoMostrarSolucao = new javax.swing.JButton();
+        comboMetodo = new javax.swing.JComboBox(SokobanResolver.getNomesMetodos());
+        comboHeuristica = new javax.swing.JComboBox(SokobanResolver.getNomesHeuristicas());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecionar...", "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
+        escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Problema...", "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
         escolhaPuzzle.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 escolhaPuzzleItemStateChanged(evt);
@@ -77,6 +80,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         });
 
         botaoResolver.setText("Resolver");
+        botaoResolver.setEnabled(false);
         botaoResolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoResolverActionPerformed(evt);
@@ -84,11 +88,14 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         });
 
         botaoMostrarSolucao.setText("Mostrar solução");
+        botaoMostrarSolucao.setEnabled(false);
         botaoMostrarSolucao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoMostrarSolucaoActionPerformed(evt);
             }
         });
+
+        comboMetodo.setSelectedIndex(0);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -97,20 +104,24 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(botaoResolver)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botaoMostrarSolucao))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botaoEscolherPuzzle)))
-                        .addGap(0, 551, Short.MAX_VALUE)))
+                                .addComponent(botaoEscolherPuzzle)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(comboMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botaoResolver)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(botaoMostrarSolucao)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(comboHeuristica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 513, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -122,11 +133,13 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(escolhaPuzzle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botaoEscolherPuzzle))
+                    .addComponent(botaoEscolherPuzzle)
+                    .addComponent(comboMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoResolver)
-                    .addComponent(botaoMostrarSolucao))
+                    .addComponent(botaoMostrarSolucao)
+                    .addComponent(comboHeuristica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addContainerGap())
@@ -157,16 +170,20 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
             @Override
             protected Void doInBackground() {
-                sokobanResolver.resolverProblema();
+                String metodo = (String) comboMetodo.getSelectedItem();
+                String heuristica = (String) comboHeuristica.getSelectedItem();
+                sokobanResolver.setMetodoPesquisa(metodo);
+                sokobanResolver.resolverProblema(heuristica);
                 return null;
             }
 
             @Override
             protected void done() {
                 if (sokobanResolver.temSolucao()) {
+                    botaoMostrarSolucao.setEnabled(true);
                     System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
                     System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
-                    System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa()/1000000) + " ms");
+                    System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "O problema não tem solução",
                             "Sem solução", JOptionPane.INFORMATION_MESSAGE);
@@ -184,9 +201,9 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     private void botaoMostrarSolucaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMostrarSolucaoActionPerformed
         new SwingWorker<Void, Void>() {
-
             @Override
             protected Void doInBackground() throws Exception {
+                botaoMostrarSolucao.setEnabled(false);
                 sokobanResolver.mostrarSolucao();
                 return null;
             }
@@ -315,6 +332,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         }
         puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
         configurarTabela();
+        botaoResolver.setEnabled(true);
     }
 
     private void configurarTabela() {
@@ -333,6 +351,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botaoEscolherPuzzle;
     private javax.swing.JButton botaoMostrarSolucao;
     private javax.swing.JButton botaoResolver;
+    private javax.swing.JComboBox comboHeuristica;
+    private javax.swing.JComboBox comboMetodo;
     private javax.swing.JComboBox escolhaPuzzle;
     private javax.swing.JPanel painelPuzzle;
     // End of variables declaration//GEN-END:variables

@@ -19,6 +19,7 @@ import sokoban.ProblemaSokoban;
  */
 public class HeuristicaCaixotesForaSitio extends Heuristica {
 
+    public static final String NOME = "Caixotes fora do destino";
     public HeuristicaCaixotesForaSitio(Problema problema) {
         super(problema);
     }
