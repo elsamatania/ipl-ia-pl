@@ -14,7 +14,7 @@ public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{
     private int limite;
 
     public PesquisaProfundidadeLimitada() {
-        this(28);
+        this(100);
     }
 
 
@@ -33,9 +33,10 @@ public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{
     }
 
 
+    @Override
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
 
-         if (noAExpandir.getProfundidade()<limite){
+         if (noAExpandir.getProfundidade() < limite){
             super.inserirSucessores(noAExpandir, listaSucessores);
         }
     }

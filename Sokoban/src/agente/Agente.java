@@ -1,6 +1,9 @@
 package agente;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import metodos.*;
 
 /**
@@ -26,6 +29,7 @@ public class Agente {
      */
     private Pesquisa metodoPesquisa;
 
+    //private HashMap<String, Heuristica> heuristicas = new HashMap<String, Heuristica>();
 
     /**
      * Heuristica actual que o agente pode usar caso utilize um metodo informado.
@@ -59,6 +63,8 @@ public class Agente {
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaEmFeixe(this);
         metodosPesquisa.put(metodo.toString(), metodo);
+        
+        //Heuristica heur = new HeuristicaCaixotesForaSitio(null)
 
     }
 
@@ -76,10 +82,15 @@ public class Agente {
      * Define o metodo de pesquisa actual.
      * @param nome Nome do metodo a utilizar.
      */
-    public void defineMetodoPesquisa(String nome){
+    public void setMetodoPesquisa(String nome){
         metodoPesquisa = metodosPesquisa.get(nome);
     }
 
+//    public void setHeuristica(String nome) {
+//        this.heuristica = heuristica;
+//    }
+
+    
 
     /**
      * Metodo que e chamado quando se pretende que o agente resolva um determinado problema.
@@ -91,5 +102,11 @@ public class Agente {
     public Solucao resolveProblema(Problema problema, Heuristica heuristica){
         this.heuristica = heuristica;
         return metodoPesquisa.pesquisar(problema);
+    }
+    
+    public String[] getNomesMetodos(){
+        List<String> nomes = new ArrayList<String>(metodosPesquisa.keySet());
+        Collections.sort(nomes);
+        return nomes.toArray(new String[0]);
     }
 }

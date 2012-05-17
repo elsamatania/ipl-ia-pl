@@ -3,7 +3,7 @@ package metodos;
 import agente.Problema;
 import agente.Solucao;
 
-public class PesquisaPorAprofundamentoProgressivo implements Pesquisa{
+public class PesquisaPorAprofundamentoProgressivo implements Pesquisa {
 
     public static final String NOME = "Aprofundamento progressivo";
     //private int limite=90;
@@ -11,18 +11,18 @@ public class PesquisaPorAprofundamentoProgressivo implements Pesquisa{
     @Override
     public Solucao pesquisar(Problema problema) {
         PesquisaProfundidadeLimitada ps = new PesquisaProfundidadeLimitada();
-         Solucao sol;
+        Solucao sol;
         for (int i = 0;; i++) {
-           ps.setLimite(i);
-           sol = ps.pesquisar(problema);
-           if (sol!=null) return sol;
+            ps.setLimite(i);
+            sol = ps.pesquisar(problema);
+            if (sol != null) {
+                return sol;
+            }
         }
-        //return null;
     }
 
-
     @Override
-    public String toString(){
+    public String toString() {
         return NOME;
     }
 }
