@@ -37,6 +37,7 @@ public class HeuristicaCaixotesForaSitio extends Heuristica {
             if (!celula.temCaixote()) contador++;
         }
         
+        
         return contador;
     }
     
