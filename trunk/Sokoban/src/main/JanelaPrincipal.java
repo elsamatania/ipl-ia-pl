@@ -10,19 +10,13 @@
  */
 package main;
 
-import agente.Solucao;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
-import sokoban.Celula;
-import sokoban.EstadoSokoban;
+import metodos.PesquisaLarguraPrimeiro;
 import sokoban.SokobanResolver;
 
 /**
@@ -42,8 +36,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
      */
     public JanelaPrincipal() {
         initComponents();
-        //comboMetodo.
-        //painelPuzzle.add(tabelaPuzzle);
     }
 
     /**
@@ -64,6 +56,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         comboHeuristica = new javax.swing.JComboBox(SokobanResolver.getNomesHeuristicas());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sokoban");
+        setName("JanelaPrincipal");
 
         escolhaPuzzle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Problema...", "soko001.txt", "soko002.txt", "soko003.txt", "soko004.txt" }));
         escolhaPuzzle.addItemListener(new java.awt.event.ItemListener() {
@@ -95,7 +89,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        comboMetodo.setSelectedIndex(0);
+        comboMetodo.setSelectedItem(PesquisaLarguraPrimeiro.NOME);
 
         comboHeuristica.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Caixotes fora do destino", "Distancia Manhattan para Caixote mais proximo" }));
 
@@ -174,6 +168,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             protected Void doInBackground() {
                 String metodo = (String) comboMetodo.getSelectedItem();
                 String heuristica = (String) comboHeuristica.getSelectedItem();
+                System.out.println("Método: " + metodo);
+                System.out.println("Heurística: " + heuristica);
                 sokobanResolver.setMetodoPesquisa(metodo);
                 sokobanResolver.resolverProblema(heuristica);
                 return null;
@@ -187,9 +183,15 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                     System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
                     System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "O problema não tem solução",
+                    String mensagem;
+                    if(sokobanResolver.isCompleto()){
+                        mensagem = "O problema não tem solução";
+                    } else {
+                        mensagem = "Não foi encontrada solução";
+                    }
+                    JOptionPane.showMessageDialog(rootPane, mensagem,
                             "Sem solução", JOptionPane.INFORMATION_MESSAGE);
-                    System.out.println("Tempo de pesquisa: " + sokobanResolver.getTempoPesquisa() + " ns");
+                    System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
                 }
                 botaoEscolherPuzzle.setEnabled(true);
                 botaoResolver.setEnabled(true);
@@ -229,6 +231,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                // System.out.println(info.getName());
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;

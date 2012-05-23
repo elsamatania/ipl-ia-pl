@@ -3,45 +3,51 @@ package metodos;
 import agente.Agente;
 import agente.Estado;
 import agente.No;
-import agente.Problema;
-import java.util.List;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
-
-public class PesquisaEmFeixe  extends PesquisaAAsterisco{
+public class PesquisaEmFeixe extends PesquisaAAsterisco {
 
     public static final String NOME = "Feixe";
-
     private int tamanhoMaximoLista;
 
-
-    public PesquisaEmFeixe(Agente agente){
-        this(100, agente);
+    public PesquisaEmFeixe(Agente agente) {
+        this(200, agente);
+        completo = false;
     }
-
 
     public PesquisaEmFeixe(int tamanhoMaximoLista, Agente agente) {
         super(agente);
         this.tamanhoMaximoLista = tamanhoMaximoLista;
     }
 
-
-    public int getTamanhoMaximoLista(){
+    public int getTamanhoMaximoLista() {
         return tamanhoMaximoLista;
     }
 
-
-    public void setTamanhomaximaLista(int tamanhoMaximoLista){
+    public void setTamanhomaximaLista(int tamanhoMaximoLista) {
         this.tamanhoMaximoLista = tamanhoMaximoLista;
     }
 
-
     @Override
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
+        super.inserirSucessores(noAExpandir, listaSucessores);
+        LinkedList<No> listaAux = new LinkedList<No>(nosPorExpandir);
+        Collections.sort(listaAux);
+        for (Iterator<No> it = listaAux.descendingIterator(); it.hasNext() && nosPorExpandir.size() > tamanhoMaximoLista;) {
+            No no = it.next();
+            nosPorExpandir.remove(no);
+            System.out.println("removeu");
+        }
+          // ou então
+//        while (nosPorExpandir.size() > tamanhoMaximoLista) {
+//            nosPorExpandir.remove(Collections.max(nosPorExpandir));
+//        }
 
-        //TODO
+        System.out.println(nosPorExpandir.size());
     }
-
 
     @Override
     public String toString() {

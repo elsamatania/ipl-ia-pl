@@ -13,6 +13,7 @@ public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<PriorityQueue
     public PesquisaAAsterisco(Agente agente) {
         super(agente);
         nosPorExpandir = new PriorityQueue<No>();
+        completo = true; //por acaso depende da heurística
     }
 
     //f = g + h

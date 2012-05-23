@@ -8,11 +8,12 @@ import java.util.PriorityQueue;
 
 public class PesquisaSofrega extends MetodoPesquisaInformadoBFS<PriorityQueue<No>> {
 
-    public static final String NOME = "Sofrega";
+    public static final String NOME = "Sôfrega";
 
     public PesquisaSofrega(Agente agente) {
         super(agente);
         nosPorExpandir = new PriorityQueue<No>();
+        completo = true;
     }
 
     // f = h;

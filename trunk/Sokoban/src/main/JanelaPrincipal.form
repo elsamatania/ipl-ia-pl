@@ -3,6 +3,8 @@
 <Form version="1.3" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="Sokoban"/>
+    <Property name="name" type="java.lang.String" value="JanelaPrincipal"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -125,7 +127,7 @@
     <Component class="javax.swing.JComboBox" name="comboMetodo">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(SokobanResolver.getNomesMetodos())"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="comboMetodo.setSelectedIndex(0);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="comboMetodo.setSelectedItem(PesquisaLarguraPrimeiro.NOME);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="comboHeuristica">

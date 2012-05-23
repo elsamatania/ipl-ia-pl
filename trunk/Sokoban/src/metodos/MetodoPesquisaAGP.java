@@ -61,9 +61,26 @@ public abstract class MetodoPesquisaAGP<L extends Queue<No>> extends MetodoPesqu
         }
         return null;
     }
-    /*
-    protected abstract void inicializar(No noInicial);
-    protected abstract No getNoSeguinte();
-    * 
-    */
+
+    @Override
+    public long getTamanhoMaximoConjuntoAExpandir() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getTamanhoMaximoConjuntoExpandidos() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getTotalNosExpandidos() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getTotalNosGerados() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    
 }
