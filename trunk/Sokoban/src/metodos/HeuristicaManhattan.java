@@ -30,7 +30,7 @@ public class HeuristicaManhattan extends Heuristica {
         EstadoSokoban estadoAtual = (EstadoSokoban) estado;
         double dx = 0;
         double dy = 0;
-        double valorFinal = 0;
+        double valorFinal = 10000;
         double caixoteMaisPerto = 0;
 
         for (Point objectivo : objectivos) {
@@ -44,13 +44,10 @@ public class HeuristicaManhattan extends Heuristica {
                     caixoteMaisPerto += dx + dy;
                 }
             }
-            if (caixoteMaisPerto > valorFinal) {
+            if (caixoteMaisPerto < valorFinal) {
                 valorFinal = caixoteMaisPerto;
             }
         }
-
-
-
 
         return valorFinal;
     }
