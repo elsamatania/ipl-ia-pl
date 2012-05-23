@@ -97,6 +97,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
         comboMetodo.setSelectedIndex(0);
 
+        comboHeuristica.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Caixotes fora do destino", "Distancia Manhattan para Caixote mais proximo" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,7 +120,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                                 .addComponent(botaoMostrarSolucao)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboHeuristica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 513, Short.MAX_VALUE))
+                        .addGap(0, 245, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
