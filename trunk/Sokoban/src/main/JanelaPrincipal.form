@@ -44,7 +44,7 @@
                               <Component id="comboHeuristica" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="245" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="470" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -131,14 +131,6 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JComboBox" name="comboHeuristica">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="Caixotes fora do destino"/>
-            <StringItem index="1" value="Distancia Manhattan para Caixote mais proximo"/>
-          </StringArray>
-        </Property>
-      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(SokobanResolver.getNomesHeuristicas())"/>
       </AuxValues>
