@@ -11,6 +11,7 @@ import agente.Solucao;
 import java.util.ArrayList;
 import java.util.List;
 import metodos.HeuristicaCaixotesForaSitio;
+import metodos.MetodoPesquisaInformadoBFS;
 import metodos.HeuristicaManhattan;
 import sokoban.operadores.MoverBaixo;
 import sokoban.operadores.MoverCima;
@@ -89,8 +90,10 @@ public class SokobanResolver {
 
     public void resolverProblema(String nomeHeuristica) {
         Heuristica heuristica = null;
-        if(nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)){
-            heuristica = new HeuristicaCaixotesForaSitio(problema);
+        if (isInformado()) {
+            if (nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)) {
+                heuristica = new HeuristicaCaixotesForaSitio(problema);
+            }
         }
         if(nomeHeuristica.equals(HeuristicaManhattan.NOME)){
             heuristica = new HeuristicaManhattan(problema);
@@ -99,47 +102,70 @@ public class SokobanResolver {
         solucao = agente.resolveProblema(problema, heuristica);
         tempoPesquisa = System.nanoTime() - tempoInicial;
     }
-    
-    public void mostrarSolucao(){
-        if(temSolucao()){
+
+    public void mostrarSolucao() {
+        if (temSolucao()) {
             problema.getEstadoInicial().aplicarOperadores(solucao.getOperadores());
         }
     }
-    
-    public boolean temSolucao(){
+
+    public boolean temSolucao() {
         return solucao != null;
     }
 
     public double getCustoSolucao() {
-        if(temSolucao()){
+        if (temSolucao()) {
             return solucao.getCusto();
         }
         return 0;
     }
 
     public int getProfundidadeSolucao() {
-        if(temSolucao()){
+        if (temSolucao()) {
             return solucao.getProfundidade();
         }
         return 0;
-        
+
     }
 
     public long getTempoPesquisa() {
         return tempoPesquisa;
     }
     
-    public static String[] getNomesMetodos(){
-        return agente.getNomesMetodos();
+    public long getTotalNosExpandidos(){
+        return agente.getMetodoPesquisa().getTotalNosExpandidos();
     }
     
-    public static String[] getNomesHeuristicas(){
-        String[] nomes = {HeuristicaCaixotesForaSitio.NOME};
+    public long getTotalNosGerados(){
+         return agente.getMetodoPesquisa().getTotalNosGerados();
+    }
+    
+    public long getTamanhoMaximoConjuntoExpandidos(){
+       return agente.getMetodoPesquisa().getTamanhoMaximoConjuntoExpandidos();
+    }
+    
+    public long getTamanhoMaximoConjuntoAExpandir(){
+        return agente.getMetodoPesquisa().getTamanhoMaximoConjuntoAExpandir();
+    }
+        
+    public static String[] getNomesMetodos() {
+        return agente.getNomesMetodos();
+    }
+
+    public static String[] getNomesHeuristicas() {
+        String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME};
         return nomes;
     }
 
     public void setMetodoPesquisa(String metodo) {
         agente.setMetodoPesquisa(metodo);
     }
+
+    public boolean isInformado() {
+        return agente.getMetodoPesquisa() instanceof MetodoPesquisaInformadoBFS;
+    }
     
+    public boolean isCompleto(){
+        return agente.getMetodoPesquisa().isCompleto();
+    }
 }
