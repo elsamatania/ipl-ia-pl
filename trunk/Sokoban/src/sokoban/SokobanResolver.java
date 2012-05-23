@@ -11,6 +11,7 @@ import agente.Solucao;
 import java.util.ArrayList;
 import java.util.List;
 import metodos.HeuristicaCaixotesForaSitio;
+import metodos.HeuristicaManhattan;
 import sokoban.operadores.MoverBaixo;
 import sokoban.operadores.MoverCima;
 import sokoban.operadores.MoverDireita;
@@ -90,6 +91,9 @@ public class SokobanResolver {
         Heuristica heuristica = null;
         if(nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)){
             heuristica = new HeuristicaCaixotesForaSitio(problema);
+        }
+        if(nomeHeuristica.equals(HeuristicaManhattan.NOME)){
+            heuristica = new HeuristicaManhattan(problema);
         }
         long tempoInicial = System.nanoTime();
         solucao = agente.resolveProblema(problema, heuristica);
