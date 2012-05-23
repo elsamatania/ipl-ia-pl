@@ -93,11 +93,12 @@ public class SokobanResolver {
         if (isInformado()) {
             if (nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)) {
                 heuristica = new HeuristicaCaixotesForaSitio(problema);
-            }
-        }
-        if(nomeHeuristica.equals(HeuristicaManhattan.NOME)){
+            } else if(nomeHeuristica.equals(HeuristicaManhattan.NOME)){
             heuristica = new HeuristicaManhattan(problema);
         }
+            
+        }
+
         long tempoInicial = System.nanoTime();
         solucao = agente.resolveProblema(problema, heuristica);
         tempoPesquisa = System.nanoTime() - tempoInicial;
