@@ -38,7 +38,6 @@ public class HeuristicaManhattan extends Heuristica {
                 for (int j = 0; j < estadoAtual.getNumLinhas(); j++) {
                     Celula celulaAtual = estadoAtual.getValueAt(i, j);
                     if (celulaAtual.temCaixote()) {
-                        objectivo.getX();
                         dx = Math.abs(i - objectivo.getX());
                         dy = Math.abs(j - objectivo.getY());
                     }
