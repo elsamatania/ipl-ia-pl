@@ -14,6 +14,7 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisa<LinkedList<No>>
 
     public PesquisaProfundidadePrimeiro() {
         nosPorExpandir = new LinkedList<No>();
+        completo = false;
     }
 
     
@@ -68,5 +69,25 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisa<LinkedList<No>>
     @Override
     public String toString() {
         return NOME;
+    }
+
+    @Override
+    public long getTotalNosExpandidos() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getTotalNosGerados() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getTamanhoMaximoConjuntoExpandidos() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public long getTamanhoMaximoConjuntoAExpandir() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

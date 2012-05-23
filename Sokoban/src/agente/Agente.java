@@ -63,8 +63,6 @@ public class Agente {
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaEmFeixe(this);
         metodosPesquisa.put(metodo.toString(), metodo);
-        
-        //Heuristica heur = new HeuristicaCaixotesForaSitio(null)
 
     }
 
@@ -86,11 +84,9 @@ public class Agente {
         metodoPesquisa = metodosPesquisa.get(nome);
     }
 
-//    public void setHeuristica(String nome) {
-//        this.heuristica = heuristica;
-//    }
-
-    
+    public Pesquisa getMetodoPesquisa() {
+        return metodoPesquisa;
+    }
 
     /**
      * Metodo que e chamado quando se pretende que o agente resolva um determinado problema.

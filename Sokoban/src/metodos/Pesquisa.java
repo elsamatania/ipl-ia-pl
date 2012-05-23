@@ -12,5 +12,16 @@ import agente.Solucao;
  * @author Renato
  */
 public interface Pesquisa {
+
     public Solucao pesquisar(Problema problema);
+    
+    public boolean isCompleto();
+
+    public long getTotalNosExpandidos();
+
+    public long getTotalNosGerados();
+
+    public long getTamanhoMaximoConjuntoExpandidos();
+
+    public long getTamanhoMaximoConjuntoAExpandir();
 }

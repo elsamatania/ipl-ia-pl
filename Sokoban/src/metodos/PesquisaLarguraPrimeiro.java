@@ -11,6 +11,7 @@ public class PesquisaLarguraPrimeiro extends MetodoPesquisaAGP<LinkedList<No>> {
 
     public PesquisaLarguraPrimeiro() {
         nosPorExpandir = new LinkedList<No>();
+        completo = true;
     }
 
     @Override
