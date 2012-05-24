@@ -13,6 +13,7 @@ import java.util.List;
 import metodos.HeuristicaCaixotesForaSitio;
 import metodos.MetodoPesquisaInformadoBFS;
 import metodos.HeuristicaManhattan;
+import metodos.HeuristicaAleatoria;
 import sokoban.operadores.MoverBaixo;
 import sokoban.operadores.MoverCima;
 import sokoban.operadores.MoverDireita;
@@ -95,6 +96,8 @@ public class SokobanResolver {
                 heuristica = new HeuristicaCaixotesForaSitio(problema);
             } else if(nomeHeuristica.equals(HeuristicaManhattan.NOME)){
             heuristica = new HeuristicaManhattan(problema);
+            } else if(nomeHeuristica.equals(HeuristicaAleatoria.NOME)){
+            heuristica = new HeuristicaAleatoria(problema);
         }
             
         }
@@ -154,7 +157,7 @@ public class SokobanResolver {
     }
 
     public static String[] getNomesHeuristicas() {
-        String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME};
+        String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME, HeuristicaAleatoria.NOME};
         return nomes;
     }
 

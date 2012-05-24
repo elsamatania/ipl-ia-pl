@@ -46,7 +46,6 @@ public class HeuristicaManhattan extends Heuristica {
 
 
         for (Point objectivo : objectivos) {
-            caixoteMaisPerto = 0;
             for (int i = 0; i < estadoAtual.getNumColunas(); i++) {
                 for (int j = 0; j < estadoAtual.getNumLinhas(); j++) {
                     Celula celulaAtual = estadoAtual.getValueAt(i, j);
@@ -57,7 +56,6 @@ public class HeuristicaManhattan extends Heuristica {
 
                         if (caixoteMaisPerto < valorFinal) {
                             valorFinal = caixoteMaisPerto;
-                            caixoteMaisPerto = 0;
                         }
 
                     }
