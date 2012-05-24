@@ -277,6 +277,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     public void carregarProblema() {
         char[][] chars;
         File fich;
+        jf.setCurrentDirectory(new File("src/puzzles"));
         int resposta = jf.showOpenDialog(this);
         if (resposta == JFileChooser.APPROVE_OPTION) {
             fich = jf.getSelectedFile();
