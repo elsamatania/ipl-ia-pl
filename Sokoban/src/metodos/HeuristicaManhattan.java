@@ -35,16 +35,6 @@ public class HeuristicaManhattan extends Heuristica {
         double valorFinal = 10000;
         double caixoteMaisPerto = 0;
 
-        /*
-         * LinkedList<Point> objectivos2 = new LinkedList<Point>(objectivos);
-         * for (Point objectivo : objectivos2) { if
-         * (estadoAtual.getValueAt(objectivo.x, objectivo.y).temCaixote()) {
-         * objectivos2.remove(objectivo); } }
-        *
-         */
-
-
-
         for (Point objectivo : objectivos) {
             for (int i = 0; i < estadoAtual.getNumColunas(); i++) {
                 for (int j = 0; j < estadoAtual.getNumLinhas(); j++) {
