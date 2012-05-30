@@ -21,7 +21,5 @@ public interface Pesquisa {
 
     public long getTotalNosGerados();
 
-    public long getTamanhoMaximoConjuntoExpandidos();
-
     public long getTamanhoMaximoConjuntoAExpandir();
 }

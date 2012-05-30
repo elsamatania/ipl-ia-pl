@@ -5,14 +5,15 @@ import agente.Estado;
 import agente.No;
 import java.util.List;
 import java.util.PriorityQueue;
+import utils.NodePriorityQueue;
 
-public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<PriorityQueue<No>> {
+public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<NodePriorityQueue> {
 
     public static final String NOME = "A*";
 
     public PesquisaAAsterisco(Agente agente) {
         super(agente);
-        nosPorExpandir = new PriorityQueue<No>();
+        nosPorExpandir = new NodePriorityQueue();
         completo = true; //por acaso depende da heurística
     }
 
@@ -21,9 +22,11 @@ public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<PriorityQueue
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
         double custo;
         for (Estado est : listaSucessores) {
-            custo = noAExpandir.getG() + est.getOperador().getCusto();
-            No no = new No(est, noAExpandir, custo, custo + agente.getHeuristica().calcular(est));
-            nosPorExpandir.add(no);
+            if (!nosPorExpandir.contemEstado(est)) {
+                custo = noAExpandir.getG() + est.getOperador().getCusto();
+                No no = new No(est, noAExpandir, custo, custo + agente.getHeuristica().calcular(est));
+                nosPorExpandir.add(no);
+            }
         }
     }
 

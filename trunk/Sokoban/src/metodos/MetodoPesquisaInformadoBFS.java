@@ -3,8 +3,9 @@ package metodos;
 import agente.Agente;
 import agente.No;
 import java.util.Queue;
+import utils.NodeCollection;
 
-public abstract class MetodoPesquisaInformadoBFS<L extends Queue<No>> extends MetodoPesquisaAGP<L>{
+public abstract class MetodoPesquisaInformadoBFS<L extends NodeCollection> extends MetodoPesquisaAGP<L>{
     protected Agente agente;
 
 

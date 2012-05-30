@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package metodos;
+package heuristicas;
 
 import agente.Estado;
 import agente.Heuristica;
@@ -10,19 +10,21 @@ import agente.Problema;
 import java.util.HashMap;
 import java.util.LinkedList;
 import sokoban.Celula;
+import sokoban.EstadoSokoban;
+import sokoban.ProblemaSokoban;
 
 /**
  *
  * @author Leonardo Lino
  */
-public class HeuristicaComRegras extends Heuristica {
+public class HeuristicaComRegras extends Heuristica<ProblemaSokoban, EstadoSokoban> {
 
-    public HeuristicaComRegras(Problema problema) {
+    public HeuristicaComRegras(ProblemaSokoban problema) {
         super(problema);
     }
 
     @Override
-    public double calcular(Estado estado) {
+    public double calcular(EstadoSokoban estado) {
 
 
         return 0;

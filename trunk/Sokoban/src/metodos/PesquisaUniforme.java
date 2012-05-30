@@ -3,12 +3,12 @@ package metodos;
 import agente.Estado;
 import agente.No;
 import java.util.List;
-import java.util.PriorityQueue;
+import utils.NodePriorityQueue;
 
-public class PesquisaUniforme extends MetodoPesquisaAGP<PriorityQueue<No>> {
+public class PesquisaUniforme extends MetodoPesquisaAGP<NodePriorityQueue> {
 
     public PesquisaUniforme() {
-        nosPorExpandir = new PriorityQueue<No>();
+        nosPorExpandir = new NodePriorityQueue();
     }
     public static final String NOME = "Uniforme";
 

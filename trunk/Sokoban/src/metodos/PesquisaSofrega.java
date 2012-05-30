@@ -4,15 +4,15 @@ import agente.Agente;
 import agente.Estado;
 import agente.No;
 import java.util.List;
-import java.util.PriorityQueue;
+import utils.NodePriorityQueue;
 
-public class PesquisaSofrega extends MetodoPesquisaInformadoBFS<PriorityQueue<No>> {
+public class PesquisaSofrega extends MetodoPesquisaInformadoBFS<NodePriorityQueue> {
 
     public static final String NOME = "Sôfrega";
 
     public PesquisaSofrega(Agente agente) {
         super(agente);
-        nosPorExpandir = new PriorityQueue<No>();
+        nosPorExpandir = new NodePriorityQueue();
         completo = true;
     }
 
@@ -20,9 +20,11 @@ public class PesquisaSofrega extends MetodoPesquisaInformadoBFS<PriorityQueue<No
     @Override
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
         for (Estado est : listaSucessores) {
-            No no = new No(est, noAExpandir, noAExpandir.getG() + est.getOperador().getCusto(),
-                    agente.getHeuristica().calcular(est));
-            nosPorExpandir.add(no);
+            if (!nosPorExpandir.contemEstado(est)) {
+                No no = new No(est, noAExpandir, noAExpandir.getG() + est.getOperador().getCusto(),
+                        agente.getHeuristica().calcular(est));
+                nosPorExpandir.add(no);
+            }
         }
     }
 

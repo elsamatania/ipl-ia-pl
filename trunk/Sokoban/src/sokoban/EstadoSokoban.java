@@ -186,11 +186,11 @@ public final class EstadoSokoban extends Estado implements Cloneable {
     }
 
     public int getNumColunas() {
-        return matriz.length;
+        return matriz[0].length;
     }
 
     public int getNumLinhas() {
-        return matriz[0].length;
+        return matriz.length;
     }
 
     public Celula getValueAt(int row, int col) {

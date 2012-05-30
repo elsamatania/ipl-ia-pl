@@ -1,43 +1,97 @@
 package metodos;
 
-import agente.Agente;
-import agente.Estado;
-import agente.No;
-import agente.Problema;
-import agente.Solucao;
+import agente.*;
 import java.util.List;
-import java.util.LinkedList;
-
 
 public class IDAAsterisco extends PesquisaAAsterisco {
-    private double limite;
 
-    public IDAAsterisco(Agente agente){
+    public static final String NOME = "IDA*";
+    private double limite;
+    private double novoLimite;
+
+    public IDAAsterisco(Agente agente) {
         super(agente);
     }
 
-
     @Override
-    public Solucao pesquisar(Problema problema){
-        //TODO
-        return null;
-    }
+    public Solucao pesquisar(Problema problema) {
+        limite = agente.getHeuristica().calcular(problema.getEstadoInicial());
+        System.out.println("Limite inicial " + limite);
+        numExpandidos = 0;
+        numGerados = 0;
 
+        Solucao sol;
+        do {
+            sol = agp(problema);
+        } while (sol == null);
+
+        return sol;
+    }
 
     private Solucao agp(Problema problema) {
-        //TODO
+        nosPorExpandir.clear();
+        numExpandidos = 0;
+        numGerados = 0;
+        maxListaPorExpandir = 0;
+        novoLimite = Double.POSITIVE_INFINITY;
+        nosPorExpandir.add(new No(problema.getEstadoInicial()));
+        numGerados++;
+
+        while (!nosPorExpandir.isEmpty()) {
+            maxListaPorExpandir = Math.max(maxListaPorExpandir, nosPorExpandir.size());
+            No noCorrente = nosPorExpandir.remove();
+
+            if (problema.isObjetivoAtingido(noCorrente.getEstado())) {
+                return new Solucao(problema, noCorrente);
+            }
+
+            List<Estado> sucessores = problema.aplicarOperadores(noCorrente.getEstado());
+            numExpandidos++;
+            numGerados += sucessores.size();
+            inserirSucessores(noCorrente, sucessores);
+
+            if (!sucessores.isEmpty()) {
+                inserirSucessores(noCorrente, sucessores);
+            }
+        }
+
+        limite = novoLimite;
+        System.out.println("Limite " + limite);
         return null;
     }
 
-
-    private boolean isCiclo(No no){
-        //TODO
+    private boolean isCiclo(No no) {
+        No ant = no.getAntecessor();
+        while (ant != null) {
+            if (no.getEstado().equals(ant.getEstado())) {
+                return true;
+            }
+            ant = ant.getAntecessor();
+        }
         return false;
     }
 
-
     @Override
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
-        //TODO
+        double g, f;
+        for (Estado est : listaSucessores) {
+            if (!nosPorExpandir.contemEstado(est)) {
+                g = noAExpandir.getG() + est.getOperador().getCusto();
+                f = g + agente.getHeuristica().calcular(est);
+                if (f <= limite) {
+                    No no = new No(est, noAExpandir, g, f);
+                    if (!isCiclo(no)) {
+                        nosPorExpandir.add(no);
+                    }
+                } else {
+                    novoLimite = Math.min(novoLimite, f);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return NOME;
     }
 }

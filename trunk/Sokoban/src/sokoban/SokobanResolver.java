@@ -4,16 +4,18 @@
  */
 package sokoban;
 
+import heuristicas.HeuristicaSomaDistanciasMinimas;
+import heuristicas.HeuristicaManhattan;
+import heuristicas.HeuristicaCaixotesForaSitio;
+import heuristicas.HeuristicaAgenteCaixoteMaisProximo;
 import agente.Agente;
 import agente.Heuristica;
 import agente.Operador;
 import agente.Solucao;
+import heuristicas.*;
 import java.util.ArrayList;
 import java.util.List;
-import metodos.HeuristicaCaixotesForaSitio;
-import metodos.MetodoPesquisaInformadoBFS;
-import metodos.HeuristicaManhattan;
-import metodos.HeuristicaAgenteCaixoteMaisProximo;
+import metodos.*;
 import sokoban.operadores.MoverBaixo;
 import sokoban.operadores.MoverCima;
 import sokoban.operadores.MoverDireita;
@@ -45,6 +47,7 @@ public class SokobanResolver {
 
     public void setProblema(char[][] tabela) {
         problema = new ProblemaSokoban(new EstadoSokoban(tabela), operadores);
+        
     }
 
     public static boolean isSokobanValido(char[][] tabela) {
@@ -94,12 +97,16 @@ public class SokobanResolver {
         if (isInformado()) {
             if (nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)) {
                 heuristica = new HeuristicaCaixotesForaSitio(problema);
-            } else if(nomeHeuristica.equals(HeuristicaManhattan.NOME)){
-            heuristica = new HeuristicaManhattan(problema);
-            } else if(nomeHeuristica.equals(HeuristicaAgenteCaixoteMaisProximo.NOME)){
-            heuristica = new HeuristicaAgenteCaixoteMaisProximo(problema);
-        }
-            
+            } else if (nomeHeuristica.equals(HeuristicaManhattan.NOME)) {
+                heuristica = new HeuristicaManhattan(problema);
+            } else if (nomeHeuristica.equals(HeuristicaAgenteCaixoteMaisProximo.NOME)) {
+                heuristica = new HeuristicaAgenteCaixoteMaisProximo(problema);
+            } else if (nomeHeuristica.equals(HeuristicaSomaDistanciasMinimas.NOME)){
+                heuristica = new HeuristicaSomaDistanciasMinimas(problema);
+            } else if (nomeHeuristica.equals(HeuristicasDistanciasCaixoteAObjetivo.NOME)){
+                heuristica = new HeuristicasDistanciasCaixoteAObjetivo(problema);
+            }
+            System.out.println("Teste: " + heuristica.calcular(getPuzzleInicial()));
         }
 
         long tempoInicial = System.nanoTime();
@@ -135,29 +142,27 @@ public class SokobanResolver {
     public long getTempoPesquisa() {
         return tempoPesquisa;
     }
-    
-    public long getTotalNosExpandidos(){
+
+    public long getTotalNosExpandidos() {
         return agente.getMetodoPesquisa().getTotalNosExpandidos();
     }
-    
-    public long getTotalNosGerados(){
-         return agente.getMetodoPesquisa().getTotalNosGerados();
+
+    public long getTotalNosGerados() {
+        return agente.getMetodoPesquisa().getTotalNosGerados();
     }
-    
-    public long getTamanhoMaximoConjuntoExpandidos(){
-       return agente.getMetodoPesquisa().getTamanhoMaximoConjuntoExpandidos();
-    }
-    
-    public long getTamanhoMaximoConjuntoAExpandir(){
+
+    public long getTamanhoMaximoConjuntoAExpandir() {
         return agente.getMetodoPesquisa().getTamanhoMaximoConjuntoAExpandir();
     }
-        
+
     public static String[] getNomesMetodos() {
         return agente.getNomesMetodos();
     }
 
     public static String[] getNomesHeuristicas() {
-        String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME, HeuristicaAgenteCaixoteMaisProximo.NOME};
+        String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME,
+            HeuristicaAgenteCaixoteMaisProximo.NOME, HeuristicaSomaDistanciasMinimas.NOME,
+            HeuristicasDistanciasCaixoteAObjetivo.NOME};
         return nomes;
     }
 
@@ -168,8 +173,8 @@ public class SokobanResolver {
     public boolean isInformado() {
         return agente.getMetodoPesquisa() instanceof MetodoPesquisaInformadoBFS;
     }
-    
-    public boolean isCompleto(){
+
+    public boolean isCompleto() {
         return agente.getMetodoPesquisa().isCompleto();
     }
 }
