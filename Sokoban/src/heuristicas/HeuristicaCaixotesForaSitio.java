@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package metodos;
+package heuristicas;
 
 import agente.Estado;
 import agente.Heuristica;
@@ -17,23 +17,23 @@ import sokoban.ProblemaSokoban;
  *
  * @author Leonardo Lino
  */
-public class HeuristicaCaixotesForaSitio extends Heuristica {
+public class HeuristicaCaixotesForaSitio extends Heuristica<ProblemaSokoban, EstadoSokoban> {
 
     public static final String NOME = "Caixotes fora do destino";
-    public HeuristicaCaixotesForaSitio(Problema problema) {
+    public HeuristicaCaixotesForaSitio(ProblemaSokoban problema) {
         super(problema);
     }
     
     
 
     @Override
-    public double calcular(Estado estado) {
+    public double calcular(EstadoSokoban estado) {
         
-        LinkedList<Point> listaObjetivos = ((ProblemaSokoban)problema).getPosicoesObjetivo();
+        LinkedList<Point> listaObjetivos = problema.getPosicoesObjetivo();
         Celula celula;
         double contador=0;
         for (Point point : listaObjetivos) {
-            celula = ((EstadoSokoban) estado).getCelula(point);
+            celula = estado.getCelula(point);
             if (!celula.temCaixote()) contador++;
         }
         

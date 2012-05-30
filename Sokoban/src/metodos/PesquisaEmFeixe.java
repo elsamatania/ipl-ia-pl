@@ -39,14 +39,13 @@ public class PesquisaEmFeixe extends PesquisaAAsterisco {
         for (Iterator<No> it = listaAux.descendingIterator(); it.hasNext() && nosPorExpandir.size() > tamanhoMaximoLista;) {
             No no = it.next();
             nosPorExpandir.remove(no);
-            System.out.println("removeu");
         }
           // ou então
 //        while (nosPorExpandir.size() > tamanhoMaximoLista) {
 //            nosPorExpandir.remove(Collections.max(nosPorExpandir));
 //        }
 
-        System.out.println(nosPorExpandir.size());
+        //System.out.println(nosPorExpandir.size());
     }
 
     @Override

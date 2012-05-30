@@ -2,9 +2,7 @@ package metodos;
 
 import agente.Estado;
 import agente.No;
-import agente.Problema;
 import java.util.List;
-import java.util.LinkedList;
 
 
 public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{

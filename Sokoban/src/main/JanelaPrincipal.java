@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import javax.swing.*;
+import heuristicas.HeuristicaSomaDistanciasMinimas;
 import metodos.PesquisaLarguraPrimeiro;
 import sokoban.SokobanResolver;
 
@@ -180,6 +181,10 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                     System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
                     System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
                     System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
+                    System.out.println("Nós expandidos: " + sokobanResolver.getTotalNosExpandidos());
+                    System.out.println("Nós gerados: " + sokobanResolver.getTotalNosGerados());
+                    System.out.println("Máximo lista a expandir: " + sokobanResolver.getTamanhoMaximoConjuntoAExpandir());
+
                 } else {
                     String mensagem;
                     if(sokobanResolver.isCompleto()){
@@ -267,11 +272,13 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             listaLinhas.add(linha.toCharArray());
             linha = br.readLine();
         }
+        
+        br.close();
 
         char[][] tabela = listaLinhas.toArray(new char[0][0]);
         traduzirProblema(tabela);
 
-        return listaLinhas.toArray(new char[0][0]);
+        return tabela;
     }
 
     public void carregarProblema() {
@@ -335,6 +342,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             sokobanResolver.setProblema(tabela);
         }
         puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
+        //new HeuristicaSomaDistanciasMinimas(sokobanResolver.).;
         configurarTabela();
         botaoResolver.setEnabled(true);
     }
@@ -350,6 +358,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         tabelaPuzzle.setBorder(BorderFactory.createLineBorder(Color.black));
         painelPuzzle.add(tabelaPuzzle);
         pack();
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEscolherPuzzle;

@@ -50,5 +50,9 @@ public class ProblemaSokoban extends Problema<EstadoSokoban> {
     public LinkedList<Point> getPosicoesObjetivo() {
         return posicoesObjetivo;
     }
+    
+    public boolean isDeadlock(EstadoSokoban est){
+        return false;
+    }
 
 }

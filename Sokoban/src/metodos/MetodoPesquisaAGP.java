@@ -7,11 +7,14 @@ import agente.Solucao;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
+import utils.NodeCollection;
 
 
-public abstract class MetodoPesquisaAGP<L extends Queue<No>> extends MetodoPesquisa<L> {
+public abstract class MetodoPesquisaAGP<L extends NodeCollection> extends MetodoPesquisa<L> {
 
     protected HashSet<Estado> nosExpandidos = new HashSet<Estado>();
+    
+    protected int maxListaExpandidos;
     
     @Override
     public Solucao pesquisar(Problema problema) {
@@ -40,47 +43,35 @@ public abstract class MetodoPesquisaAGP<L extends Queue<No>> extends MetodoPesqu
     private Solucao agp(Problema problema) {
         nosPorExpandir.clear();
         nosExpandidos.clear();
+        numExpandidos = 0;
+        numGerados = 0;
+        maxListaPorExpandir = 0;
 
         No no;
         nosPorExpandir.add(new No(problema.getEstadoInicial()));
+        numGerados++;
         
         while (!nosPorExpandir.isEmpty()) {
+            maxListaPorExpandir = Math.max(maxListaPorExpandir, nosPorExpandir.size());
             no = nosPorExpandir.remove();
             if (nosExpandidos.contains(no.getEstado())) {
                 continue;
             }
 
             nosExpandidos.add(no.getEstado());
+            maxListaExpandidos = Math.max(maxListaExpandidos, nosExpandidos.size());
 
             if (problema.isObjetivoAtingido(no.getEstado())) {
                 return new Solucao(problema, no);
             }
-
-            inserirSucessores(no, problema.aplicarOperadores(no.getEstado()));
+            
+            List<Estado> sucessores = problema.aplicarOperadores(no.getEstado());
+            numExpandidos++;
+            numGerados += sucessores.size();
+            inserirSucessores(no, sucessores);
 
         }
         return null;
     }
-
-    @Override
-    public long getTamanhoMaximoConjuntoAExpandir() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public long getTamanhoMaximoConjuntoExpandidos() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public long getTotalNosExpandidos() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public long getTotalNosGerados() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
     
 }

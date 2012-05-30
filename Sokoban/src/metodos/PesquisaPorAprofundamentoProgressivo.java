@@ -42,11 +42,6 @@ import agente.Solucao;
     }
 
     @Override
-    public long getTamanhoMaximoConjuntoExpandidos() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public long getTamanhoMaximoConjuntoAExpandir() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package metodos;
+package heuristicas;
 
 import agente.Estado;
 import agente.Heuristica;
@@ -17,28 +17,26 @@ import sokoban.ProblemaSokoban;
  *
  * @author Leonardo Lino
  */
-public class HeuristicaManhattan extends Heuristica {
+public class HeuristicaManhattan extends Heuristica<ProblemaSokoban, EstadoSokoban> {
 
     public static final String NOME = "Distancia Manhattan para Caixote mais proximo";
 
-    public HeuristicaManhattan(Problema problema) {
+    public HeuristicaManhattan(ProblemaSokoban problema) {
         super(problema);
     }
 
     @Override
-    public double calcular(Estado estado) {
+    public double calcular(EstadoSokoban estado) {
 
-        LinkedList<Point> objectivos = ((ProblemaSokoban) problema).getPosicoesObjetivo();
-        EstadoSokoban estadoAtual = (EstadoSokoban) estado;
-        double dx = 0;
-        double dy = 0;
+        LinkedList<Point> objectivos = problema.getPosicoesObjetivo();
+        double dx, dy;
         double valorFinal = 10000;
-        double caixoteMaisPerto = 0;
+        double caixoteMaisPerto;
 
         for (Point objectivo : objectivos) {
-            for (int i = 0; i < estadoAtual.getNumColunas(); i++) {
-                for (int j = 0; j < estadoAtual.getNumLinhas(); j++) {
-                    Celula celulaAtual = estadoAtual.getValueAt(i, j);
+            for (int i = 0; i < estado.getNumColunas(); i++) {
+                for (int j = 0; j < estado.getNumLinhas(); j++) {
+                    Celula celulaAtual = estado.getValueAt(i, j);
                     if (celulaAtual.temCaixote()) {
                         dx = Math.abs(i - objectivo.getX());
                         dy = Math.abs(j - objectivo.getY());
