@@ -49,6 +49,7 @@ public class NodePriorityQueue extends PriorityQueue<No> implements NodeCollecti
         return no;
     }
     
+    @Override
     public boolean contemEstado(Estado e){
         return estados.contains(e);
     }

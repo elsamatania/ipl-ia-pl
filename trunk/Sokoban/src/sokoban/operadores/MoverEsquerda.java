@@ -7,11 +7,12 @@ package sokoban.operadores;
 import agente.Operador;
 import sokoban.EstadoSokoban;
 import sokoban.Celula;
+
 /**
  *
  * @author Leonardo Lino
  */
-public class MoverEsquerda extends Operador<EstadoSokoban> {
+public class MoverEsquerda extends OperadorSokoban {
 
     public MoverEsquerda(double custo) {
         super(custo);
@@ -20,8 +21,8 @@ public class MoverEsquerda extends Operador<EstadoSokoban> {
     @Override
     public void executar(EstadoSokoban estado) {
         Celula celula = estado.getCelulaEsquerda(estado.getPosicaoAgente());
-       estado.setPosicaoAgente(celula);
-        
+        estado.setPosicaoAgente(celula);
+
         if (celula.temCaixote()) {
             Celula celulaEsquerdaCaixote = estado.getCelulaEsquerda(celula);
             celulaEsquerdaCaixote.setCaixote(true);
@@ -32,26 +33,16 @@ public class MoverEsquerda extends Operador<EstadoSokoban> {
     @Override
     public boolean podeSerAplicado(EstadoSokoban estado) {
         Celula celula = estado.getCelulaEsquerda(estado.getPosicaoAgente());
-        
-        if (celula == null) {
+
+        if (!isDestinoValidoAgente(estado, celula)) {
             return false;
         }
-        if (celula.isParede()) {
-            return false;
-        }
-        
+
         if (celula.temCaixote()) {
-            Celula celulaEsquerdaCaixote = estado.getCelulaEsquerda(celula);
-            if (celulaEsquerdaCaixote == null) {
-                return false;
-            }
-            if (celulaEsquerdaCaixote.isParede() || celulaEsquerdaCaixote.temCaixote()) {
-                return false;
-            }
+            Celula celulaDestinoCaixote = estado.getCelulaEsquerda(celula);
+            return isDestinoValidoCaixote(estado, celulaDestinoCaixote);
         }
+        
         return true;
     }
-    
-    
-    
 }

@@ -51,6 +51,7 @@ public final class EstadoSokoban extends Estado implements Cloneable {
                 }
             }
         }
+        marcarCantos();
     }
 
     @Override
@@ -195,5 +196,32 @@ public final class EstadoSokoban extends Estado implements Cloneable {
 
     public Celula getValueAt(int row, int col) {
         return matriz[row][col];
+    }
+    
+    public void marcarCantos(){
+        for (int i = 1; i < matriz.length-1; i++) {
+            for (int j = 1; j < matriz[0].length-1; j++) {
+                Celula c = matriz[i][j];
+                if (isCanto(c)) {
+                    c.setCanto(true);
+                }
+            }
+        }
+    }
+    
+    public boolean isCanto(Celula c){
+        Celula[] vizinhas = new Celula[4];
+        vizinhas[0] = getCelulaAcima(c);
+        vizinhas[1] = getCelulaDireita(c);
+        vizinhas[2] = getCelulaAbaixo(c);
+        vizinhas[3] = getCelulaEsquerda(c);
+        
+        for (int i = 0; i < 4; i++) {
+            if(vizinhas[i % 4].isParede() && vizinhas[(i+1) % 4].isParede()){
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
