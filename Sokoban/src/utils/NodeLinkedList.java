@@ -85,6 +85,7 @@ public class NodeLinkedList extends LinkedList<No> implements NodeCollection {
         return no;
     }
     
+    @Override
     public boolean contemEstado(Estado e){
         return estados.contains(e);
     }

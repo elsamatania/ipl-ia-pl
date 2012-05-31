@@ -16,6 +16,7 @@ public class Celula implements Cloneable {
     private boolean parede = false;
     private boolean caixote = false;
     private boolean objetivo = false;
+    private boolean canto = false;
 
     public Celula(int x, int y, boolean isParede, boolean isObjetivo) {
 	this.x = x;
@@ -95,6 +96,10 @@ public class Celula implements Cloneable {
 	this.caixote = caixote;
     }
 
+    public void setCanto(boolean canto) {
+        this.canto = canto;
+    }
+
     public boolean isObjetivo() {
 	return objetivo;
     }
@@ -102,6 +107,12 @@ public class Celula implements Cloneable {
     public boolean isParede() {
 	return parede;
     }
+
+    public boolean isCanto() {
+        return canto;
+    }
+    
+    
 
     /*
      *  V, para uma posição vazia;  P, para uma posição ocupada por uma
