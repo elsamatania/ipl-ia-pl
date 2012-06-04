@@ -105,6 +105,8 @@ public class SokobanResolver {
                 heuristica = new HeuristicaSomaDistanciasMinimas(problema);
             } else if (nomeHeuristica.equals(HeuristicasDistanciasCaixoteAObjetivo.NOME)){
                 heuristica = new HeuristicasDistanciasCaixoteAObjetivo(problema);
+            } else if (nomeHeuristica.equals(HeuristicaEmpurrar.NOME)){
+                heuristica = new HeuristicaEmpurrar(problema);
             }
             System.out.println("Teste: " + heuristica.calcular(getPuzzleInicial()));
         }
@@ -162,7 +164,7 @@ public class SokobanResolver {
     public static String[] getNomesHeuristicas() {
         String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME,
             HeuristicaAgenteCaixoteMaisProximo.NOME, HeuristicaSomaDistanciasMinimas.NOME,
-            HeuristicasDistanciasCaixoteAObjetivo.NOME};
+            HeuristicasDistanciasCaixoteAObjetivo.NOME, HeuristicaEmpurrar.NOME};
         return nomes;
     }
 
