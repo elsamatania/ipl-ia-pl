@@ -33,7 +33,7 @@ public class HeuristicaCaixotesForaSitio extends Heuristica<ProblemaSokoban, Est
         Celula celula;
         double contador=0;
         for (Point point : listaObjetivos) {
-            celula = estado.getCelula(point);
+            celula = estado.getValueAt(point.x, point.y);
             if (!celula.temCaixote()) contador++;
         }
         

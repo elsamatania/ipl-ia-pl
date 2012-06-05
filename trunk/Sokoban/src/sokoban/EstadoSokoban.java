@@ -89,7 +89,7 @@ public final class EstadoSokoban extends Estado implements Cloneable {
                 copia.matriz[i][j] = matriz[i][j].clone();
             }
         }
-        copia.posicaoAgente = copia.getCelula(new Point(posicaoAgente.getX(), posicaoAgente.getY()));
+        copia.posicaoAgente = copia.getValueAt(posicaoAgente.getX(), posicaoAgente.getY());
         return copia;
     }
 
@@ -163,10 +163,20 @@ public final class EstadoSokoban extends Estado implements Cloneable {
         }
         return lista;
     }
-
-    public Celula getCelula(Point p) {
-        return matriz[p.x][p.y];
-    }
+    
+    public LinkedList<Point> getPosicoesCaixotes() {
+        LinkedList<Point> lista = new LinkedList<Point>();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                Celula c = matriz[i][j];
+                if (c.temCaixote()) {
+                    lista.add(new Point(c.getX(), c.getY()));
+                }
+            }
+        }
+        return lista;
+    } 
+    
     //Listeners
     private transient ArrayList<PuzzleListener> listeners = new ArrayList<PuzzleListener>(3);
 
