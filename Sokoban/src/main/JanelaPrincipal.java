@@ -16,9 +16,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import javax.swing.*;
-import heuristicas.HeuristicaSomaDistanciasMinimas;
 import metodos.PesquisaLarguraPrimeiro;
 import sokoban.SokobanResolver;
+import sokoban.SokobanTester;
 
 /**
  *
@@ -55,6 +55,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         botaoMostrarSolucao = new javax.swing.JButton();
         comboMetodo = new javax.swing.JComboBox(SokobanResolver.getNomesMetodos());
         comboHeuristica = new javax.swing.JComboBox(SokobanResolver.getNomesHeuristicas());
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sokoban");
@@ -91,6 +96,26 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         });
 
         comboMetodo.setSelectedItem(PesquisaLarguraPrimeiro.NOME);
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Relatórios");
+
+        jMenuItem1.setText("Gerar relatório");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,7 +161,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                     .addComponent(botaoMostrarSolucao)
                     .addComponent(comboHeuristica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addComponent(painelPuzzle, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -161,6 +186,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private void botaoResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoResolverActionPerformed
         botaoEscolherPuzzle.setEnabled(false);
         botaoResolver.setEnabled(false);
+        botaoMostrarSolucao.setEnabled(false);
         new SwingWorker<Void, Void>() {
 
             @Override
@@ -170,7 +196,12 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 System.out.println("Método: " + metodo);
                 System.out.println("Heurística: " + heuristica);
                 sokobanResolver.setMetodoPesquisa(metodo);
-                sokobanResolver.resolverProblema(heuristica);
+                try {
+                    sokobanResolver.resolverProblema(heuristica);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //sokobanResolver.resolverProblema(heuristica);
                 return null;
             }
 
@@ -216,6 +247,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         }.execute();
     }//GEN-LAST:event_botaoMostrarSolucaoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new SokobanTester().testar();
+        JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,6 +403,11 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox comboHeuristica;
     private javax.swing.JComboBox comboMetodo;
     private javax.swing.JComboBox escolhaPuzzle;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel painelPuzzle;
     // End of variables declaration//GEN-END:variables
 }

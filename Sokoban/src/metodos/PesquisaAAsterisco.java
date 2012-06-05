@@ -4,7 +4,6 @@ import agente.Agente;
 import agente.Estado;
 import agente.No;
 import java.util.List;
-import java.util.PriorityQueue;
 import utils.NodePriorityQueue;
 
 public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<NodePriorityQueue> {

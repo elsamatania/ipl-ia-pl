@@ -26,7 +26,7 @@ public class ProblemaSokoban extends Problema<EstadoSokoban> {
     @Override
     public boolean isObjetivoAtingido(EstadoSokoban e) {
         for (Point p : posicoesObjetivo) {
-            if(!e.getCelula(p).temCaixote()){
+            if(!e.getValueAt(p.x, p.y).temCaixote()){
                 return false;
             }
         }
