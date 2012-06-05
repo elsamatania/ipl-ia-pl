@@ -18,16 +18,17 @@ import sokoban.ProblemaSokoban;
 public class HeuristicaCombinacao extends Heuristica<ProblemaSokoban, EstadoSokoban> {
 
     public static final String NOME = "Combinacao de Varias Heuristicas";
+    public static LinkedList<Celula> visitadas;
+    
 
     public HeuristicaCombinacao(ProblemaSokoban problema) {
         super(problema);
+        
+        visitadas = new LinkedList<Celula>();
     }
 
     @Override
     public double calcular(EstadoSokoban estado) {
-
-        //para dar um custo proporcional ao tamanho do puzzle
-        int tamanhoPuzzle = estado.getNumColunas() * estado.getNumLinhas();
 
         double valortotal = 0;
 
@@ -39,8 +40,28 @@ public class HeuristicaCombinacao extends Heuristica<ProblemaSokoban, EstadoSoko
 
         //empurrar
         valortotal += empurrar(estado, valortotal);
+        
+        //evita caminho ja percorrido
+        //valortotal += celulaVisitada(estado);
 
         return valortotal;
+    }
+    
+    
+    private double celulaVisitada(EstadoSokoban estado){
+        
+        double visita = 0;
+         //para dar um custo proporcional ao tamanho do puzzle
+        int tamanhoPuzzle = estado.getNumColunas() * estado.getNumLinhas();
+        
+        for (Celula celula : visitadas) {
+            if (estado.getPosicaoAgente().equals(celula)){
+                visita = tamanhoPuzzle;
+            } else {
+                visitadas.add(celula);
+            }
+        }
+        return visita;
     }
 
     private double agenteObjetivo(EstadoSokoban estado, double valorFinal) {
