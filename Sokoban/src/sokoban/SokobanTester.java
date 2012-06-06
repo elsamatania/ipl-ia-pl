@@ -4,17 +4,17 @@
  */
 package sokoban;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+import metodos.PesquisaAAsterisco;
+import metodos.PesquisaLarguraPrimeiro;
 
 /**
  *
@@ -29,9 +29,11 @@ public class SokobanTester {
     private File results;
     private BufferedWriter bw;
     private static Logger logger;
+    private ArrayList<HashMap<String, Double>> resultados;
 
     public SokobanTester() {
         ficheirosTeste = new ArrayList<File>();
+        resultados = new ArrayList<HashMap<String, Double>>();
         ficheirosTeste.add(new File("src/puzzles/soko001.txt"));
         ficheirosTeste.add(new File("src/puzzles/soko002.txt"));
         ficheirosTeste.add(new File("src/puzzles/soko003.txt"));
@@ -81,6 +83,67 @@ public class SokobanTester {
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, "Erro: " + ex, ex);
         }
+    }
+    
+    public void compararHeuristicas(){
+        char[][] problema;
+        double custoLargura;
+        long expandidosLargura;
+        HashMap<String,Double> heurRes;
+        int numPuzzles = 0;
+        try {
+            for (File file : ficheirosTeste) {
+                problema = SokobanResolver.lerFicheiroProblema(file);
+                resolver = new SokobanResolver(problema);
+                resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
+                resolver.resolverProblema(null);
+                expandidosLargura = resolver.getTotalNosExpandidos();
+                
+                heurRes = new HashMap<String, Double>();
+                resolver.setMetodoPesquisa(PesquisaAAsterisco.NOME);
+                for (String heuristica : heuristicas) {
+                    resolver.resolverProblema(heuristica);
+                    heurRes.put(heuristica, (double) resolver.getTotalNosExpandidos()/expandidosLargura);
+                }
+                
+                resultados.add(heurRes);
+                numPuzzles++;
+                
+                bw = new BufferedWriter(new PrintWriter(new File("./comparaHeuristicas.csv"), "UTF-8"));
+                
+                double media = 0;
+                double temp = 0;
+                for (String heuristica : heuristicas) {
+                    for(HashMap<String, Double> res: resultados){
+                        temp += res.get(heuristica);
+                    }
+                    bw.write(heuristica + ",");
+                    bw.write(Double.toString(temp/numPuzzles));
+                    bw.newLine();
+                }
+                
+                
+                for (String metodo : metodosPesquisa) {
+                    resolver.setMetodoPesquisa(metodo);
+                    if (resolver.isInformado()) {
+                        for (String heuristica : heuristicas) {
+                            bw.write(file.getName() + ",");
+                            bw.write(metodo + ",");
+                            bw.write(heuristica + ",");
+                            analisarProblema(heuristica);
+                        }
+                    } else {
+                        bw.write(file.getName() + ",");
+                        bw.write(metodo + ",");
+                        bw.write(",");
+                        analisarProblema(null);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            getLogger().log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void analisarProblema(String heuristica) throws Exception {
