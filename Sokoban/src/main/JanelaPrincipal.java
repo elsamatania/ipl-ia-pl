@@ -175,7 +175,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             String escolha = (String) escolhaPuzzle.getSelectedItem();
             File file = new File("src/puzzles/" + escolha);
             try {
-                setPuzzle(lerFicheiroProblema(file));
+                setPuzzle(SokobanResolver.lerFicheiroProblema(file));
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro com a leitura do ficheiro: " + ex.getMessage(),
                         "Erro", JOptionPane.WARNING_MESSAGE);
@@ -298,7 +298,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
     }
-
+/*
     public static char[][] lerFicheiroProblema(File f) throws Exception {
         ArrayList<char[]> listaLinhas = new ArrayList<char[]>();
         BufferedReader br = new BufferedReader(new FileReader(f));
@@ -316,7 +316,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
         return tabela;
     }
-
+*/
     public void carregarProblema() {
         char[][] chars;
         File fich;
@@ -329,7 +329,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         }
 
         try {
-            chars = lerFicheiroProblema(fich);
+            chars = SokobanResolver.lerFicheiroProblema(fich);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro com a leitura do ficheiro: " + ex.getMessage(),
                     "Erro", JOptionPane.WARNING_MESSAGE);
@@ -344,7 +344,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             carregarProblema();
         }
     }
-
+/*
     public static void traduzirProblema(char[][] tabela) {
         for (int i = 0; i < tabela.length; i++) {
             for (int j = 0; j < tabela[i].length; j++) {
@@ -370,7 +370,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         }
     }
-
+*/
     private void setPuzzle(char[][] tabela) {
         if (sokobanResolver == null) {
             sokobanResolver = new SokobanResolver(tabela);

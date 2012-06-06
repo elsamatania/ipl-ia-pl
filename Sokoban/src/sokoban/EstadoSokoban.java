@@ -75,9 +75,7 @@ public final class EstadoSokoban extends Estado implements Cloneable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Arrays.deepHashCode(this.matriz);
-        return hash;
+        return Arrays.deepHashCode(this.matriz);
     }
 
     @Override
@@ -208,7 +206,8 @@ public final class EstadoSokoban extends Estado implements Cloneable {
         return matriz[row][col];
     }
     
-    public void marcarCantos(){
+    private void marcarCantos(){
+        
         for (int i = 1; i < matriz.length-1; i++) {
             for (int j = 1; j < matriz[0].length-1; j++) {
                 Celula c = matriz[i][j];
@@ -219,7 +218,7 @@ public final class EstadoSokoban extends Estado implements Cloneable {
         }
     }
     
-    public boolean isCanto(Celula c){
+    private boolean isCanto(Celula c){
         Celula[] vizinhas = new Celula[4];
         vizinhas[0] = getCelulaAcima(c);
         vizinhas[1] = getCelulaDireita(c);

@@ -54,9 +54,6 @@ public abstract class MetodoPesquisaAGP<L extends NodeCollection> extends Metodo
         while (!nosPorExpandir.isEmpty()) {
             maxListaPorExpandir = Math.max(maxListaPorExpandir, nosPorExpandir.size());
             no = nosPorExpandir.remove();
-            if (nosExpandidos.contains(no.getEstado())) {
-                continue;
-            }
 
             nosExpandidos.add(no.getEstado());
             maxListaExpandidos = Math.max(maxListaExpandidos, nosExpandidos.size());

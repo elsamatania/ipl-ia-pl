@@ -17,8 +17,15 @@ public class PesquisaUniforme extends MetodoPesquisaAGP<NodePriorityQueue> {
         double custo;
         for (Estado est : listaSucessores) {
             custo = noAExpandir.getG() + est.getOperador().getCusto();
-            No no = new No(est, noAExpandir, custo, custo);
-            nosPorExpandir.add(no);
+            if(!nosPorExpandir.contemEstado(est)){
+                if(!nosExpandidos.contains(est)){
+                    No no = new No(est, noAExpandir, custo, custo);
+                    nosPorExpandir.add(no);
+                }
+            } else if (nosPorExpandir.getNo(est).getG() > custo){
+                nosPorExpandir.removeNo(est);
+                nosPorExpandir.add(new No(est, noAExpandir, custo, custo));
+            }
         }
     }
 
