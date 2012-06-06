@@ -14,7 +14,7 @@ public class PesquisaEmFeixe extends PesquisaAAsterisco {
     private int tamanhoMaximoLista;
 
     public PesquisaEmFeixe(Agente agente) {
-        this(200, agente);
+        this(20000, agente);
         completo = false;
     }
 
