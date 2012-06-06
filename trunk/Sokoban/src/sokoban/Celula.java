@@ -38,12 +38,6 @@ public class Celula implements Cloneable {
     }
 
     public boolean equals(Celula other) {
-	if (this.x != other.x) {
-	    return false;
-	}
-	if (this.y != other.y) {
-	    return false;
-	}
 	if (this.agente != other.agente) {
 	    return false;
 	}
@@ -61,14 +55,7 @@ public class Celula implements Cloneable {
 
     @Override
     public int hashCode() {
-	int hash = 7;
-	hash = 13 * hash + this.x;
-	hash = 13 * hash + this.y;
-	hash = 13 * hash + (this.agente ? 1 : 0);
-	hash = 13 * hash + (this.parede ? 1 : 0);
-	hash = 13 * hash + (this.caixote ? 1 : 0);
-	hash = 13 * hash + (this.objetivo ? 1 : 0);
-	return hash;
+        return toString().hashCode();
     }
 
     @Override

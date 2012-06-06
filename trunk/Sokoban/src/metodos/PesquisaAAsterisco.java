@@ -21,10 +21,15 @@ public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<NodePriorityQ
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
         double custo;
         for (Estado est : listaSucessores) {
-            if (!nosPorExpandir.contemEstado(est)) {
-                custo = noAExpandir.getG() + est.getOperador().getCusto();
-                No no = new No(est, noAExpandir, custo, custo + agente.getHeuristica().calcular(est));
-                nosPorExpandir.add(no);
+            custo = noAExpandir.getG() + est.getOperador().getCusto();
+            if(!nosPorExpandir.contemEstado(est)){
+                if(!nosExpandidos.contains(est)){
+                    No no = new No(est, noAExpandir, custo, custo + agente.getHeuristica().calcular(est));
+                    nosPorExpandir.add(no);
+                }
+            } else if (nosPorExpandir.getNo(est).getG() > custo){
+                nosPorExpandir.removeNo(est);
+                nosPorExpandir.add(new No(est, noAExpandir, custo, custo + agente.getHeuristica().calcular(est)));
             }
         }
     }

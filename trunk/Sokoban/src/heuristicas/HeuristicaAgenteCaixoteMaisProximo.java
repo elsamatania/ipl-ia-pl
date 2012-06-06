@@ -26,13 +26,13 @@ public class HeuristicaAgenteCaixoteMaisProximo extends Heuristica<ProblemaSokob
     @Override
     public double calcular(EstadoSokoban estado) {
         double dx, dy;
-        double valorFinalAgente = 0;
+        double valorFinalAgente = Double.POSITIVE_INFINITY;
         double cMaisPertoAgente;
 
         Celula celulaAgente = estado.getPosicaoAgente();
 
-        for (int i = 0; i < estado.getNumColunas(); i++) {
-            for (int j = 0; j < estado.getNumLinhas(); j++) {
+        for (int i = 0; i < estado.getNumLinhas(); i++) {
+            for (int j = 0; j < estado.getNumColunas(); j++) {
                 Celula celulaAtual = estado.getValueAt(i, j);
                 if (celulaAtual.temCaixote()) {
 

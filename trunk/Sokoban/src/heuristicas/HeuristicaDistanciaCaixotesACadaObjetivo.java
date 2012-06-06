@@ -6,7 +6,6 @@ package heuristicas;
 
 import agente.Heuristica;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import sokoban.EstadoSokoban;
@@ -14,29 +13,55 @@ import sokoban.ProblemaSokoban;
 
 /**
  *
- * @author Renato
+ * @author Renato 
  */
-public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<ProblemaSokoban, EstadoSokoban>{
+public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<ProblemaSokoban, EstadoSokoban> {
+    
+    public static final String NOME = "Atribuição de caixotes";
 
     private int[][] tabela;
-    private int[] lista;
+    //private int[] lista;
     private LinkedList<Point> objetivos;
     private int dimensao;
+    private HeuristicaAgenteCaixoteMaisProximo heurAgente;
     
     public HeuristicaDistanciaCaixotesACadaObjetivo(ProblemaSokoban problema) {
         super(problema);
+        heurAgente = new HeuristicaAgenteCaixoteMaisProximo(problema);
         objetivos = problema.getPosicoesObjetivo();
         dimensao = objetivos.size();
         tabela = new int[objetivos.size()][objetivos.size()];
-        lista = new int[dimensao*dimensao];
+        //lista = new int[dimensao*dimensao];
     }
 
     @Override
     public double calcular(EstadoSokoban estado) {
+        int temp;
+        Point pos = new Point();
         Point minimo = preencherTabela(estado);
-        Arrays.fill(tabela[minimo.x], Integer.MAX_VALUE);
-        //for()
-        return 0;
+        int total = tabela[minimo.x][minimo.y];
+        
+        invalidarLinhaEColuna(minimo);
+        
+        for (int i = 0; i < dimensao - 1; i++) {
+            temp = Integer.MAX_VALUE;
+            for (int j = 0; j < dimensao; j++) {
+                for (int k = 0; k < dimensao; k++) {
+                    if(tabela[j][k] < temp){
+                        temp = tabela[j][k];
+                        pos.setLocation(j, k);
+                    }
+                }
+            }
+            total += temp;
+            invalidarLinhaEColuna(pos);
+        }
+        
+        if(total > 0){
+            total += heurAgente.calcular(estado);
+        }
+        
+        return total;
     }
 
     private Point preencherTabela(EstadoSokoban e) {
@@ -58,6 +83,13 @@ public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<Problem
         }
         
         return minimo;
+    }
+    
+    private void invalidarLinhaEColuna(Point p){
+        Arrays.fill(tabela[p.x], Integer.MAX_VALUE);
+        for (int i = 0; i < tabela[0].length; i++) {
+            tabela[i][p.y] = Integer.MAX_VALUE;  
+        }
     }
     
     

@@ -4,7 +4,10 @@
  */
 package sokoban;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,23 +28,7 @@ public class SokobanTester {
     private SokobanResolver resolver;
     private File results;
     private BufferedWriter bw;
-    private static final Logger logger = Logger.getLogger(SokobanTester.class.getName());
-
-    static {
-        try {
-            FileHandler fh = new FileHandler("./sokoban.log");
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-            logger.addHandler(fh);
-            logger.setLevel(Level.ALL);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        } catch (SecurityException ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-    }
+    private static Logger logger;
 
     public SokobanTester() {
         ficheirosTeste = new ArrayList<File>();
@@ -59,22 +46,20 @@ public class SokobanTester {
             bw.write("Problema,Método,Heurística,Custo,Profundidade,TotalExpandidos,TotalGerados,TamanhoMáximoLista");
             bw.newLine();
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Erro ao abrir ficheiro de resultados: " + ex, ex);
+            getLogger().log(Level.SEVERE, "Erro ao abrir ficheiro de resultados: " + ex, ex);
             System.exit(1);
         }
 
-        //bw.write("Problema,Método,Heurística,");
         try {
             for (File file : ficheirosTeste) {
                 try {
                     problema = SokobanResolver.lerFicheiroProblema(file);
                     resolver = new SokobanResolver(problema);
                 } catch (Exception ex) {
-                    logger.log(Level.SEVERE, "Erro na leitura do ficheiro {0}: {1}", new Object[]{file.getName(), ex});
+                    getLogger().log(Level.SEVERE, "Erro na leitura do ficheiro {0}: {1}", new Object[]{file.getName(), ex});
                     continue;
                 }
 
-                //bw.write(file.getName() + ",");
                 for (String metodo : metodosPesquisa) {
                     resolver.setMetodoPesquisa(metodo);
                     if (resolver.isInformado()) {
@@ -94,7 +79,7 @@ public class SokobanTester {
             }
             bw.close();
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Erro: " + ex, ex);
+            getLogger().log(Level.SEVERE, "Erro: " + ex, ex);
         }
     }
 
@@ -112,5 +97,25 @@ public class SokobanTester {
         sb.append(resolver.getTamanhoMaximoConjuntoAExpandir());
         bw.write(sb.toString());
         bw.newLine();
+    }
+
+    private Logger getLogger() {
+        if (logger == null) {
+            logger = Logger.getLogger(SokobanTester.class.getName());
+            try {
+                FileHandler fh = new FileHandler("./sokoban.log");
+                SimpleFormatter formatter = new SimpleFormatter();
+                fh.setFormatter(formatter);
+                logger.addHandler(fh);
+                logger.setLevel(Level.ALL);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                System.exit(1);
+            } catch (SecurityException ex) {
+                ex.printStackTrace();
+                System.exit(1);
+            }
+        }
+        return logger;
     }
 }

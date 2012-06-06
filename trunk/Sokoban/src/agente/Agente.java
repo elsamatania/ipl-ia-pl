@@ -60,8 +60,8 @@ public class Agente {
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaEmFeixe(this);
         metodosPesquisa.put(metodo.toString(), metodo);
-        metodo = new IDAAsterisco(this);
-        metodosPesquisa.put(metodo.toString(), metodo);
+//        metodo = new IDAAsterisco(this);
+//        metodosPesquisa.put(metodo.toString(), metodo);
 
     }
 

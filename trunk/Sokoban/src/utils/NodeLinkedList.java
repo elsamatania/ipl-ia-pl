@@ -6,6 +6,7 @@ package utils;
 
 import agente.Estado;
 import agente.No;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -15,30 +16,30 @@ import java.util.LinkedList;
  */
 public class NodeLinkedList extends LinkedList<No> implements NodeCollection {
 
-    private HashSet<Estado> estados;
+    private HashMap<Estado,No> contents;
 
     public NodeLinkedList() {
         super();
-        estados = new HashSet<Estado>();
+        contents = new HashMap<Estado, No>(128);
     }
 
     @Override
     public void add(int index, No element) {
         super.add(index, element);
-        estados.add(element.getEstado());
+        contents.put(element.getEstado(), element);
     }
 
     @Override
     public void clear() {
         super.clear();
-        estados.clear();
+        contents.clear();
     }
 
     @Override
     public boolean remove(Object o) {
         if (o instanceof No) {
             No no = (No) o;
-            estados.remove(no.getEstado());
+            contents.remove(no.getEstado());
         }
         return super.remove(o);
     }
@@ -47,33 +48,33 @@ public class NodeLinkedList extends LinkedList<No> implements NodeCollection {
     public No remove(int index) {
         No no = super.remove(index);
         if (no != null) {
-            estados.remove(no.getEstado());
+            contents.remove(no.getEstado());
         }
         return no;
     }
 
     @Override
-    public boolean add(No e) {
-        estados.add(e.getEstado());
-        return super.add(e);
+    public boolean add(No n) {
+        contents.put(n.getEstado(), n);
+        return super.add(n);
     }
 
     @Override
     public void addFirst(No e) {
         super.addFirst(e);
-        estados.add(e.getEstado());
+        contents.put(e.getEstado(), e);
     }
 
     @Override
     public void addLast(No e) {
         super.addLast(e);
-        estados.add(e.getEstado());
+        contents.put(e.getEstado(), e);
     }
 
     @Override
     public No removeFirst() {
         No no = super.removeFirst();
-        estados.remove(no.getEstado());
+        contents.remove(no.getEstado());
         return no;
 
     }
@@ -81,12 +82,20 @@ public class NodeLinkedList extends LinkedList<No> implements NodeCollection {
     @Override
     public No removeLast() {
         No no = super.removeLast();
-        estados.remove(no.getEstado());
+        contents.remove(no.getEstado());
         return no;
     }
     
     @Override
     public boolean contemEstado(Estado e){
-        return estados.contains(e);
+        return contents.containsKey(e);
+    }
+    
+    public No getNo(Estado e){
+        return contents.get(e);
+    }
+    
+    public boolean removeNo(Estado e) {
+        return remove(contents.get(e));
     }
 }

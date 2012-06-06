@@ -35,7 +35,7 @@ public class PuzzleTableModel extends AbstractTableModel implements PuzzleListen
     public void puzzleChanged(EventObject eo){
         fireTableDataChanged();
         try{
-            Thread.sleep(500);
+            Thread.sleep(200);
         }catch(InterruptedException e){
         }
     }
