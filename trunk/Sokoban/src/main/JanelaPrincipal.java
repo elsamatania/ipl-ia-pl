@@ -249,7 +249,10 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoMostrarSolucaoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        new SokobanTester().testar();
+        SokobanTester tester = new SokobanTester();
+        tester.testar();
+        tester.compararHeuristicas();
+        
         JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

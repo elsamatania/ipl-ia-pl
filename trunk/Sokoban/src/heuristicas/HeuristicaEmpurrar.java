@@ -31,7 +31,7 @@ public class HeuristicaEmpurrar extends Heuristica<ProblemaSokoban, EstadoSokoba
         Celula esquerda = estado.getCelulaEsquerda(agente);
         Celula direita = estado.getCelulaDireita(agente);
          
-        double valortotal = 2;
+        double valortotal = 50;
         
         if (abaixo.temCaixote()) valortotal = 1;
         if (acima.temCaixote()) valortotal = 1;
