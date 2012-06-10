@@ -7,6 +7,8 @@ package heuristicas;
 import agente.Estado;
 import agente.Heuristica;
 import agente.Problema;
+import java.awt.Point;
+import java.util.List;
 import sokoban.Celula;
 import sokoban.EstadoSokoban;
 import sokoban.ProblemaSokoban;
@@ -28,27 +30,23 @@ public class HeuristicaAgenteCaixoteMaisProximo extends Heuristica<ProblemaSokob
         double dx, dy;
         double valorFinalAgente = Double.POSITIVE_INFINITY;
         double cMaisPertoAgente;
-
-        Celula celulaAgente = estado.getPosicaoAgente();
-
-        for (int i = 0; i < estado.getNumLinhas(); i++) {
-            for (int j = 0; j < estado.getNumColunas(); j++) {
-                Celula celulaAtual = estado.getValueAt(i, j);
-                if (celulaAtual.temCaixote()) {
-
-                    dx = Math.abs(i - celulaAgente.getX());
-                    dy = Math.abs(j - celulaAgente.getY());
-                    cMaisPertoAgente = dx + dy;
-
-                    if (cMaisPertoAgente < valorFinalAgente) {
-                        valorFinalAgente = cMaisPertoAgente;
-                    }
-
-                }
-
-            }
+        List<Point> caixotesFalta = estado.getPosicoesCaixotes();
+        caixotesFalta.removeAll(estado.getPosicoesObjetivo());
+        
+        if(caixotesFalta.isEmpty()){
+            return 0;
         }
 
+        Celula celulaAgente = estado.getPosicaoAgente();
+        for (Point p : caixotesFalta) {
+            dx = Math.abs(celulaAgente.getX() - p.x);
+            dy = Math.abs(celulaAgente.getY() - p.y);
+            cMaisPertoAgente = dx + dy;
+
+            if (cMaisPertoAgente < valorFinalAgente) {
+                valorFinalAgente = cMaisPertoAgente;
+            }
+        }
 
         return valorFinalAgente;
     }

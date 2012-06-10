@@ -5,8 +5,8 @@
 package heuristicas;
 
 import agente.Heuristica;
-import java.awt.Point;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 import sokoban.Celula;
 import sokoban.EstadoSokoban;
 import sokoban.ProblemaSokoban;
@@ -17,117 +17,49 @@ import sokoban.ProblemaSokoban;
  */
 public class HeuristicaCombinacao extends Heuristica<ProblemaSokoban, EstadoSokoban> {
 
-    public static final String NOME = "Combinacao de Varias Heuristicas";
+    public static final String NOME = "Soma mínima sôfrega + prioridade a empurrar";
     
-    private HeuristicaDistanciaCaixotesACadaObjetivo heurObj;
+    private HeuristicaSomaMinimaSofrega heurObj;
 
     public HeuristicaCombinacao(ProblemaSokoban problema) {
         super(problema);
-        heurObj = new HeuristicaDistanciaCaixotesACadaObjetivo(problema);
+        heurObj = new HeuristicaSomaMinimaSofrega(problema);
     }
 
     @Override
     public double calcular(EstadoSokoban estado) {
 
-        //para dar um custo proporcional ao tamanho do puzzle
-        int tamanhoPuzzle = estado.getNumColunas() * estado.getNumLinhas();
-
         double valortotal = 0;
 
         //caixotes ao objectivo
         valortotal += heurObj.calcular(estado);
-        
-        //distancia agente ao objectivo mais proximo
-        //valortotal += agenteObjetivo(estado, valortotal);
 
         //empurrar
-        valortotal += empurrar(estado, valortotal);
+        if(valortotal > 0){
+            valortotal += empurrar(estado, valortotal);
+        }
 
         return valortotal;
     }
 
-    private double agenteObjetivo(EstadoSokoban estado, double valorFinal) {
-        LinkedList<Point> objectivos = problema.getPosicoesObjetivo();
+    private double empurrar(EstadoSokoban estado, double valorTotal) {
         Celula agente = estado.getPosicaoAgente();
-        double distancia; //distancia ao objectivo mais proximo
-        double dx, dy;
-        double valorTemp = 0;
 
-        for (Point objectivo : objectivos) {
-            dx = Math.abs(agente.getX() - objectivo.getX());
-            dy = Math.abs(agente.getY() - objectivo.getY());
-            distancia = dx + dy;
+        List<Celula> vizinhas = new ArrayList<Celula>();
+        vizinhas.add(estado.getCelulaAcima(agente));
+        vizinhas.add(estado.getCelulaDireita(agente));
+        vizinhas.add(estado.getCelulaAbaixo(agente));
+        vizinhas.add(estado.getCelulaEsquerda(agente));
 
-            if (distancia > valorTemp) valorTemp = distancia;
-        }
-
-        return valorTemp;
-    }
-
-    private double caixotesObjectivo(EstadoSokoban estado, double valorFinal) {
-        LinkedList<Point> objectivos = problema.getPosicoesObjetivo();
-        double dx, dy;
-        double distCaixote;
-        double menorDistancia = Double.POSITIVE_INFINITY;
-
-        for (int i = 0; i < estado.getNumColunas(); i++) {
-            for (int j = 0; j < estado.getNumLinhas(); j++) {
-                Celula celulaAtual = estado.getValueAt(j, i);
-                if (celulaAtual.temCaixote()) {
-                    menorDistancia = Double.POSITIVE_INFINITY;
-                    for (Point objectivo : objectivos) {
-                        dx = Math.abs(i - objectivo.getY());
-                        dy = Math.abs(j - objectivo.getX());
-                        distCaixote = dx + dy;
-                        menorDistancia = Math.min(distCaixote, menorDistancia);
-                    }
-                    valorFinal += menorDistancia;
+        for (Celula c : vizinhas) {
+            if (c.temCaixote()) {
+                if (!c.isObjetivo()) {
+                    valorTotal = 0;
                 }
             }
         }
 
-        if (problema.isObjetivoAtingido(estado)) {
-            System.out.println("valor final:" + valorFinal);
-        }
-
-        return valorFinal;
-    }
-
-    private double empurrar(EstadoSokoban estado, double valortotal) {
-        Celula agente = estado.getPosicaoAgente();
-        Celula abaixo = estado.getCelulaAbaixo(agente);
-        Celula acima = estado.getCelulaAcima(agente);
-        Celula esquerda = estado.getCelulaEsquerda(agente);
-        Celula direita = estado.getCelulaDireita(agente);
-
-
-        if (abaixo.temCaixote()) {
-            valortotal = 1;
-        }
-        if (acima.temCaixote()) {
-            valortotal = 1;
-        }
-        if (esquerda.temCaixote()) {
-            valortotal = 1;
-        }
-        if (direita.temCaixote()) {
-            valortotal = 1;
-        }
-
-
-        if (abaixo.temCaixote() && abaixo.isObjetivo()) {
-            valortotal = 0;
-        }
-        if (acima.temCaixote() && acima.isObjetivo()) {
-            valortotal = 0;
-        }
-        if (esquerda.temCaixote() && esquerda.isObjetivo()) {
-            valortotal = 0;
-        }
-        if (direita.temCaixote() && direita.isObjetivo()) {
-            valortotal = 0;
-        }
-
-        return valortotal;
+        
+        return valorTotal;
     }
 }

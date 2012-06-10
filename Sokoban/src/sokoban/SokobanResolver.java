@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import metodos.MetodoPesquisaInformadoBFS;
 import sokoban.operadores.MoverBaixo;
@@ -37,10 +39,12 @@ public class SokobanResolver {
             throw new IllegalArgumentException("A tabela fornecida não corresponde a um problema de Sokoban válido.");
         }
         operadores = new ArrayList<Operador>();
-        operadores.add(new MoverCima(1));
-        operadores.add(new MoverDireita(1));
-        operadores.add(new MoverBaixo(1));
+        operadores.add(new MoverCima(1)); 
         operadores.add(new MoverEsquerda(1));
+        operadores.add(new MoverBaixo(1));
+        operadores.add(new MoverDireita(1));
+        
+        
         problema = new ProblemaSokoban(new EstadoSokoban(tabela), operadores);
     }
 
@@ -139,22 +143,19 @@ public class SokobanResolver {
         if (isInformado()) {
             if (nomeHeuristica.equals(HeuristicaCaixotesForaSitio.NOME)) {
                 heuristica = new HeuristicaCaixotesForaSitio(problema);
-            } else if (nomeHeuristica.equals(HeuristicaManhattan.NOME)) {
-                heuristica = new HeuristicaManhattan(problema);
             } else if (nomeHeuristica.equals(HeuristicaAgenteCaixoteMaisProximo.NOME)) {
                 heuristica = new HeuristicaAgenteCaixoteMaisProximo(problema);
-            } else if (nomeHeuristica.equals(HeuristicaSomaDistanciasMinimas.NOME)){
-                heuristica = new HeuristicaSomaDistanciasMinimas(problema);
+            } else if (nomeHeuristica.equals(HeuristicaSomaMinimaOtima.NOME)){
+                heuristica = new HeuristicaSomaMinimaOtima(problema);
             } else if (nomeHeuristica.equals(HeuristicasDistanciasCaixoteAObjetivo.NOME)){
                 heuristica = new HeuristicasDistanciasCaixoteAObjetivo(problema);
             } else if (nomeHeuristica.equals(HeuristicaEmpurrar.NOME)){
                 heuristica = new HeuristicaEmpurrar(problema);
             } else if (nomeHeuristica.equals(HeuristicaCombinacao.NOME)){
                 heuristica = new HeuristicaCombinacao(problema);
-            } else if (nomeHeuristica.equals(HeuristicaDistanciaCaixotesACadaObjetivo.NOME)){
-                heuristica = new HeuristicaDistanciaCaixotesACadaObjetivo(problema);
+            } else if (nomeHeuristica.equals(HeuristicaSomaMinimaSofrega.NOME)){
+                heuristica = new HeuristicaSomaMinimaSofrega(problema);
             }
-            System.out.println("Teste: " + heuristica.calcular(getPuzzleInicial()));
         }
 
         long tempoInicial = System.nanoTime();
@@ -208,10 +209,11 @@ public class SokobanResolver {
     }
 
     public static String[] getNomesHeuristicas() {
-        String[] nomes = {HeuristicaCaixotesForaSitio.NOME, HeuristicaManhattan.NOME,
-            HeuristicaAgenteCaixoteMaisProximo.NOME, HeuristicaSomaDistanciasMinimas.NOME,
+        String[] nomes = {HeuristicaCaixotesForaSitio.NOME,
+            HeuristicaAgenteCaixoteMaisProximo.NOME, HeuristicaSomaMinimaOtima.NOME,
             HeuristicasDistanciasCaixoteAObjetivo.NOME, HeuristicaEmpurrar.NOME, HeuristicaCombinacao.NOME,
-        HeuristicaDistanciaCaixotesACadaObjetivo.NOME};
+        HeuristicaSomaMinimaSofrega.NOME};
+        Collections.sort(Arrays.asList(nomes));
         return nomes;
     }
 

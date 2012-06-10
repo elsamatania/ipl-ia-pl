@@ -44,4 +44,37 @@ public class MoverCima extends OperadorSokoban {
         }
         return true;
     }
+    
+    protected boolean isDeadlock(EstadoSokoban estado, Celula celula){
+        if(celula.isObjetivo()){
+            return false;
+        }
+        
+        Celula acima = estado.getCelulaAcima(celula);
+        Celula direita = estado.getCelulaDireita(celula);
+        Celula esquerda = estado.getCelulaEsquerda(celula);
+        
+        if(acima.temCaixote()){
+            if(direita.isParede() && estado.getCelulaDireita(acima).isParede()){
+                return true;
+            }
+            if(esquerda.isParede() && estado.getCelulaEsquerda(acima).isParede()){
+                return true;
+            }
+        }
+        
+        if(direita.temCaixote()){
+            if(acima.isParede() && estado.getCelulaAcima(direita).isParede()){
+                return true;
+            }
+        }
+        
+         if(esquerda.temCaixote()){
+            if(acima.isParede() && estado.getCelulaAcima(esquerda).isParede()){
+                return true;
+            }
+        }
+                
+        return false;
+    }
 }
