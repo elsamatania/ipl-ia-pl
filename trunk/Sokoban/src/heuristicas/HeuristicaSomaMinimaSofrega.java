@@ -13,19 +13,18 @@ import sokoban.ProblemaSokoban;
 
 /**
  *
- * @author Renato 
+ * @author Renato
  */
-public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<ProblemaSokoban, EstadoSokoban> {
-    
-    public static final String NOME = "Atribuição de caixotes";
+public class HeuristicaSomaMinimaSofrega extends Heuristica<ProblemaSokoban, EstadoSokoban> {
 
+    public static final String NOME = "Soma mínima sôfrega das distâncias dos caixotes aos objetivos";
     private int[][] tabela;
-    //private int[] lista;
     private LinkedList<Point> objetivos;
+    //private LinkedList<Point> caixotes;
     private int dimensao;
     private HeuristicaAgenteCaixoteMaisProximo heurAgente;
-    
-    public HeuristicaDistanciaCaixotesACadaObjetivo(ProblemaSokoban problema) {
+
+    public HeuristicaSomaMinimaSofrega(ProblemaSokoban problema) {
         super(problema);
         heurAgente = new HeuristicaAgenteCaixoteMaisProximo(problema);
         objetivos = problema.getPosicoesObjetivo();
@@ -36,18 +35,19 @@ public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<Problem
 
     @Override
     public double calcular(EstadoSokoban estado) {
+        
         int temp;
         Point pos = new Point();
         Point minimo = preencherTabela(estado);
         int total = tabela[minimo.x][minimo.y];
-        
+
         invalidarLinhaEColuna(minimo);
-        
+
         for (int i = 0; i < dimensao - 1; i++) {
             temp = Integer.MAX_VALUE;
             for (int j = 0; j < dimensao; j++) {
                 for (int k = 0; k < dimensao; k++) {
-                    if(tabela[j][k] < temp){
+                    if (tabela[j][k] < temp) {
                         temp = tabela[j][k];
                         pos.setLocation(j, k);
                     }
@@ -56,11 +56,11 @@ public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<Problem
             total += temp;
             invalidarLinhaEColuna(pos);
         }
-        
-        if(total > 0){
+
+        if (total > 0) {
             total += heurAgente.calcular(estado);
         }
-        
+
         return total;
     }
 
@@ -75,22 +75,20 @@ public class HeuristicaDistanciaCaixotesACadaObjetivo extends Heuristica<Problem
                 Point c = caixotes.get(j);
                 val = Math.abs(o.x - c.x) + Math.abs(o.y - c.y);
                 tabela[i][j] = val;
-                if (val < min){
+                if (val < min) {
                     min = val;
-                    minimo = new Point(i,j);
+                    minimo = new Point(i, j);
                 }
-            } 
+            }
         }
-        
+
         return minimo;
     }
-    
-    private void invalidarLinhaEColuna(Point p){
+
+    private void invalidarLinhaEColuna(Point p) {
         Arrays.fill(tabela[p.x], Integer.MAX_VALUE);
         for (int i = 0; i < tabela[0].length; i++) {
-            tabela[i][p.y] = Integer.MAX_VALUE;  
+            tabela[i][p.y] = Integer.MAX_VALUE;
         }
     }
-    
-    
 }

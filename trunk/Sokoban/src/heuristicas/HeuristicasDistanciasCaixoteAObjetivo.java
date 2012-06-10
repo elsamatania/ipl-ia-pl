@@ -29,7 +29,7 @@ public class HeuristicasDistanciasCaixoteAObjetivo extends Heuristica<ProblemaSo
         double dx, dy;
         double valorFinal = 0;
         double distCaixote;
-        double menorDistancia = Double.POSITIVE_INFINITY;
+        double menorDistancia;
 
             for (int i = 0; i < estado.getNumColunas(); i++) {
                 for (int j = 0; j < estado.getNumLinhas(); j++) {
@@ -46,10 +46,6 @@ public class HeuristicasDistanciasCaixoteAObjetivo extends Heuristica<ProblemaSo
                     }
                 }
             }
-
-        if (problema.isObjetivoAtingido(estado)) {
-            System.out.println("valor final:" + valorFinal);
-        }
 
         return valorFinal;
     }

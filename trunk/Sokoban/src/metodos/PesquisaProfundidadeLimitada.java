@@ -12,7 +12,7 @@ public class PesquisaProfundidadeLimitada extends PesquisaProfundidadePrimeiro{
     private int limite;
 
     public PesquisaProfundidadeLimitada() {
-        this(100);
+        this(120);
     }
 
 

@@ -59,7 +59,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuGeraRel = new javax.swing.JMenuItem();
+        menuComparaHeur = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sokoban");
@@ -105,13 +106,21 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
         jMenu3.setText("Relatórios");
 
-        jMenuItem1.setText("Gerar relatório");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuGeraRel.setText("Gerar relatório");
+        menuGeraRel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuGeraRelActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem1);
+        jMenu3.add(menuGeraRel);
+
+        menuComparaHeur.setText("Comparar heurísticas");
+        menuComparaHeur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuComparaHeurActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuComparaHeur);
 
         jMenuBar1.add(jMenu3);
 
@@ -248,13 +257,40 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         }.execute();
     }//GEN-LAST:event_botaoMostrarSolucaoActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        SokobanTester tester = new SokobanTester();
-        tester.testar();
-        tester.compararHeuristicas();
-        
-        JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void menuGeraRelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGeraRelActionPerformed
+
+        new SwingWorker<Void, Void>() {
+            SokobanTester tester = new SokobanTester();
+            @Override
+            protected Void doInBackground() throws Exception {
+                tester.testar();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
+            }
+               
+        }.execute();
+    }//GEN-LAST:event_menuGeraRelActionPerformed
+
+    private void menuComparaHeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuComparaHeurActionPerformed
+        new SwingWorker<Void, Void>() {
+            SokobanTester tester = new SokobanTester();
+            @Override
+            protected Void doInBackground() throws Exception {
+                tester.compararHeuristicas();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
+            }
+               
+        }.execute();
+    }//GEN-LAST:event_menuComparaHeurActionPerformed
 
     /**
      * @param args the command line arguments
@@ -410,7 +446,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem menuComparaHeur;
+    private javax.swing.JMenuItem menuGeraRel;
     private javax.swing.JPanel painelPuzzle;
     // End of variables declaration//GEN-END:variables
 }

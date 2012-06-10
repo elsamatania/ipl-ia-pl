@@ -45,4 +45,38 @@ public class MoverEsquerda extends OperadorSokoban {
         
         return true;
     }
+    
+    protected boolean isDeadlock(EstadoSokoban estado, Celula celula){
+        if(celula.isObjetivo()){
+            return false;
+        }
+        
+        Celula acima = estado.getCelulaAcima(celula);
+        Celula abaixo = estado.getCelulaAbaixo(celula);
+        Celula esquerda = estado.getCelulaEsquerda(celula);
+        
+        if(acima.temCaixote()){
+            if(esquerda.isParede() && estado.getCelulaEsquerda(acima).isParede()){
+                return true;
+            }
+        }
+        
+        
+        if(abaixo.temCaixote()){
+            if(esquerda.isParede() && estado.getCelulaEsquerda(abaixo).isParede()){
+                return true;
+            }
+        }
+        
+         if(esquerda.temCaixote()){
+            if(acima.isParede() && estado.getCelulaAcima(esquerda).isParede()){
+                return true;
+            }
+            if(abaixo.isParede() && estado.getCelulaAbaixo(esquerda).isParede()){
+                return true;
+            }
+        }
+                
+        return false;
+    }
 }

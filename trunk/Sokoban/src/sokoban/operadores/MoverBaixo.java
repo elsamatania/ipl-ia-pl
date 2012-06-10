@@ -44,4 +44,37 @@ public class MoverBaixo extends OperadorSokoban {
         }
         return true;
     }
+    
+    protected boolean isDeadlock(EstadoSokoban estado, Celula celula){
+        if(celula.isObjetivo()){
+            return false;
+        }
+        
+        Celula direita = estado.getCelulaDireita(celula);
+        Celula abaixo = estado.getCelulaAbaixo(celula);
+        Celula esquerda = estado.getCelulaEsquerda(celula);
+
+        if(abaixo.temCaixote()){
+            if(direita.isParede() && estado.getCelulaDireita(abaixo).isParede()){
+                return true;
+            }
+            if(esquerda.isParede() && estado.getCelulaEsquerda(abaixo).isParede()){
+                return true;
+            }
+        }
+        
+        if(direita.temCaixote()){
+            if(abaixo.isParede() && estado.getCelulaAbaixo(direita).isParede()){
+                return true;
+            }
+        }
+        
+         if(esquerda.temCaixote()){
+            if(abaixo.isParede() && estado.getCelulaAbaixo(esquerda).isParede()){
+                return true;
+            }
+        }
+                
+        return false;
+    }
 }

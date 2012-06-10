@@ -45,12 +45,12 @@ public class Agente {
         metodoPesquisa = metodo;
         heuristica = null;
 
-//        metodo = new PesquisaProfundidadePrimeiro();
-//        metodosPesquisa.put(metodo.toString(), metodo);
-//        metodo = new PesquisaProfundidadeLimitada();
-//        metodosPesquisa.put(metodo.toString(), metodo);
-//        metodo = new PesquisaPorAprofundamentoProgressivo();
-//        metodosPesquisa.put(metodo.toString(), metodo);
+        metodo = new PesquisaProfundidadePrimeiro();
+        metodosPesquisa.put(metodo.toString(), metodo);
+        metodo = new PesquisaProfundidadeLimitada();
+        metodosPesquisa.put(metodo.toString(), metodo);
+        metodo = new PesquisaPorAprofundamentoProgressivo();
+        metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaUniforme();
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaSofrega(this);
@@ -60,8 +60,8 @@ public class Agente {
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaEmFeixe(this);
         metodosPesquisa.put(metodo.toString(), metodo);
-//        metodo = new IDAAsterisco(this);
-//        metodosPesquisa.put(metodo.toString(), metodo);
+        metodo = new IDAAsterisco(this);
+        metodosPesquisa.put(metodo.toString(), metodo);
 
     }
 

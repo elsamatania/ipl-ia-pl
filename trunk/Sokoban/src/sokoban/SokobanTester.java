@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,28 +34,39 @@ public class SokobanTester {
     private BufferedWriter bw;
     private static Logger logger;
     private ArrayList<HashMap<String, Double>> resultados;
+    private HashMap<String, char[][]> problemas;
 
     public SokobanTester() {
         ficheirosTeste = new ArrayList<File>();
         resultados = new ArrayList<HashMap<String, Double>>();
         for (int i = 1; i < 53; i++) {
-            if(i < 10){
+            if (i < 10) {
                 ficheirosTeste.add(new File("src/puzzles/soko00" + i + ".txt"));
             } else {
-               ficheirosTeste.add(new File("src/puzzles/soko0" + i + ".txt")); 
+                ficheirosTeste.add(new File("src/puzzles/soko0" + i + ".txt"));
             }
-            
-            //ficheirosTeste.add(new File("src/puzzles/soko001.txt"));
         }
-//        ficheirosTeste.add(new File("src/puzzles/soko001.txt"));
-//        ficheirosTeste.add(new File("src/puzzles/soko002.txt"));
-//        ficheirosTeste.add(new File("src/puzzles/soko003.txt"));
-//        ficheirosTeste.add(new File("src/puzzles/soko004.txt"));
+        problemas = lerFicheiros();
         results = new File("./resultados.csv");
     }
 
-    public void testar() {
+    private HashMap<String, char[][]> lerFicheiros() {
         char[][] problema;
+        HashMap<String, char[][]> lista = new HashMap<String, char[][]>();
+
+        for (File file : ficheirosTeste) {
+            try {
+                problema = SokobanResolver.lerFicheiroProblema(file);
+                lista.put(file.getName(), problema);
+            } catch (Exception ex) {
+                getLogger().log(Level.SEVERE, "Erro na leitura do ficheiro {0}: {1}", new Object[]{file.getName(), ex});
+                continue;
+            }
+        }
+        return lista;
+    }
+
+    public void testar() {
         try {
             bw = new BufferedWriter(new PrintWriter(results, "UTF-8"));
             bw.write("Problema,Método,Heurística,Custo,Profundidade,TotalExpandidos,TotalGerados,TamanhoMáximoLista");
@@ -65,26 +77,23 @@ public class SokobanTester {
         }
 
         try {
-            for (File file : ficheirosTeste) {
-                try {
-                    problema = SokobanResolver.lerFicheiroProblema(file);
-                    resolver = new SokobanResolver(problema);
-                } catch (Exception ex) {
-                    getLogger().log(Level.SEVERE, "Erro na leitura do ficheiro {0}: {1}", new Object[]{file.getName(), ex});
-                    continue;
-                }
+            for (Map.Entry<String, char[][]> entry : problemas.entrySet()) {
+                String nome = entry.getKey();
+                char[][] problema = entry.getValue();
+
+                resolver = new SokobanResolver(problema);
 
                 for (String metodo : metodosPesquisa) {
                     resolver.setMetodoPesquisa(metodo);
                     if (resolver.isInformado()) {
                         for (String heuristica : heuristicas) {
-                            bw.write(file.getName() + ",");
+                            bw.write(nome + ",");
                             bw.write(metodo + ",");
                             bw.write(heuristica + ",");
                             analisarProblema(heuristica);
                         }
                     } else {
-                        bw.write(file.getName() + ",");
+                        bw.write(nome + ",");
                         bw.write(metodo + ",");
                         bw.write(",");
                         analisarProblema(null);
@@ -98,15 +107,12 @@ public class SokobanTester {
     }
 
     public void compararHeuristicas() {
-        char[][] problema;
         double custoLargura;
         long expandidosLargura;
         HashMap<String, Double> heurRes;
         int numPuzzles = 0;
         try {
-            
-            for (File file : ficheirosTeste) {
-                problema = SokobanResolver.lerFicheiroProblema(file);
+            for (char[][] problema : problemas.values()) {
                 resolver = new SokobanResolver(problema);
                 resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
                 resolver.resolverProblema(null);
@@ -116,27 +122,25 @@ public class SokobanTester {
                 resolver.setMetodoPesquisa(PesquisaAAsterisco.NOME);
                 for (String heuristica : heuristicas) {
                     resolver.resolverProblema(heuristica);
-                    heurRes.put(heuristica, ((double) resolver.getTotalNosExpandidos() / expandidosLargura) + 
-                            (heurRes.get(heuristica)==null?0:heurRes.get(heuristica)));
+                    heurRes.put(heuristica, ((double) resolver.getTotalNosExpandidos() / expandidosLargura)
+                            + (heurRes.get(heuristica) == null ? 0 : heurRes.get(heuristica)));
                 }
 
                 resultados.add(heurRes);
                 numPuzzles++;
-
-                //bw = new BufferedWriter(new PrintWriter(new File("./comparaHeuristicas.csv"), "UTF-8"));
             }
             double media = 0;
-                double temp = 0;
-                bw = new BufferedWriter(new PrintWriter(new File("./comparaHeuristicas.csv"), "UTF-8"));
-                for (String heuristica : heuristicas) {
-                    for (HashMap<String, Double> res : resultados) {
-                        temp += res.get(heuristica);
-                    }
-                    bw.write(heuristica + ",");
-                    bw.write(Double.toString(temp / numPuzzles));
-                    bw.newLine();
-                    temp = 0;
+            double temp = 0;
+            bw = new BufferedWriter(new PrintWriter(new File("./comparaHeuristicas.csv"), "UTF-8"));
+            for (String heuristica : heuristicas) {
+                for (HashMap<String, Double> res : resultados) {
+                    temp += res.get(heuristica);
                 }
+                bw.write(heuristica + ",");
+                bw.write(Double.toString(temp / numPuzzles));
+                bw.newLine();
+                temp = 0;
+            }
             bw.close();
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, "Erro: " + ex, ex);

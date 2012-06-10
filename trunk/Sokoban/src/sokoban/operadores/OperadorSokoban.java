@@ -39,6 +39,11 @@ public abstract class OperadorSokoban extends Operador<EstadoSokoban> {
         if (!celula.isObjetivo() && celula.isCanto()) {
             return false;
         }
-        return true;
+
+        return !isDeadlock(estado, celula);
+
+
     }
+    
+    protected abstract boolean isDeadlock(EstadoSokoban estado, Celula celula);
 }
