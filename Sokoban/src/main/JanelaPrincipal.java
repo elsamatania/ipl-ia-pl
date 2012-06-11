@@ -36,6 +36,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
      * Creates new form JanelaPrincipal
      */
     public JanelaPrincipal() {
+        sokobanResolver = new SokobanResolver();
         initComponents();
     }
 
@@ -53,7 +54,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         botaoEscolherPuzzle = new javax.swing.JButton();
         botaoResolver = new javax.swing.JButton();
         botaoMostrarSolucao = new javax.swing.JButton();
-        comboMetodo = new javax.swing.JComboBox(SokobanResolver.getNomesMetodos());
+        comboMetodo = new javax.swing.JComboBox(sokobanResolver.getNomesMetodos());
         comboHeuristica = new javax.swing.JComboBox(SokobanResolver.getNomesHeuristicas());
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -61,6 +62,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         menuGeraRel = new javax.swing.JMenuItem();
         menuComparaHeur = new javax.swing.JMenuItem();
+        menuTesteSofrega = new javax.swing.JMenuItem();
+        menuRelFeixe = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sokoban");
@@ -121,6 +124,22 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu3.add(menuComparaHeur);
+
+        menuTesteSofrega.setText("Relatório  - pesquisa sôfrega");
+        menuTesteSofrega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuTesteSofregaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuTesteSofrega);
+
+        menuRelFeixe.setText("Relatório - pesquisa em feixe");
+        menuRelFeixe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRelFeixeActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuRelFeixe);
 
         jMenuBar1.add(jMenu3);
 
@@ -210,7 +229,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                //sokobanResolver.resolverProblema(heuristica);
                 return null;
             }
 
@@ -218,24 +236,22 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             protected void done() {
                 if (sokobanResolver.temSolucao()) {
                     botaoMostrarSolucao.setEnabled(true);
-                    System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
-                    System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
-                    System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
-                    System.out.println("Nós expandidos: " + sokobanResolver.getTotalNosExpandidos());
-                    System.out.println("Nós gerados: " + sokobanResolver.getTotalNosGerados());
-                    System.out.println("Máximo lista a expandir: " + sokobanResolver.getTamanhoMaximoConjuntoAExpandir());
-
                 } else {
                     String mensagem;
-                    if(sokobanResolver.isCompleto()){
+                    if (sokobanResolver.isCompleto()) {
                         mensagem = "O problema não tem solução";
                     } else {
                         mensagem = "Não foi encontrada solução";
                     }
                     JOptionPane.showMessageDialog(rootPane, mensagem,
                             "Sem solução", JOptionPane.INFORMATION_MESSAGE);
-                    System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
                 }
+                System.out.println("Custo da solução: " + sokobanResolver.getCustoSolucao());
+                System.out.println("Profundidade da solução: " + sokobanResolver.getProfundidadeSolucao());
+                System.out.println("Tempo de pesquisa: " + Math.round(sokobanResolver.getTempoPesquisa() / 1000000) + " ms");
+                System.out.println("Nós expandidos: " + sokobanResolver.getTotalNosExpandidos());
+                System.out.println("Nós gerados: " + sokobanResolver.getTotalNosGerados());
+                System.out.println("Máximo lista a expandir: " + sokobanResolver.getTamanhoMaximoConjuntoAExpandir());
                 botaoEscolherPuzzle.setEnabled(true);
                 botaoResolver.setEnabled(true);
             }
@@ -248,6 +264,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
 
     private void botaoMostrarSolucaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoMostrarSolucaoActionPerformed
         new SwingWorker<Void, Void>() {
+
             @Override
             protected Void doInBackground() throws Exception {
                 botaoMostrarSolucao.setEnabled(false);
@@ -260,7 +277,9 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private void menuGeraRelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGeraRelActionPerformed
 
         new SwingWorker<Void, Void>() {
+
             SokobanTester tester = new SokobanTester();
+
             @Override
             protected Void doInBackground() throws Exception {
                 tester.testar();
@@ -271,16 +290,17 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             protected void done() {
                 JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
             }
-               
         }.execute();
     }//GEN-LAST:event_menuGeraRelActionPerformed
 
     private void menuComparaHeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuComparaHeurActionPerformed
         new SwingWorker<Void, Void>() {
+
             SokobanTester tester = new SokobanTester();
+
             @Override
             protected Void doInBackground() throws Exception {
-                tester.compararHeuristicas();
+                tester.testarHeuristicas();
                 return null;
             }
 
@@ -288,9 +308,44 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             protected void done() {
                 JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
             }
-               
         }.execute();
     }//GEN-LAST:event_menuComparaHeurActionPerformed
+
+    private void menuTesteSofregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuTesteSofregaActionPerformed
+                new SwingWorker<Void, Void>() {
+
+            SokobanTester tester = new SokobanTester();
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                tester.testarSofrega();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }.execute();
+    }//GEN-LAST:event_menuTesteSofregaActionPerformed
+
+    private void menuRelFeixeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRelFeixeActionPerformed
+                        new SwingWorker<Void, Void>() {
+
+            SokobanTester tester = new SokobanTester();
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                tester.testarFeixe();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JOptionPane.showMessageDialog(rootPane, "Relatório concluído!", "Concluído", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }.execute();
+    }//GEN-LAST:event_menuRelFeixeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,25 +392,22 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
     }
-/*
-    public static char[][] lerFicheiroProblema(File f) throws Exception {
-        ArrayList<char[]> listaLinhas = new ArrayList<char[]>();
-        BufferedReader br = new BufferedReader(new FileReader(f));
+    /*
+     * public static char[][] lerFicheiroProblema(File f) throws Exception {
+     * ArrayList<char[]> listaLinhas = new ArrayList<char[]>(); BufferedReader
+     * br = new BufferedReader(new FileReader(f));
+     *
+     * String linha = br.readLine(); while (linha != null) {
+     * listaLinhas.add(linha.toCharArray()); linha = br.readLine(); }
+     *
+     * br.close();
+     *
+     * char[][] tabela = listaLinhas.toArray(new char[0][0]);
+     * traduzirProblema(tabela);
+     *
+     * return tabela; }
+     */
 
-        String linha = br.readLine();
-        while (linha != null) {
-            listaLinhas.add(linha.toCharArray());
-            linha = br.readLine();
-        }
-        
-        br.close();
-
-        char[][] tabela = listaLinhas.toArray(new char[0][0]);
-        traduzirProblema(tabela);
-
-        return tabela;
-    }
-*/
     public void carregarProblema() {
         char[][] chars;
         File fich;
@@ -383,41 +435,19 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             carregarProblema();
         }
     }
-/*
-    public static void traduzirProblema(char[][] tabela) {
-        for (int i = 0; i < tabela.length; i++) {
-            for (int j = 0; j < tabela[i].length; j++) {
-                switch (tabela[i][j]) {
-                    case '#':
-                        tabela[i][j] = 'P';
-                        break;
-                    case '.':
-                        tabela[i][j] = 'O';
-                        break;
-                    case '@':
-                        tabela[i][j] = 'A';
-                        break;
-                    case '$':
-                        tabela[i][j] = 'C';
-                        break;
-                    case '*':
-                        tabela[i][j] = 'X';
-                        break;
-                    case ' ':
-                        tabela[i][j] = 'V';
-                }
-            }
-        }
-    }
-*/
+    /*
+     * public static void traduzirProblema(char[][] tabela) { for (int i = 0; i
+     * < tabela.length; i++) { for (int j = 0; j < tabela[i].length; j++) {
+     * switch (tabela[i][j]) { case '#': tabela[i][j] = 'P'; break; case '.':
+     * tabela[i][j] = 'O'; break; case '@': tabela[i][j] = 'A'; break; case '$':
+     * tabela[i][j] = 'C'; break; case '*': tabela[i][j] = 'X'; break; case ' ':
+     * tabela[i][j] = 'V'; } } } }
+     */
+
     private void setPuzzle(char[][] tabela) {
-        if (sokobanResolver == null) {
-            sokobanResolver = new SokobanResolver(tabela);
-        } else {
-            sokobanResolver.setProblema(tabela);
-        }
+        sokobanResolver.setProblema(tabela);
         puzzleTableModel = new PuzzleTableModel(sokobanResolver.getPuzzleInicial());
-        //new HeuristicaSomaDistanciasMinimas(sokobanResolver.).;
+
         configurarTabela();
         botaoResolver.setEnabled(true);
     }
@@ -433,7 +463,7 @@ public class JanelaPrincipal extends javax.swing.JFrame {
         tabelaPuzzle.setBorder(BorderFactory.createLineBorder(Color.black));
         painelPuzzle.add(tabelaPuzzle);
         pack();
-        
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEscolherPuzzle;
@@ -448,6 +478,8 @@ public class JanelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem menuComparaHeur;
     private javax.swing.JMenuItem menuGeraRel;
+    private javax.swing.JMenuItem menuRelFeixe;
+    private javax.swing.JMenuItem menuTesteSofrega;
     private javax.swing.JPanel painelPuzzle;
     // End of variables declaration//GEN-END:variables
 }

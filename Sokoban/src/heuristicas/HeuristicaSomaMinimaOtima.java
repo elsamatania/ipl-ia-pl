@@ -18,10 +18,12 @@ public class HeuristicaSomaMinimaOtima extends Heuristica<ProblemaSokoban, Estad
 
     public static final String NOME = "Soma mínima ótima das distâncias dos caixotes aos objetivos";
     int[][] permutacoes3 = {{1, 2, 3}, {1, 3, 2}, {2, 1, 3}, {2, 3, 1}, {3, 1, 2}, {3, 2, 1}};
+    private HeuristicaAgenteCaixoteMaisProximo heurAgente;
     private LinkedList<Point> objetivos;
     
     public HeuristicaSomaMinimaOtima(ProblemaSokoban problema) {
         super(problema);
+        heurAgente = new HeuristicaAgenteCaixoteMaisProximo(problema);
     }
 
     @Override
@@ -42,6 +44,10 @@ public class HeuristicaSomaMinimaOtima extends Heuristica<ProblemaSokoban, Estad
                 soma += temp;
             }
             min = Math.min(soma, min);
+        }
+        
+        if(min > 0) {
+            min += heurAgente.calcular(estado);
         }
 
         return min;

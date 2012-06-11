@@ -30,25 +30,40 @@ public class SokobanResolver {
 
     private List<Operador> operadores;
     private ProblemaSokoban problema;
-    private static Agente agente = new Agente();
+    private Agente agente = new Agente();
     private Solucao solucao;
     private long tempoPesquisa;
 
-    public SokobanResolver(char[][] tabela) {
-        if (!isSokobanValido(tabela)) {
-            throw new IllegalArgumentException("A tabela fornecida não corresponde a um problema de Sokoban válido.");
-        }
+    public SokobanResolver() {
         operadores = new ArrayList<Operador>();
         operadores.add(new MoverCima(1)); 
         operadores.add(new MoverEsquerda(1));
         operadores.add(new MoverBaixo(1));
         operadores.add(new MoverDireita(1));
-        
-        
-        problema = new ProblemaSokoban(new EstadoSokoban(tabela), operadores);
+        agente = new Agente();
     }
+    
+    
+
+//    public SokobanResolver(char[][] tabela) {
+//        if (!isSokobanValido(tabela)) {
+//            throw new IllegalArgumentException("A tabela fornecida não corresponde a um problema de Sokoban válido.");
+//        }
+//        operadores = new ArrayList<Operador>();
+//        operadores.add(new MoverCima(1)); 
+//        operadores.add(new MoverEsquerda(1));
+//        operadores.add(new MoverBaixo(1));
+//        operadores.add(new MoverDireita(1));
+//        
+//        agente = new Agente();
+//        
+//        problema = new ProblemaSokoban(new EstadoSokoban(tabela), operadores);
+//    }
 
     public void setProblema(char[][] tabela) {
+         if (!isSokobanValido(tabela)) {
+            throw new IllegalArgumentException("A tabela fornecida não corresponde a um problema de Sokoban válido.");
+        }
         problema = new ProblemaSokoban(new EstadoSokoban(tabela), operadores);
     }
     
@@ -204,7 +219,7 @@ public class SokobanResolver {
         return agente.getMetodoPesquisa().getTamanhoMaximoConjuntoAExpandir();
     }
 
-    public static String[] getNomesMetodos() {
+    public String[] getNomesMetodos() {
         return agente.getNomesMetodos();
     }
 

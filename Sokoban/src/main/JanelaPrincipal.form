@@ -35,6 +35,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuComparaHeurActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuTesteSofrega">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Relat&#xf3;rio  - pesquisa s&#xf4;frega"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuTesteSofregaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuRelFeixe">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Relat&#xf3;rio - pesquisa em feixe"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuRelFeixeActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -166,7 +182,7 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="comboMetodo">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(SokobanResolver.getNomesMetodos())"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(sokobanResolver.getNomesMetodos())"/>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="comboMetodo.setSelectedItem(PesquisaLarguraPrimeiro.NOME);"/>
       </AuxValues>
     </Component>

@@ -75,8 +75,8 @@ public class IDAAsterisco extends PesquisaAAsterisco {
     public void inserirSucessores(No noAExpandir, List<Estado> listaSucessores) {
         double g, f;
         for (Estado est : listaSucessores) {
+            g = noAExpandir.getG() + est.getOperador().getCusto();
             if (!nosPorExpandir.contemEstado(est)) {
-                g = noAExpandir.getG() + est.getOperador().getCusto();
                 f = g + agente.getHeuristica().calcular(est);
                 if (f <= limite) {
                     No no = new No(est, noAExpandir, g, f);
@@ -86,6 +86,9 @@ public class IDAAsterisco extends PesquisaAAsterisco {
                 } else {
                     novoLimite = Math.min(novoLimite, f);
                 }
+            } else if (nosPorExpandir.getNo(est).getG() > g){
+                nosPorExpandir.removeNo(est);
+                nosPorExpandir.add(new No(est, noAExpandir, g, g + agente.getHeuristica().calcular(est)));
             }
         }
     }
