@@ -76,6 +76,7 @@ public class SokobanTester {
         }
 
         List<String> metodos = new ArrayList<String>(metodosPesquisa);
+        //senão nunca mais daqui saíamos à espera do relatório
         metodos.remove(PesquisaProfundidadePrimeiro.NOME);
         metodos.remove(PesquisaProfundidadeLimitada.NOME);
         metodos.remove(PesquisaPorAprofundamentoProgressivo.NOME);

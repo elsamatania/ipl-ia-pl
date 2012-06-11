@@ -36,8 +36,4 @@ public class Solucao {
     public List<Operador> getOperadores() {
         return listaOperadores;
     }
-
-    public void executar() {
-        //TODO
-    }
 }

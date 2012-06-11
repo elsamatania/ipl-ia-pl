@@ -16,7 +16,6 @@ public class IDAAsterisco extends PesquisaAAsterisco {
     @Override
     public Solucao pesquisar(Problema problema) {
         limite = agente.getHeuristica().calcular(problema.getEstadoInicial());
-        //System.out.println("Limite inicial " + limite);
         numExpandidos = 0;
         numGerados = 0;
 
@@ -56,7 +55,6 @@ public class IDAAsterisco extends PesquisaAAsterisco {
         }
 
         limite = novoLimite;
-        //System.out.println("Limite " + limite);
         return null;
     }
 
@@ -86,7 +84,7 @@ public class IDAAsterisco extends PesquisaAAsterisco {
                 } else {
                     novoLimite = Math.min(novoLimite, f);
                 }
-            } else if (nosPorExpandir.getNo(est).getG() > g){
+            } else if (nosPorExpandir.getNo(est).getG() > g) {
                 nosPorExpandir.removeNo(est);
                 nosPorExpandir.add(new No(est, noAExpandir, g, g + agente.getHeuristica().calcular(est)));
             }

@@ -42,23 +42,6 @@ public class SokobanResolver {
         operadores.add(new MoverDireita(1));
         agente = new Agente();
     }
-    
-    
-
-//    public SokobanResolver(char[][] tabela) {
-//        if (!isSokobanValido(tabela)) {
-//            throw new IllegalArgumentException("A tabela fornecida não corresponde a um problema de Sokoban válido.");
-//        }
-//        operadores = new ArrayList<Operador>();
-//        operadores.add(new MoverCima(1)); 
-//        operadores.add(new MoverEsquerda(1));
-//        operadores.add(new MoverBaixo(1));
-//        operadores.add(new MoverDireita(1));
-//        
-//        agente = new Agente();
-//        
-//        problema = new ProblemaSokoban(new EstadoSokoban(tabela), operadores);
-//    }
 
     public void setProblema(char[][] tabela) {
          if (!isSokobanValido(tabela)) {
