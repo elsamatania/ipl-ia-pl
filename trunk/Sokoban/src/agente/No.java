@@ -51,6 +51,7 @@ public class No<E extends Estado> implements Comparable{
     }
 
 
+    @Override
     public int compareTo(Object object){
         if(true)
             return (f < ((No<E>) object).f)? -1: (f == ((No<E>) object).f)? 0 : 1;

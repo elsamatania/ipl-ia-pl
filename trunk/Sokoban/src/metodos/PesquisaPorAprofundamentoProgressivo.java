@@ -9,15 +9,13 @@ public class PesquisaPorAprofundamentoProgressivo implements Pesquisa {
     private long numGeradosGlobal = 0;
     private long tamanhoMaximoGlobal = 0;
     public static final String NOME = "Aprofundamento progressivo";
-    //private int limite=90;
 
     @Override
     public Solucao pesquisar(Problema problema) {
         PesquisaProfundidadeLimitada ps = new PesquisaProfundidadeLimitada();
         Solucao sol;
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0;; i++) {
             ps.setLimite(i);
-            //System.out.println(i);
             sol = ps.pesquisar(problema);
             numExpandidosGlobal += ps.getTotalNosExpandidos();
             numGeradosGlobal += ps.getTotalNosGerados();
@@ -26,7 +24,6 @@ public class PesquisaPorAprofundamentoProgressivo implements Pesquisa {
                 return sol;
             }
         }
-        return null;
     }
 
     @Override

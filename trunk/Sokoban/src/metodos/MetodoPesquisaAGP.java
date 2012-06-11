@@ -6,7 +6,6 @@ import agente.Problema;
 import agente.Solucao;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import utils.NodeCollection;
 
 

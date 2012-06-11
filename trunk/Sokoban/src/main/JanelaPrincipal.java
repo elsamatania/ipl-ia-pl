@@ -11,10 +11,7 @@
 package main;
 
 import java.awt.Color;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
 import javax.swing.*;
 import metodos.PesquisaLarguraPrimeiro;
 import sokoban.SokobanResolver;
@@ -392,21 +389,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             }
         });
     }
-    /*
-     * public static char[][] lerFicheiroProblema(File f) throws Exception {
-     * ArrayList<char[]> listaLinhas = new ArrayList<char[]>(); BufferedReader
-     * br = new BufferedReader(new FileReader(f));
-     *
-     * String linha = br.readLine(); while (linha != null) {
-     * listaLinhas.add(linha.toCharArray()); linha = br.readLine(); }
-     *
-     * br.close();
-     *
-     * char[][] tabela = listaLinhas.toArray(new char[0][0]);
-     * traduzirProblema(tabela);
-     *
-     * return tabela; }
-     */
 
     public void carregarProblema() {
         char[][] chars;
@@ -435,14 +417,6 @@ public class JanelaPrincipal extends javax.swing.JFrame {
             carregarProblema();
         }
     }
-    /*
-     * public static void traduzirProblema(char[][] tabela) { for (int i = 0; i
-     * < tabela.length; i++) { for (int j = 0; j < tabela[i].length; j++) {
-     * switch (tabela[i][j]) { case '#': tabela[i][j] = 'P'; break; case '.':
-     * tabela[i][j] = 'O'; break; case '@': tabela[i][j] = 'A'; break; case '$':
-     * tabela[i][j] = 'C'; break; case '*': tabela[i][j] = 'X'; break; case ' ':
-     * tabela[i][j] = 'V'; } } } }
-     */
 
     private void setPuzzle(char[][] tabela) {
         sokobanResolver.setProblema(tabela);

@@ -67,10 +67,7 @@ public final class EstadoSokoban extends Estado implements Cloneable {
     }
 
     public boolean equals(EstadoSokoban other) {
-        if (!Arrays.deepEquals(this.matriz, other.matriz)) {
-            return false;
-        }
-        return true;
+        return Arrays.deepEquals(this.matriz, other.matriz);
     }
 
     @Override

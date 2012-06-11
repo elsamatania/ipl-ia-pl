@@ -25,10 +25,10 @@ public class HeuristicaEmpurrar extends Heuristica<ProblemaSokoban, EstadoSokoba
 
     @Override
     public double calcular(EstadoSokoban estado) {
-        if(problema.isObjetivoAtingido(estado)){
+        if (problema.isObjetivoAtingido(estado)) {
             return 0;
         }
-        
+
         Celula agente = estado.getPosicaoAgente();
         double valorTotal = 2;
 

@@ -6,16 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import metodos.*;
 
-/**
- *
- * <p>Title: Algoritmo Geral de Pesquisa</p> <p>Description: Classe que
- * representa um agente capaz de resolver problemas utilizando metodos de
- * pesquisa classica.</p> <p>Copyright: Copyright (c) 2004</p> <p>Company:
- * ESTG</p>
- *
- * @author Carlos Grilo
- * @version 1.0
- */
 public class Agente {
 
     /**

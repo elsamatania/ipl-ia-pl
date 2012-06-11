@@ -30,7 +30,6 @@ public class PesquisaAAsterisco extends MetodoPesquisaInformadoBFS<NodePriorityQ
             } else if (nosPorExpandir.getNo(est).getG() > custo){
                 nosPorExpandir.removeNo(est);
                 nosPorExpandir.add(new No(est, noAExpandir, custo, custo + agente.getHeuristica().calcular(est)));
-                //System.out.println("Substituiu");
             }
         }
     }

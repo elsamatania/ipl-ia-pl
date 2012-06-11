@@ -2,14 +2,6 @@ package agente;
 
 import java.util.List;
 
-/**
- * <p>Title: Algoritmo Geral de Pesquisa</p>
- * <p>Description: Classe abstracta que representa um estado do um problema.</p>
- * <p>Copyright: Copyright (c) 2004</p>
- * <p>Company: ESTG</p>
- * @author Carlos Grilo
- * @version 1.0
- */
 public abstract class Estado {
 
     /**

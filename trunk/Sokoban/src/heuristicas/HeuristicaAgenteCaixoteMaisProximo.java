@@ -4,9 +4,7 @@
  */
 package heuristicas;
 
-import agente.Estado;
 import agente.Heuristica;
-import agente.Problema;
 import java.awt.Point;
 import java.util.List;
 import sokoban.Celula;

@@ -7,7 +7,6 @@ package utils;
 import agente.Estado;
 import agente.No;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 /**

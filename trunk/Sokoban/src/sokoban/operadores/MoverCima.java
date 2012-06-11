@@ -4,7 +4,6 @@
  */
 package sokoban.operadores;
 
-import agente.Operador;
 import sokoban.Celula;
 import sokoban.EstadoSokoban;
 
@@ -45,6 +44,7 @@ public class MoverCima extends OperadorSokoban {
         return true;
     }
     
+    @Override
     protected boolean isDeadlock(EstadoSokoban estado, Celula celula){
         if(celula.isObjetivo()){
             return false;
