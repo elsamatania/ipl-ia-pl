@@ -14,7 +14,7 @@ public class PesquisaEmFeixe extends PesquisaAAsterisco {
     private int tamanhoMaximoLista;
 
     public PesquisaEmFeixe(Agente agente) {
-        this(20000, agente);
+        this(200, agente);
         completo = false;
     }
 
@@ -40,12 +40,6 @@ public class PesquisaEmFeixe extends PesquisaAAsterisco {
             No no = it.next();
             nosPorExpandir.remove(no);
         }
-          // ou então
-//        while (nosPorExpandir.size() > tamanhoMaximoLista) {
-//            nosPorExpandir.remove(Collections.max(nosPorExpandir));
-//        }
-
-        //System.out.println(nosPorExpandir.size());
     }
 
     @Override

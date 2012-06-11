@@ -17,7 +17,7 @@ public class PesquisaPorAprofundamentoProgressivo implements Pesquisa {
         Solucao sol;
         for (int i = 0; i < 200; i++) {
             ps.setLimite(i);
-            System.out.println(i);
+            //System.out.println(i);
             sol = ps.pesquisar(problema);
             numExpandidosGlobal += ps.getTotalNosExpandidos();
             numGeradosGlobal += ps.getTotalNosGerados();

@@ -54,7 +54,6 @@ public class Agente {
         metodo = new PesquisaUniforme();
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaSofrega(this);
-        
         metodosPesquisa.put(metodo.toString(), metodo);
         metodo = new PesquisaAAsterisco(this);
         metodosPesquisa.put(metodo.toString(), metodo);

@@ -8,17 +8,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import metodos.PesquisaAAsterisco;
-import metodos.PesquisaLarguraPrimeiro;
+import metodos.*;
 
 /**
  *
@@ -27,7 +22,7 @@ import metodos.PesquisaLarguraPrimeiro;
 public class SokobanTester {
 
     private List<File> ficheirosTeste;
-    private List<String> metodosPesquisa = Arrays.asList(SokobanResolver.getNomesMetodos());
+    private List<String> metodosPesquisa;
     private List<String> heuristicas = Arrays.asList(SokobanResolver.getNomesHeuristicas());
     private SokobanResolver resolver;
     private File results;
@@ -48,6 +43,10 @@ public class SokobanTester {
         }
         problemas = lerFicheiros();
         results = new File("./resultados.csv");
+        resolver = new SokobanResolver();
+        metodosPesquisa = Arrays.asList(resolver.getNomesMetodos());
+        
+        Locale.setDefault(Locale.getDefault());
     }
 
     private HashMap<String, char[][]> lerFicheiros() {
@@ -69,34 +68,44 @@ public class SokobanTester {
     public void testar() {
         try {
             bw = new BufferedWriter(new PrintWriter(results, "UTF-8"));
-            bw.write("Problema,Método,Heurística,Custo,Profundidade,TotalExpandidos,TotalGerados,TamanhoMáximoLista");
+            bw.write("Problema;Método;Heurística;Sucesso;Custo;DiferençaCustoÓtimo;TotalExpandidos;TaxaExpandidos;TotalGerados;TamanhoMáximoLista");
             bw.newLine();
         } catch (IOException ex) {
             getLogger().log(Level.SEVERE, "Erro ao abrir ficheiro de resultados: " + ex, ex);
             System.exit(1);
         }
 
+        List<String> metodos = new ArrayList<String>(metodosPesquisa);
+        metodos.remove(PesquisaProfundidadePrimeiro.NOME);
+        metodos.remove(PesquisaProfundidadeLimitada.NOME);
+        metodos.remove(PesquisaPorAprofundamentoProgressivo.NOME);
+        metodos.remove(IDAAsterisco.NOME);
+
         try {
             for (Map.Entry<String, char[][]> entry : problemas.entrySet()) {
                 String nome = entry.getKey();
                 char[][] problema = entry.getValue();
 
-                resolver = new SokobanResolver(problema);
+                resolver.setProblema(problema);
+                resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
+                resolver.resolverProblema(null);
+                double solucaoOtima = resolver.getCustoSolucao();
+                long expandidosLargura = resolver.getTotalNosExpandidos();
 
-                for (String metodo : metodosPesquisa) {
+                for (String metodo : metodos) {
                     resolver.setMetodoPesquisa(metodo);
                     if (resolver.isInformado()) {
                         for (String heuristica : heuristicas) {
-                            bw.write(nome + ",");
-                            bw.write(metodo + ",");
-                            bw.write(heuristica + ",");
-                            analisarProblema(heuristica);
+                            bw.write(nome + ";");
+                            bw.write(metodo + ";");
+                            bw.write(heuristica + ";");
+                            analisarProblema(heuristica, solucaoOtima, expandidosLargura);
                         }
                     } else {
-                        bw.write(nome + ",");
-                        bw.write(metodo + ",");
-                        bw.write(",");
-                        analisarProblema(null);
+                        bw.write(nome + ";");
+                        bw.write(metodo + ";");
+                        bw.write(";");
+                        analisarProblema(null, solucaoOtima, expandidosLargura);
                     }
                 }
             }
@@ -106,59 +115,157 @@ public class SokobanTester {
         }
     }
 
-    public void compararHeuristicas() {
-        double custoLargura;
+    public void testarSofrega() {
         long expandidosLargura;
-        HashMap<String, Double> heurRes;
-        int numPuzzles = 0;
+        double custoLargura;
+        double somaTaxas;
+        double somaDifCustos;
+        double numPuzzles;
         try {
-            for (char[][] problema : problemas.values()) {
-                resolver = new SokobanResolver(problema);
-                resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
-                resolver.resolverProblema(null);
-                expandidosLargura = resolver.getTotalNosExpandidos();
-
-                heurRes = new HashMap<String, Double>();
-                resolver.setMetodoPesquisa(PesquisaAAsterisco.NOME);
-                for (String heuristica : heuristicas) {
-                    resolver.resolverProblema(heuristica);
-                    heurRes.put(heuristica, ((double) resolver.getTotalNosExpandidos() / expandidosLargura)
-                            + (heurRes.get(heuristica) == null ? 0 : heurRes.get(heuristica)));
-                }
-
-                resultados.add(heurRes);
-                numPuzzles++;
-            }
-            double media = 0;
-            double temp = 0;
-            bw = new BufferedWriter(new PrintWriter(new File("./comparaHeuristicas.csv"), "UTF-8"));
+            bw = new BufferedWriter(new PrintWriter(new File("./sofrega.csv"), "UTF-8"));
+            bw.write("Heurística;Média da taxa de nós expandidos;Média da diferença em relação à solução ótima");
+            bw.newLine();
             for (String heuristica : heuristicas) {
-                for (HashMap<String, Double> res : resultados) {
-                    temp += res.get(heuristica);
+                somaTaxas = 0;
+                somaDifCustos = 0;
+                numPuzzles = 0;
+                for (char[][] problema : problemas.values()) {
+                    resolver.setProblema(problema);
+                    resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
+                    resolver.resolverProblema(null);
+                    expandidosLargura = resolver.getTotalNosExpandidos();
+                    custoLargura = resolver.getCustoSolucao();
+                    resolver.setMetodoPesquisa(PesquisaSofrega.NOME);
+                    resolver.resolverProblema(heuristica);
+                    somaTaxas += ((double)resolver.getTotalNosExpandidos() / (double) expandidosLargura);
+                    somaDifCustos += (resolver.getCustoSolucao() - custoLargura);
+                    numPuzzles++;
                 }
-                bw.write(heuristica + ",");
-                bw.write(Double.toString(temp / numPuzzles));
+                double mediaTaxas = somaTaxas/numPuzzles;
+                double mediaDif = somaDifCustos/numPuzzles;
+                bw.write(heuristica + ";");
+                bw.write(mediaTaxas + ";");
+                bw.write(mediaDif + ";");
                 bw.newLine();
-                temp = 0;
             }
             bw.close();
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, "Erro: " + ex, ex);
         }
-
+    }
+    
+    public void testarHeuristicas(){
+        long expandidosLargura;
+        double custoLargura;
+        double somaTaxas;
+        double somaDifCustos;
+        double numPuzzles;
+        double numPuzzlesNaoOtimos;
+        try {
+            bw = new BufferedWriter(new PrintWriter(new File("./heuristicas.csv"), "UTF-8"));
+            bw.write("Heurística;Média da taxa de nós expandidos;Taxa de soluções não ótimas;Média do desvio quanto à solução ótima");
+            bw.newLine();
+            for (String heuristica : heuristicas) {
+                somaTaxas = 0;
+                somaDifCustos = 0;
+                numPuzzles = 0;
+                numPuzzlesNaoOtimos = 0;
+                for (char[][] problema : problemas.values()) {
+                    resolver.setProblema(problema);
+                    resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
+                    resolver.resolverProblema(null);
+                    expandidosLargura = resolver.getTotalNosExpandidos();
+                    custoLargura = resolver.getCustoSolucao();
+                    resolver.setMetodoPesquisa(PesquisaAAsterisco.NOME);
+                    resolver.resolverProblema(heuristica);
+                    somaTaxas += ((double)resolver.getTotalNosExpandidos() / (double) expandidosLargura);
+                    if(resolver.getCustoSolucao() > custoLargura){
+                        somaDifCustos += (resolver.getCustoSolucao() - custoLargura);
+                        numPuzzlesNaoOtimos++;
+                    }
+                    numPuzzles++;
+                }
+                double mediaDif = 0;
+                double mediaTaxas = somaTaxas/numPuzzles;
+                if(numPuzzlesNaoOtimos > 0){
+                    mediaDif = somaDifCustos/numPuzzlesNaoOtimos;
+                }
+                double taxaNaoOtimas = numPuzzlesNaoOtimos/numPuzzles;
+                bw.write(heuristica + ";");
+                bw.write(mediaTaxas + ";");
+                bw.write(taxaNaoOtimas + ";");
+                bw.write(mediaDif + ";");
+                bw.newLine();
+            }
+            bw.close();
+        } catch (Exception ex) {
+            getLogger().log(Level.SEVERE, "Erro: " + ex, ex);
+        }
+    }
+    
+        public void testarFeixe() {
+        long expandidosLargura;
+        double custoLargura;
+        double somaTaxas;
+        double somaDifCustos;
+        double numPuzzles;
+        int numNaoResolvidos;
+        try {
+            bw = new BufferedWriter(new PrintWriter(new File("./feixe.csv"), "UTF-8"));
+            bw.write("Heurística;Taxa de resolução;Média da taxa de nós expandidos;Média da diferença em relação à solução ótima");
+            bw.newLine();
+            for (String heuristica : heuristicas) {
+                somaTaxas = 0;
+                somaDifCustos = 0;
+                numPuzzles = 0;
+                numNaoResolvidos = 0;
+                for (char[][] problema : problemas.values()) {
+                    resolver.setProblema(problema);
+                    resolver.setMetodoPesquisa(PesquisaLarguraPrimeiro.NOME);
+                    resolver.resolverProblema(null);
+                    expandidosLargura = resolver.getTotalNosExpandidos();
+                    custoLargura = resolver.getCustoSolucao();
+                    resolver.setMetodoPesquisa(PesquisaEmFeixe.NOME);
+                    resolver.resolverProblema(heuristica);
+                    if(resolver.temSolucao()){
+                        somaTaxas += ((double)resolver.getTotalNosExpandidos() / (double) expandidosLargura);
+                        somaDifCustos += (resolver.getCustoSolucao() - custoLargura);
+                    } else {
+                        numNaoResolvidos++;
+                    }
+                    numPuzzles++;
+                }
+                double taxaResolucao = (double)(numPuzzles-numNaoResolvidos)/(double)numPuzzles;
+                double mediaTaxas = somaTaxas/(double)(numPuzzles-numNaoResolvidos);
+                double mediaDif = somaDifCustos/(double)(numPuzzles-numNaoResolvidos);
+                bw.write(heuristica + ";");
+                bw.write(taxaResolucao + ";");
+                bw.write(mediaTaxas + ";");
+                bw.write(mediaDif + ";");
+                bw.newLine();
+            }
+            bw.close();
+        } catch (Exception ex) {
+            getLogger().log(Level.SEVERE, "Erro: " + ex, ex);
+        }
     }
 
-    private void analisarProblema(String heuristica) throws Exception {
+    private void analisarProblema(String heuristica, double solucaoOtima, long expandidosLargura) throws Exception {
         resolver.resolverProblema(heuristica);
         StringBuilder sb = new StringBuilder();
-        sb.append(resolver.getCustoSolucao());
-        sb.append(",");
-        sb.append(resolver.getProfundidadeSolucao());
-        sb.append(",");
+        sb.append(resolver.temSolucao() ? "Sim" : "Não");
+        sb.append(";");
+        sb.append(String.format("%.1f", resolver.getCustoSolucao()));
+        sb.append(";");
+        sb.append(String.format("%.1f", resolver.getCustoSolucao() - solucaoOtima));
+        sb.append(";");
         sb.append(resolver.getTotalNosExpandidos());
-        sb.append(",");
+        sb.append(";");
+        double taxaExpandidos = (double) resolver.getTotalNosExpandidos() / (double) expandidosLargura;
+        sb.append(String.format("%.3f", taxaExpandidos));
+        sb.append(";");
         sb.append(resolver.getTotalNosGerados());
-        sb.append(",");
+        sb.append(";");
         sb.append(resolver.getTamanhoMaximoConjuntoAExpandir());
         bw.write(sb.toString());
         bw.newLine();

@@ -20,7 +20,6 @@ public class HeuristicaSomaMinimaSofrega extends Heuristica<ProblemaSokoban, Est
     public static final String NOME = "Soma mínima sôfrega das distâncias dos caixotes aos objetivos";
     private int[][] tabela;
     private LinkedList<Point> objetivos;
-    //private LinkedList<Point> caixotes;
     private int dimensao;
     private HeuristicaAgenteCaixoteMaisProximo heurAgente;
 
@@ -30,7 +29,6 @@ public class HeuristicaSomaMinimaSofrega extends Heuristica<ProblemaSokoban, Est
         objetivos = problema.getPosicoesObjetivo();
         dimensao = objetivos.size();
         tabela = new int[objetivos.size()][objetivos.size()];
-        //lista = new int[dimensao*dimensao];
     }
 
     @Override

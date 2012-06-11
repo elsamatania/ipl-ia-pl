@@ -31,7 +31,7 @@ public class PesquisaProfundidadePrimeiro extends MetodoPesquisa<NodeLinkedList>
         nosPorExpandir.add(new No(problema.getEstadoInicial()));
         numGerados++;
 
-        while (!nosPorExpandir.isEmpty() && numExpandidos < 200000) {
+        while (!nosPorExpandir.isEmpty() && numExpandidos < 250000) {
             maxListaPorExpandir = Math.max(maxListaPorExpandir, nosPorExpandir.size());
             no = nosPorExpandir.removeFirst();
 
